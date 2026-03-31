@@ -95,7 +95,7 @@ export const apiPatch = async <TVariables extends any, TResponse = TVariables>(
   headers: Record<string, string> = {}
 ): Promise<TResponse> => {
   try {
-    const response = await getInstance().put<TResponse>(url, data, { headers });
+    const response = await getInstance().patch<TResponse>(url, data, { headers });
     return response.data;
   } catch (error) {
     extractError<TResponse>(error);

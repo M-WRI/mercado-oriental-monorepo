@@ -11,6 +11,8 @@ import notificationsRoutes from "./_modules/notifications/routes";
 import touchpointsRoutes from "./_modules/touchpoints/routes";
 import reviewsRoutes from "./_modules/reviews/routes";
 import storeAuthRoutes from "./_modules/store-auth/routes";
+import storeProductRoutes from "./_modules/store-products/routes";
+import storeOrderRoutes from "./_modules/store-orders/routes";
 import { authMiddleware } from "./middleware/authMiddleware";
 import { errorMiddleware } from "./middleware/errorMiddleware";
 
@@ -22,6 +24,8 @@ export function createApp() {
 
   app.use("/api/auth", authRoutes);
   app.use("/api/store/auth", storeAuthRoutes);
+  app.use("/api/store/products", storeProductRoutes);
+  app.use("/api/store/orders", storeOrderRoutes);
   app.use("/api/shops", authMiddleware, shopRoutes);
   app.use("/api/attributes", authMiddleware, attributeRoutes);
   app.use("/api/products", authMiddleware, productRoutes);

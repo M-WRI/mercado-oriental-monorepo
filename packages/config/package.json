@@ -1,0 +1,19 @@
+{
+  "name": "@mercado/config",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    "./tailwind": "./tailwind/base.js",
+    "./postcss": "./postcss.js",
+    "./eslint/web-app": "./eslint/web-app.js"
+  },
+  "dependencies": {
+    "@eslint/js": "catalog:",
+    "eslint": "catalog:",
+    "eslint-plugin-react-hooks": "catalog:",
+    "eslint-plugin-react-refresh": "catalog:",
+    "globals": "catalog:",
+    "typescript-eslint": "catalog:"
+  }
+}

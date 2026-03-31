@@ -1,5 +1,8 @@
+import baseConfig from "@mercado/config/tailwind";
+
 /** @type {import('tailwindcss').Config} */
 export default {
+  presets: [baseConfig],
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -7,9 +10,6 @@ export default {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ["Lexend Deca", "sans-serif"],
-      },
       fontSize: {
         "5xl": ["3rem", { lineHeight: "1.2" }],
         "4xl": ["2.5rem", { lineHeight: "1.3" }],
@@ -22,5 +22,4 @@ export default {
       },
     },
   },
-  plugins: [],
 };

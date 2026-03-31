@@ -3,7 +3,7 @@ import { updateProfileEndpoint } from "@/_modules/auth/api";
 import type { Customer, UpdateProfilePayload } from "@/_modules/auth/types";
 
 export function AccountScreen() {
-  const { user, logout, refreshUser } = useAuth();
+  const { user, refreshUser } = useAuth();
   const { success } = useToast();
   const { mutate, isPending } = usePatch<UpdateProfilePayload, Customer>();
 
@@ -26,13 +26,13 @@ export function AccountScreen() {
             await refreshUser();
             success("Profile updated.");
           },
-        }
+        },
       ),
   });
 
   return (
-    <div className="min-h-screen p-6 bg-gray-50">
-      <div className="max-w-xl mx-auto bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+    <div className="max-w-xl mx-auto px-4 py-8">
+      <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
         <div>
           <h1 className="text-xl font-semibold">My Account</h1>
           <p className="text-sm text-gray-600 mt-1">{user?.email}</p>
@@ -41,14 +41,9 @@ export function AccountScreen() {
         <form.AppField name="name">{(field: any) => <field.TextField label="Name" placeholder="Your name" />}</form.AppField>
         <form.AppField name="phone">{(field: any) => <field.TextField label="Phone" placeholder="+39 02 0000000" />}</form.AppField>
 
-        <div className="flex gap-3">
-          <Button onClick={() => form.handleSubmit()} disabled={isPending}>
-            {isPending ? "Saving..." : "Save Profile"}
-          </Button>
-          <Button style="primaryOutline" onClick={logout}>
-            Logout
-          </Button>
-        </div>
+        <Button onClick={() => form.handleSubmit()} disabled={isPending}>
+          {isPending ? "Saving..." : "Save Profile"}
+        </Button>
       </div>
     </div>
   );

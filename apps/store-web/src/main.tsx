@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "react-router/dom";
 import { AuthProvider, ErrorBoundary, ToastProvider, initApiClient, serializeApiError } from "@mercado/shared-ui";
+import { CartProvider } from "@/_modules/cart/CartContext";
 import { router } from "@/app/router";
 import "@/index.css";
 
@@ -29,10 +30,12 @@ createRoot(document.getElementById("root")!).render(
       <QueryClientProvider client={queryClient}>
         <ToastProvider>
           <AuthProvider tokenStorageKey="customerToken" meUrl="/store/auth/me">
-            <RouterProvider router={router} />
+            <CartProvider>
+              <RouterProvider router={router} />
+            </CartProvider>
           </AuthProvider>
         </ToastProvider>
       </QueryClientProvider>
     </ErrorBoundary>
-  </StrictMode>
+  </StrictMode>,
 );
