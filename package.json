@@ -1,0 +1,22 @@
+{
+  "name": "mercado-oriental",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Mercado Oriental – marketplace platform",
+  "scripts": {
+    "dev:api": "pnpm --filter @mercado/admin-api dev",
+    "dev:admin": "pnpm --filter @mercado/admin-web dev",
+    "dev:store": "pnpm --filter @mercado/store-web dev",
+    "build:api": "pnpm --filter @mercado/admin-api build",
+    "build:admin": "pnpm --filter @mercado/admin-web build",
+    "build:store": "pnpm --filter @mercado/store-web build",
+    "dev": "pnpm --parallel --filter @mercado/admin-api --filter @mercado/admin-web dev --filter @mercado/store-web dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint"
+  },
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=9"
+  }
+}

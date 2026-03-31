@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mercado Oriental — API Documentation</title>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #111827;
+      --text-secondary: #6b7280;
+      --accent: #111827;
+      --get: #059669;
+      --get-bg: #ecfdf5;
+      --post: #2563eb;
+      --post-bg: #eff6ff;
+      --put: #d97706;
+      --put-bg: #fffbeb;
+      --delete: #dc2626;
+      --delete-bg: #fef2f2;
+      --code-bg: #f3f4f6;
+      --sidebar-w: 260px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ───────────────────────────────────────── */
+    aside {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+      padding: 24px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    aside .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 20px 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    aside .logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    aside .logo span {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    aside .version {
+      font-size: 11px;
+      color: var(--text-secondary);
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: auto;
+    }
+
+    aside h3 {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      padding: 12px 20px 6px;
+    }
+
+    aside a {
+      display: block;
+      padding: 6px 20px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+
+    aside a:hover {
+      color: var(--text);
+      background: var(--code-bg);
+    }
+
+    aside a .method-badge-sm {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin-right: 6px;
+      min-width: 36px;
+      text-align: center;
+      vertical-align: 1px;
+    }
+
+    .badge-get { background: var(--get-bg); color: var(--get); }
+    .badge-post { background: var(--post-bg); color: var(--post); }
+    .badge-put { background: var(--put-bg); color: var(--put); }
+    .badge-delete { background: var(--delete-bg); color: var(--delete); }
+
+    /* ── Main content ──────────────────────────────────── */
+    main {
+      margin-left: var(--sidebar-w);
+      padding: 40px 48px 80px;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    h1 + p {
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      font-size: 15px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 48px 0 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin: 16px 0 6px;
+      color: var(--text-secondary);
+    }
+
+    p, li { font-size: 14px; }
+
+    /* ── Endpoint card ─────────────────────────────────── */
+    .endpoint {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .endpoint-header:hover { background: var(--code-bg); }
+
+    .method-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      min-width: 52px;
+      text-align: center;
+      letter-spacing: 0.03em;
+    }
+
+    .endpoint-path {
+      font-family: "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .endpoint-desc {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .endpoint-body {
+      padding: 18px;
+    }
+
+    .endpoint-body p {
+      margin-bottom: 12px;
+      color: var(--text-secondary);
+    }
+
+    .endpoint-body h4 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      margin: 18px 0 8px;
+    }
+
+    .endpoint-body h4:first-child { margin-top: 0; }
+
+    .auth-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+
+    .auth-required { background: #fef3c7; color: #92400e; }
+    .auth-public { background: #ecfdf5; color: #065f46; }
+
+    /* ── Code blocks ───────────────────────────────────── */
+    pre {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12.5px;
+      line-height: 1.7;
+      margin: 8px 0;
+    }
+
+    pre .key { color: #89b4fa; }
+    pre .str { color: #a6e3a1; }
+    pre .num { color: #fab387; }
+    pre .comment { color: #6c7086; font-style: italic; }
+    pre .null { color: #cba6f7; }
+    pre .bool { color: #f38ba8; }
+
+    code {
+      font-family: "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12.5px;
+      background: var(--code-bg);
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    pre code { background: none; padding: 0; }
+
+    /* ── Tables ─────────────────────────────────────────── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 8px 0;
+    }
+
+    th {
+      text-align: left;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    td code {
+      font-size: 12px;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .required {
+      color: var(--delete);
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .optional {
+      color: var(--text-secondary);
+      font-size: 10px;
+    }
+
+    /* ── Error reference table ─────────────────────────── */
+    .error-table td:first-child { font-family: "SF Mono", SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+    .error-table td:nth-child(2) { font-family: "SF Mono", SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+
+    /* ── Info box ───────────────────────────────────────── */
+    .info-box {
+      background: #eff6ff;
+      border-left: 3px solid #2563eb;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      font-size: 13px;
+      margin: 12px 0;
+      color: #1e40af;
+    }
+
+    .warn-box {
+      background: #fffbeb;
+      border-left: 3px solid #d97706;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      font-size: 13px;
+      margin: 12px 0;
+      color: #92400e;
+    }
+
+    /* ── Utilities ──────────────────────────────────────── */
+    .mb-0 { margin-bottom: 0; }
+    .mt-0 { margin-top: 0; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SIDEBAR                                                 -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<aside>
+  <div class="logo">
+    <div class="logo-icon">M</div>
+    <span>Mercado Oriental</span>
+    <span class="version">v1.0</span>
+  </div>
+
+  <h3>Getting started</h3>
+  <a href="#overview">Overview</a>
+  <a href="#authentication">Authentication</a>
+  <a href="#errors">Error handling</a>
+  <a href="#data-models">Data models</a>
+
+  <h3>Auth</h3>
+  <a href="#post-register"><span class="method-badge-sm badge-post">POST</span>/api/auth/register</a>
+  <a href="#post-login"><span class="method-badge-sm badge-post">POST</span>/api/auth/login</a>
+  <a href="#get-me"><span class="method-badge-sm badge-get">GET</span>/api/auth/me</a>
+
+  <h3>Shops</h3>
+  <a href="#get-shops"><span class="method-badge-sm badge-get">GET</span>/api/shops</a>
+  <a href="#get-shop"><span class="method-badge-sm badge-get">GET</span>/api/shops/:id</a>
+  <a href="#post-shop"><span class="method-badge-sm badge-post">POST</span>/api/shops</a>
+  <a href="#put-shop"><span class="method-badge-sm badge-put">PUT</span>/api/shops/:id</a>
+  <a href="#delete-shop"><span class="method-badge-sm badge-delete">DEL</span>/api/shops/:id</a>
+
+  <h3>Products</h3>
+  <a href="#get-products"><span class="method-badge-sm badge-get">GET</span>/api/products</a>
+  <a href="#get-product"><span class="method-badge-sm badge-get">GET</span>/api/products/:id</a>
+  <a href="#post-product"><span class="method-badge-sm badge-post">POST</span>/api/products</a>
+  <a href="#put-product"><span class="method-badge-sm badge-put">PUT</span>/api/products/:id</a>
+  <a href="#delete-product"><span class="method-badge-sm badge-delete">DEL</span>/api/products/:id</a>
+
+  <h3>Product variants</h3>
+  <a href="#get-variants"><span class="method-badge-sm badge-get">GET</span>…/:id/variants</a>
+  <a href="#get-variant"><span class="method-badge-sm badge-get">GET</span>…/:id/variants/:vid</a>
+  <a href="#post-variant"><span class="method-badge-sm badge-post">POST</span>…/:id/variants</a>
+  <a href="#put-variant"><span class="method-badge-sm badge-put">PUT</span>…/:id/variants/:vid</a>
+  <a href="#delete-variant"><span class="method-badge-sm badge-delete">DEL</span>…/:id/variants/:vid</a>
+
+  <h3>Attributes</h3>
+  <a href="#get-attributes"><span class="method-badge-sm badge-get">GET</span>/api/attributes</a>
+  <a href="#get-attribute"><span class="method-badge-sm badge-get">GET</span>/api/attributes/:id</a>
+  <a href="#post-attribute"><span class="method-badge-sm badge-post">POST</span>/api/attributes</a>
+  <a href="#put-attribute"><span class="method-badge-sm badge-put">PUT</span>/api/attributes/:id</a>
+  <a href="#delete-attribute"><span class="method-badge-sm badge-delete">DEL</span>/api/attributes/:id</a>
+  <a href="#delete-attr-value"><span class="method-badge-sm badge-delete">DEL</span>…/:id/values/:vid</a>
+
+  <h3>Dashboard</h3>
+  <a href="#get-dashboard"><span class="method-badge-sm badge-get">GET</span>/api/dashboard</a>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- MAIN CONTENT                                            -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<main>
+
+<!-- ── Overview ─────────────────────────────────────────── -->
+<h1 id="overview">Mercado Oriental API</h1>
+<p>REST API for the Mercado Oriental vendor administration platform. Manage shops, products, variants, attributes, and view business analytics.</p>
+
+<div class="info-box">
+  <strong>Base URL</strong>&nbsp;&nbsp;<code>http://localhost:8000</code>&nbsp;&nbsp;·&nbsp;&nbsp;All endpoints are prefixed with <code>/api</code>.
+</div>
+
+<!-- ── Authentication ──────────────────────────────────── -->
+<h2 id="authentication">Authentication</h2>
+<p>The API uses <strong>JWT bearer tokens</strong>. Obtain a token via the <code>/api/auth/login</code> or <code>/api/auth/register</code> endpoints, then include it in every request to protected routes.</p>
+
+<h3>Header format</h3>
+<pre><code>Authorization: Bearer &lt;token&gt;</code></pre>
+
+<p>Tokens expire after <strong>7 days</strong>. When a token is missing or invalid the API responds with <code>401</code> and an error body identifying the issue.</p>
+
+<div class="warn-box">
+  All endpoints except <code>POST /api/auth/register</code> and <code>POST /api/auth/login</code> require a valid bearer token.
+</div>
+
+<!-- ── Errors ──────────────────────────────────────────── -->
+<h2 id="errors">Error handling</h2>
+<p>Every error response follows the same shape, making it easy to build generic error handling on the client.</p>
+
+<h3>Error response format</h3>
+<pre><code>{
+  <span class="key">"case"</span>: <span class="str">"product_name"</span>,
+  <span class="key">"code"</span>: <span class="str">"MISSING"</span>
+}</code></pre>
+
+<p>The <code>case</code> field identifies <em>what</em> went wrong (which field or resource), while <code>code</code> categorises <em>how</em> it went wrong. This pair maps directly to i18n translation keys on the frontend: <code>errors.{case}.{code}</code>.</p>
+
+<h3>Error codes</h3>
+<table class="error-table">
+  <tr><th>Code</th><th>HTTP status</th><th>Meaning</th></tr>
+  <tr><td>MISSING</td><td>400</td><td>A required field was not provided</td></tr>
+  <tr><td>INVALID</td><td>400</td><td>A field value is malformed or out of range</td></tr>
+  <tr><td>NOT_FOUND</td><td>404</td><td>The requested resource does not exist</td></tr>
+  <tr><td>DUPLICATE</td><td>409</td><td>A unique constraint was violated</td></tr>
+  <tr><td>UNAUTHORIZED</td><td>401</td><td>No token or token expired</td></tr>
+  <tr><td>FORBIDDEN</td><td>403</td><td>Authenticated but not allowed</td></tr>
+  <tr><td>SERVER_ERROR</td><td>500</td><td>Unexpected internal error</td></tr>
+</table>
+
+<h3>Common error cases</h3>
+<table class="error-table">
+  <tr><th>Case</th><th>Possible codes</th><th>Description</th></tr>
+  <tr><td>auth_token</td><td>MISSING, INVALID</td><td>Bearer token absent or expired</td></tr>
+  <tr><td>login_credentials</td><td>MISSING, INVALID</td><td>Email/password missing or wrong</td></tr>
+  <tr><td>login_email_format</td><td>INVALID</td><td>Email missing @ symbol</td></tr>
+  <tr><td>register_credentials</td><td>MISSING</td><td>Email or password not provided</td></tr>
+  <tr><td>register_email_format</td><td>INVALID</td><td>Email format invalid</td></tr>
+  <tr><td>register_password_length</td><td>INVALID</td><td>Password shorter than 6 characters</td></tr>
+  <tr><td>register_email</td><td>DUPLICATE</td><td>Email already registered</td></tr>
+  <tr><td>user</td><td>NOT_FOUND</td><td>User not found</td></tr>
+  <tr><td>shop</td><td>NOT_FOUND</td><td>Shop not found</td></tr>
+  <tr><td>shop_name</td><td>MISSING, INVALID</td><td>Shop name missing or empty</td></tr>
+  <tr><td>product</td><td>NOT_FOUND</td><td>Product not found</td></tr>
+  <tr><td>product_name</td><td>MISSING, INVALID</td><td>Product name missing or empty</td></tr>
+  <tr><td>product_shop</td><td>MISSING</td><td>Shop ID not provided for product</td></tr>
+  <tr><td>product_variants</td><td>INVALID</td><td>Variant data malformed</td></tr>
+  <tr><td>variant</td><td>NOT_FOUND</td><td>Variant not found</td></tr>
+  <tr><td>variant_name</td><td>MISSING, INVALID</td><td>Variant name missing or empty</td></tr>
+  <tr><td>variant_price</td><td>MISSING, INVALID</td><td>Price missing or negative</td></tr>
+  <tr><td>variant_stock</td><td>INVALID</td><td>Stock is negative</td></tr>
+  <tr><td>attribute</td><td>NOT_FOUND</td><td>Attribute not found</td></tr>
+  <tr><td>attribute_name</td><td>MISSING, INVALID</td><td>Attribute name missing or empty</td></tr>
+  <tr><td>attribute_shop</td><td>MISSING</td><td>Shop ID not provided for attribute</td></tr>
+  <tr><td>attribute_values</td><td>INVALID</td><td>Values is not an array</td></tr>
+  <tr><td>attribute_value_empty</td><td>INVALID</td><td>A value in the array is empty</td></tr>
+  <tr><td>record_not_found</td><td>NOT_FOUND</td><td>Generic Prisma record not found</td></tr>
+  <tr><td>record_already_exists</td><td>DUPLICATE</td><td>Generic Prisma unique violation</td></tr>
+  <tr><td>internal_server_error</td><td>SERVER_ERROR</td><td>Unhandled server error</td></tr>
+</table>
+
+<!-- ── Data models ─────────────────────────────────────── -->
+<h2 id="data-models">Data models</h2>
+
+<h3>User</h3>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+  <tr><td><code>id</code></td><td>UUID</td><td>Primary key</td></tr>
+  <tr><td><code>email</code></td><td>String (unique)</td><td>User email address</td></tr>
+  <tr><td><code>name</code></td><td>String?</td><td>Optional display name</td></tr>
+  <tr><td><code>createdAt</code></td><td>DateTime</td><td>Account creation timestamp</td></tr>
+</table>
+
+<h3>Shop</h3>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+  <tr><td><code>id</code></td><td>UUID</td><td>Primary key</td></tr>
+  <tr><td><code>name</code></td><td>String</td><td>Shop name</td></tr>
+  <tr><td><code>description</code></td><td>String?</td><td>Optional description</td></tr>
+  <tr><td><code>userId</code></td><td>UUID</td><td>Owner reference</td></tr>
+  <tr><td><code>createdAt</code></td><td>DateTime</td><td>Creation timestamp</td></tr>
+</table>
+
+<h3>Product</h3>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+  <tr><td><code>id</code></td><td>UUID</td><td>Primary key</td></tr>
+  <tr><td><code>name</code></td><td>String</td><td>Product name</td></tr>
+  <tr><td><code>description</code></td><td>String?</td><td>Optional description</td></tr>
+  <tr><td><code>shopId</code></td><td>UUID</td><td>Parent shop reference</td></tr>
+  <tr><td><code>productVariants</code></td><td>ProductVariant[]</td><td>Associated variants</td></tr>
+  <tr><td><code>createdAt</code></td><td>DateTime</td><td>Creation timestamp</td></tr>
+</table>
+
+<h3>ProductVariant</h3>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+  <tr><td><code>id</code></td><td>UUID</td><td>Primary key</td></tr>
+  <tr><td><code>name</code></td><td>String</td><td>Variant name (e.g. "Blue 128GB")</td></tr>
+  <tr><td><code>price</code></td><td>Float</td><td>Unit price in EUR</td></tr>
+  <tr><td><code>stock</code></td><td>Int</td><td>Available stock (default 0)</td></tr>
+  <tr><td><code>productId</code></td><td>UUID</td><td>Parent product reference</td></tr>
+</table>
+
+<h3>ProductAttribute</h3>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+  <tr><td><code>id</code></td><td>UUID</td><td>Primary key</td></tr>
+  <tr><td><code>name</code></td><td>String</td><td>Attribute name (e.g. "Color")</td></tr>
+  <tr><td><code>description</code></td><td>String?</td><td>Optional description</td></tr>
+  <tr><td><code>shopId</code></td><td>UUID</td><td>Parent shop reference</td></tr>
+  <tr><td><code>productAttributeValues</code></td><td>ProductAttributeValue[]</td><td>Possible values</td></tr>
+</table>
+
+<h3>ProductAttributeValue</h3>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+  <tr><td><code>id</code></td><td>UUID</td><td>Primary key</td></tr>
+  <tr><td><code>value</code></td><td>String</td><td>The value (e.g. "Red")</td></tr>
+  <tr><td><code>productAttributeId</code></td><td>UUID</td><td>Parent attribute reference</td></tr>
+</table>
+
+<h3>Order</h3>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+  <tr><td><code>id</code></td><td>UUID</td><td>Primary key</td></tr>
+  <tr><td><code>customerEmail</code></td><td>String</td><td>Customer email</td></tr>
+  <tr><td><code>customerName</code></td><td>String?</td><td>Optional customer name</td></tr>
+  <tr><td><code>status</code></td><td>String</td><td>"pending" | "completed" | "cancelled"</td></tr>
+  <tr><td><code>totalAmount</code></td><td>Float</td><td>Order total in EUR</td></tr>
+  <tr><td><code>shopId</code></td><td>UUID</td><td>Shop reference</td></tr>
+</table>
+
+<h3>OrderItem</h3>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+  <tr><td><code>id</code></td><td>UUID</td><td>Primary key</td></tr>
+  <tr><td><code>quantity</code></td><td>Int</td><td>Number of units</td></tr>
+  <tr><td><code>unitPrice</code></td><td>Float</td><td>Price per unit at time of order</td></tr>
+  <tr><td><code>orderId</code></td><td>UUID</td><td>Parent order</td></tr>
+  <tr><td><code>productVariantId</code></td><td>UUID</td><td>Purchased variant</td></tr>
+</table>
+
+<hr />
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- AUTH ENDPOINTS                                          -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Auth</h2>
+
+<!-- POST /api/auth/register -->
+<div class="endpoint" id="post-register">
+  <div class="endpoint-header">
+    <span class="method-badge badge-post">POST</span>
+    <span class="endpoint-path">/api/auth/register</span>
+    <span class="auth-badge auth-public">Public</span>
+    <span class="endpoint-desc">Create a new account</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>Request body</h4>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Rules</th></tr>
+      <tr><td><code>email</code></td><td>string</td><td><span class="required">required</span> · must contain <code>@</code></td></tr>
+      <tr><td><code>password</code></td><td>string</td><td><span class="required">required</span> · min 6 characters</td></tr>
+      <tr><td><code>name</code></td><td>string</td><td><span class="optional">optional</span> · trimmed</td></tr>
+    </table>
+
+    <h4>Success response — <code>201 Created</code></h4>
+<pre><code>{
+  <span class="key">"user"</span>: {
+    <span class="key">"id"</span>: <span class="str">"uuid"</span>,
+    <span class="key">"email"</span>: <span class="str">"user@example.com"</span>,
+    <span class="key">"name"</span>: <span class="str">"Moritz"</span>
+  },
+  <span class="key">"token"</span>: <span class="str">"eyJhbGciOiJIUzI1NiIs..."</span>
+}</code></pre>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>register_credentials</code></td><td><code>MISSING</code></td><td>400 — Email or password not provided</td></tr>
+      <tr><td><code>register_email_format</code></td><td><code>INVALID</code></td><td>400 — Email format invalid</td></tr>
+      <tr><td><code>register_password_length</code></td><td><code>INVALID</code></td><td>400 — Password shorter than 6 characters</td></tr>
+      <tr><td><code>register_email</code></td><td><code>DUPLICATE</code></td><td>409 — Email already registered</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- POST /api/auth/login -->
+<div class="endpoint" id="post-login">
+  <div class="endpoint-header">
+    <span class="method-badge badge-post">POST</span>
+    <span class="endpoint-path">/api/auth/login</span>
+    <span class="auth-badge auth-public">Public</span>
+    <span class="endpoint-desc">Sign in and receive a token</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>Request body</h4>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Rules</th></tr>
+      <tr><td><code>email</code></td><td>string</td><td><span class="required">required</span> · must contain <code>@</code></td></tr>
+      <tr><td><code>password</code></td><td>string</td><td><span class="required">required</span></td></tr>
+    </table>
+
+    <h4>Success response — <code>200 OK</code></h4>
+<pre><code>{
+  <span class="key">"user"</span>: {
+    <span class="key">"id"</span>: <span class="str">"uuid"</span>,
+    <span class="key">"email"</span>: <span class="str">"user@example.com"</span>,
+    <span class="key">"name"</span>: <span class="str">"Moritz"</span>
+  },
+  <span class="key">"token"</span>: <span class="str">"eyJhbGciOiJIUzI1NiIs..."</span>
+}</code></pre>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>login_credentials</code></td><td><code>MISSING</code></td><td>400 — Email or password not provided</td></tr>
+      <tr><td><code>login_email_format</code></td><td><code>INVALID</code></td><td>400 — Email format invalid</td></tr>
+      <tr><td><code>login_credentials</code></td><td><code>INVALID</code></td><td>401 — Wrong email or password</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- GET /api/auth/me -->
+<div class="endpoint" id="get-me">
+  <div class="endpoint-header">
+    <span class="method-badge badge-get">GET</span>
+    <span class="endpoint-path">/api/auth/me</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Get current user profile</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>Success response — <code>200 OK</code></h4>
+<pre><code>{
+  <span class="key">"id"</span>: <span class="str">"uuid"</span>,
+  <span class="key">"email"</span>: <span class="str">"user@example.com"</span>,
+  <span class="key">"name"</span>: <span class="str">"Moritz"</span>,
+  <span class="key">"createdAt"</span>: <span class="str">"2026-03-15T10:30:00.000Z"</span>
+}</code></pre>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>auth_token</code></td><td><code>MISSING</code></td><td>401 — No bearer token provided</td></tr>
+      <tr><td><code>auth_token</code></td><td><code>INVALID</code></td><td>401 — Token expired or malformed</td></tr>
+      <tr><td><code>user</code></td><td><code>NOT_FOUND</code></td><td>404 — User account no longer exists</td></tr>
+    </table>
+  </div>
+</div>
+
+<hr />
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SHOP ENDPOINTS                                          -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Shops</h2>
+<p>All shop endpoints require authentication. Users can only access their own shops.</p>
+
+<!-- GET /api/shops -->
+<div class="endpoint" id="get-shops">
+  <div class="endpoint-header">
+    <span class="method-badge badge-get">GET</span>
+    <span class="endpoint-path">/api/shops</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">List all shops for the current user</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>Success response — <code>200 OK</code></h4>
+<pre><code>[
+  {
+    <span class="key">"id"</span>: <span class="str">"uuid"</span>,
+    <span class="key">"name"</span>: <span class="str">"My Shop"</span>,
+    <span class="key">"description"</span>: <span class="str">"A great shop"</span>,
+    <span class="key">"userId"</span>: <span class="str">"uuid"</span>,
+    <span class="key">"createdAt"</span>: <span class="str">"2026-03-15T10:30:00.000Z"</span>,
+    <span class="key">"updatedAt"</span>: <span class="str">"2026-03-15T10:30:00.000Z"</span>
+  }
+]</code></pre>
+  </div>
+</div>
+
+<!-- GET /api/shops/:id -->
+<div class="endpoint" id="get-shop">
+  <div class="endpoint-header">
+    <span class="method-badge badge-get">GET</span>
+    <span class="endpoint-path">/api/shops/:id</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Get a specific shop</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>URL parameters</h4>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>UUID</td><td>Shop ID</td></tr></table>
+
+    <h4>Success response — <code>200 OK</code></h4>
+    <p>Returns a single shop object (same shape as list item above).</p>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>shop</code></td><td><code>NOT_FOUND</code></td><td>404 — Shop does not exist</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- POST /api/shops -->
+<div class="endpoint" id="post-shop">
+  <div class="endpoint-header">
+    <span class="method-badge badge-post">POST</span>
+    <span class="endpoint-path">/api/shops</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Create a new shop</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>Request body</h4>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Rules</th></tr>
+      <tr><td><code>name</code></td><td>string</td><td><span class="required">required</span> · non-empty · trimmed</td></tr>
+      <tr><td><code>description</code></td><td>string</td><td><span class="optional">optional</span></td></tr>
+    </table>
+
+    <h4>Success response — <code>201 Created</code></h4>
+    <p>Returns the created shop object.</p>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>shop_name</code></td><td><code>MISSING</code></td><td>400 — Name not provided</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- PUT /api/shops/:id -->
+<div class="endpoint" id="put-shop">
+  <div class="endpoint-header">
+    <span class="method-badge badge-put">PUT</span>
+    <span class="endpoint-path">/api/shops/:id</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Update a shop</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>URL parameters</h4>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>UUID</td><td>Shop ID</td></tr></table>
+
+    <h4>Request body</h4>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Rules</th></tr>
+      <tr><td><code>name</code></td><td>string</td><td><span class="optional">optional</span> · non-empty if provided</td></tr>
+      <tr><td><code>description</code></td><td>string</td><td><span class="optional">optional</span></td></tr>
+    </table>
+
+    <h4>Success response — <code>200 OK</code></h4>
+    <p>Returns the updated shop object.</p>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>shop_name</code></td><td><code>INVALID</code></td><td>400 — Name is empty string</td></tr>
+      <tr><td><code>shop</code></td><td><code>NOT_FOUND</code></td><td>404 — Shop does not exist</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- DELETE /api/shops/:id -->
+<div class="endpoint" id="delete-shop">
+  <div class="endpoint-header">
+    <span class="method-badge badge-delete">DELETE</span>
+    <span class="endpoint-path">/api/shops/:id</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Delete a shop</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>URL parameters</h4>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>UUID</td><td>Shop ID</td></tr></table>
+
+    <h4>Success response — <code>204 No Content</code></h4>
+    <p>Empty response body. Cascading delete removes all associated products, variants, attributes, and orders.</p>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>record_not_found</code></td><td><code>NOT_FOUND</code></td><td>404 — Shop does not exist</td></tr>
+    </table>
+  </div>
+</div>
+
+<hr />
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PRODUCT ENDPOINTS                                       -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Products</h2>
+<p>All product endpoints require authentication. Products belong to a shop owned by the authenticated user.</p>
+
+<!-- GET /api/products -->
+<div class="endpoint" id="get-products">
+  <div class="endpoint-header">
+    <span class="method-badge badge-get">GET</span>
+    <span class="endpoint-path">/api/products</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">List all products with stats</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>Success response — <code>200 OK</code></h4>
+    <p>Returns an array of serialized products. Each product includes computed stats such as total stock, total sold, revenue, and variant count.</p>
+<pre><code>[
+  {
+    <span class="key">"id"</span>: <span class="str">"uuid"</span>,
+    <span class="key">"name"</span>: <span class="str">"Ceramic Tea Set"</span>,
+    <span class="key">"description"</span>: <span class="str">"Hand-crafted tea set"</span>,
+    <span class="key">"shopId"</span>: <span class="str">"uuid"</span>,
+    <span class="key">"createdAt"</span>: <span class="str">"2026-03-15T10:30:00.000Z"</span>,
+    <span class="key">"totalStock"</span>: <span class="num">150</span>,
+    <span class="key">"totalSold"</span>: <span class="num">42</span>,
+    <span class="key">"totalRevenue"</span>: <span class="num">1260.00</span>,
+    <span class="key">"variantCount"</span>: <span class="num">3</span>,
+    <span class="key">"priceRange"</span>: { <span class="key">"min"</span>: <span class="num">25.00</span>, <span class="key">"max"</span>: <span class="num">45.00</span> }
+  }
+]</code></pre>
+  </div>
+</div>
+
+<!-- GET /api/products/:id -->
+<div class="endpoint" id="get-product">
+  <div class="endpoint-header">
+    <span class="method-badge badge-get">GET</span>
+    <span class="endpoint-path">/api/products/:id</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Get product with full analytics</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>URL parameters</h4>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>UUID</td><td>Product ID</td></tr></table>
+
+    <h4>Success response — <code>200 OK</code></h4>
+    <p>Returns the product with detailed analytics including sales performance, variant stats, inventory health, and customer insights.</p>
+<pre><code>{
+  <span class="key">"product"</span>: {
+    <span class="key">"id"</span>: <span class="str">"uuid"</span>,
+    <span class="key">"name"</span>: <span class="str">"Ceramic Tea Set"</span>,
+    <span class="key">"description"</span>: <span class="str">"..."</span>,
+    <span class="key">"shopId"</span>: <span class="str">"uuid"</span>,
+    <span class="key">"productVariants"</span>: [ <span class="comment">/* variants with attributes */</span> ]
+  },
+  <span class="key">"salesPerformance"</span>: {
+    <span class="key">"totalRevenue"</span>: <span class="num">1260.00</span>,
+    <span class="key">"totalUnitsSold"</span>: <span class="num">42</span>,
+    <span class="key">"unitsPerDay"</span>: <span class="num">1.4</span>,
+    <span class="key">"unitsPerWeek"</span>: <span class="num">9.8</span>,
+    <span class="key">"avgSellingPrice"</span>: <span class="num">30.00</span>,
+    <span class="key">"lastSaleDate"</span>: <span class="str">"2026-03-28T14:00:00.000Z"</span>,
+    <span class="key">"salesTimeline"</span>: [ <span class="comment">/* daily sales data */</span> ]
+  },
+  <span class="key">"variantStats"</span>: [ <span class="comment">/* per-variant performance */</span> ],
+  <span class="key">"customerInsights"</span>: {
+    <span class="key">"totalCustomers"</span>: <span class="num">18</span>,
+    <span class="key">"repeatBuyers"</span>: <span class="num">5</span>,
+    <span class="key">"repeatRate"</span>: <span class="num">0.28</span>,
+    <span class="key">"topBuyers"</span>: [ <span class="comment">/* customer purchase data */</span> ]
+  }
+}</code></pre>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>product</code></td><td><code>NOT_FOUND</code></td><td>404 — Product does not exist</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- POST /api/products -->
+<div class="endpoint" id="post-product">
+  <div class="endpoint-header">
+    <span class="method-badge badge-post">POST</span>
+    <span class="endpoint-path">/api/products</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Create a product with variants</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>Request body</h4>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Rules</th></tr>
+      <tr><td><code>name</code></td><td>string</td><td><span class="required">required</span> · non-empty · trimmed</td></tr>
+      <tr><td><code>shopId</code></td><td>string (UUID)</td><td><span class="required">required</span></td></tr>
+      <tr><td><code>description</code></td><td>string</td><td><span class="optional">optional</span> · trimmed</td></tr>
+      <tr><td><code>productVariants</code></td><td>object</td><td><span class="optional">optional</span> · nested create</td></tr>
+    </table>
+
+    <h4>Variant create structure</h4>
+<pre><code>{
+  <span class="key">"name"</span>: <span class="str">"Ceramic Tea Set"</span>,
+  <span class="key">"shopId"</span>: <span class="str">"uuid"</span>,
+  <span class="key">"description"</span>: <span class="str">"Optional description"</span>,
+  <span class="key">"productVariants"</span>: {
+    <span class="key">"create"</span>: [
+      {
+        <span class="key">"name"</span>: <span class="str">"Blue - Large"</span>,        <span class="comment">// required, non-empty</span>
+        <span class="key">"price"</span>: <span class="num">29.99</span>,              <span class="comment">// required, >= 0</span>
+        <span class="key">"stock"</span>: <span class="num">50</span>                  <span class="comment">// optional, >= 0, default 0</span>
+      }
+    ]
+  }
+}</code></pre>
+
+    <h4>Success response — <code>201 Created</code></h4>
+    <p>Returns the created product object.</p>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>product_name</code></td><td><code>MISSING</code></td><td>400 — Name not provided or empty</td></tr>
+      <tr><td><code>product_shop</code></td><td><code>MISSING</code></td><td>400 — Shop ID not provided</td></tr>
+      <tr><td><code>product_variants</code></td><td><code>INVALID</code></td><td>400 — Variants data is not an array</td></tr>
+      <tr><td><code>variant_name</code></td><td><code>MISSING</code></td><td>400 — Variant name missing</td></tr>
+      <tr><td><code>variant_price</code></td><td><code>INVALID</code></td><td>400 — Price missing or negative</td></tr>
+      <tr><td><code>variant_stock</code></td><td><code>INVALID</code></td><td>400 — Stock is negative</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- PUT /api/products/:id -->
+<div class="endpoint" id="put-product">
+  <div class="endpoint-header">
+    <span class="method-badge badge-put">PUT</span>
+    <span class="endpoint-path">/api/products/:id</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Update a product</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>URL parameters</h4>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>UUID</td><td>Product ID</td></tr></table>
+
+    <h4>Request body</h4>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Rules</th></tr>
+      <tr><td><code>name</code></td><td>string</td><td><span class="optional">optional</span> · non-empty if provided</td></tr>
+      <tr><td><code>description</code></td><td>string</td><td><span class="optional">optional</span></td></tr>
+      <tr><td><code>shopId</code></td><td>string</td><td><span class="optional">optional</span></td></tr>
+      <tr><td><code>productVariants</code></td><td>object</td><td><span class="optional">optional</span></td></tr>
+    </table>
+
+    <h4>Success response — <code>200 OK</code></h4>
+    <p>Returns the updated product object.</p>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>product_name</code></td><td><code>INVALID</code></td><td>400 — Name is empty string</td></tr>
+      <tr><td><code>record_not_found</code></td><td><code>NOT_FOUND</code></td><td>404 — Product does not exist</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- DELETE /api/products/:id -->
+<div class="endpoint" id="delete-product">
+  <div class="endpoint-header">
+    <span class="method-badge badge-delete">DELETE</span>
+    <span class="endpoint-path">/api/products/:id</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Delete a product</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>URL parameters</h4>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>UUID</td><td>Product ID</td></tr></table>
+
+    <h4>Success response — <code>204 No Content</code></h4>
+    <p>Empty response body. Cascading delete removes all associated variants.</p>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>record_not_found</code></td><td><code>NOT_FOUND</code></td><td>404 — Product does not exist</td></tr>
+    </table>
+  </div>
+</div>
+
+<hr />
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- VARIANT ENDPOINTS                                       -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Product variants</h2>
+<p>Variants are nested under a product. All endpoints require authentication.</p>
+
+<!-- GET /api/products/:id/variants -->
+<div class="endpoint" id="get-variants">
+  <div class="endpoint-header">
+    <span class="method-badge badge-get">GET</span>
+    <span class="endpoint-path">/api/products/:id/variants</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">List variants for a product</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>URL parameters</h4>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>UUID</td><td>Product ID</td></tr></table>
+
+    <h4>Success response — <code>200 OK</code></h4>
+<pre><code>[
+  {
+    <span class="key">"id"</span>: <span class="str">"uuid"</span>,
+    <span class="key">"name"</span>: <span class="str">"Blue - Large"</span>,
+    <span class="key">"price"</span>: <span class="num">29.99</span>,
+    <span class="key">"stock"</span>: <span class="num">50</span>,
+    <span class="key">"productId"</span>: <span class="str">"uuid"</span>,
+    <span class="key">"productVariantAttributeValues"</span>: [
+      {
+        <span class="key">"productAttributeValue"</span>: {
+          <span class="key">"id"</span>: <span class="str">"uuid"</span>,
+          <span class="key">"value"</span>: <span class="str">"Blue"</span>,
+          <span class="key">"productAttribute"</span>: { <span class="key">"name"</span>: <span class="str">"Color"</span> }
+        }
+      }
+    ]
+  }
+]</code></pre>
+  </div>
+</div>
+
+<!-- GET /api/products/:id/variants/:variantId -->
+<div class="endpoint" id="get-variant">
+  <div class="endpoint-header">
+    <span class="method-badge badge-get">GET</span>
+    <span class="endpoint-path">/api/products/:id/variants/:variantId</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Get a specific variant</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>URL parameters</h4>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>UUID</td><td>Product ID</td></tr>
+    <tr><td><code>variantId</code></td><td>UUID</td><td>Variant ID</td></tr></table>
+
+    <h4>Success response — <code>200 OK</code></h4>
+    <p>Returns a single variant object with attribute values (same shape as list item).</p>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>variant</code></td><td><code>NOT_FOUND</code></td><td>404 — Variant does not exist</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- POST /api/products/:id/variants -->
+<div class="endpoint" id="post-variant">
+  <div class="endpoint-header">
+    <span class="method-badge badge-post">POST</span>
+    <span class="endpoint-path">/api/products/:id/variants</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Create a variant</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>URL parameters</h4>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>UUID</td><td>Product ID</td></tr></table>
+
+    <h4>Request body</h4>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Rules</th></tr>
+      <tr><td><code>name</code></td><td>string</td><td><span class="required">required</span> · non-empty</td></tr>
+      <tr><td><code>price</code></td><td>number</td><td><span class="required">required</span> · &ge; 0</td></tr>
+      <tr><td><code>stock</code></td><td>number</td><td><span class="optional">optional</span> · &ge; 0, default 0</td></tr>
+      <tr><td><code>productVariantAttributeValues</code></td><td>object</td><td><span class="optional">optional</span> · nested create</td></tr>
+    </table>
+
+    <h4>Success response — <code>201 Created</code></h4>
+    <p>Returns the created variant object.</p>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>variant_name</code></td><td><code>MISSING</code></td><td>400 — Name not provided</td></tr>
+      <tr><td><code>variant_price</code></td><td><code>MISSING</code></td><td>400 — Price not provided</td></tr>
+      <tr><td><code>variant_price</code></td><td><code>INVALID</code></td><td>400 — Price is negative</td></tr>
+      <tr><td><code>variant_stock</code></td><td><code>INVALID</code></td><td>400 — Stock is negative</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- PUT /api/products/:id/variants/:variantId -->
+<div class="endpoint" id="put-variant">
+  <div class="endpoint-header">
+    <span class="method-badge badge-put">PUT</span>
+    <span class="endpoint-path">/api/products/:id/variants/:variantId</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Update a variant</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>URL parameters</h4>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>UUID</td><td>Product ID</td></tr>
+    <tr><td><code>variantId</code></td><td>UUID</td><td>Variant ID</td></tr></table>
+
+    <h4>Request body</h4>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Rules</th></tr>
+      <tr><td><code>name</code></td><td>string</td><td><span class="optional">optional</span> · non-empty if provided</td></tr>
+      <tr><td><code>price</code></td><td>number</td><td><span class="optional">optional</span> · &ge; 0</td></tr>
+      <tr><td><code>stock</code></td><td>number</td><td><span class="optional">optional</span> · &ge; 0</td></tr>
+      <tr><td><code>productVariantAttributeValues</code></td><td>object</td><td><span class="optional">optional</span></td></tr>
+    </table>
+
+    <h4>Success response — <code>200 OK</code></h4>
+    <p>Returns the updated variant object.</p>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>variant_name</code></td><td><code>INVALID</code></td><td>400 — Name is empty string</td></tr>
+      <tr><td><code>variant_price</code></td><td><code>INVALID</code></td><td>400 — Price is negative</td></tr>
+      <tr><td><code>variant_stock</code></td><td><code>INVALID</code></td><td>400 — Stock is negative</td></tr>
+      <tr><td><code>record_not_found</code></td><td><code>NOT_FOUND</code></td><td>404 — Variant does not exist</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- DELETE /api/products/:id/variants/:variantId -->
+<div class="endpoint" id="delete-variant">
+  <div class="endpoint-header">
+    <span class="method-badge badge-delete">DELETE</span>
+    <span class="endpoint-path">/api/products/:id/variants/:variantId</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Delete a variant</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>URL parameters</h4>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>UUID</td><td>Product ID</td></tr>
+    <tr><td><code>variantId</code></td><td>UUID</td><td>Variant ID</td></tr></table>
+
+    <h4>Success response — <code>204 No Content</code></h4>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>record_not_found</code></td><td><code>NOT_FOUND</code></td><td>404 — Variant does not exist</td></tr>
+    </table>
+  </div>
+</div>
+
+<hr />
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- ATTRIBUTE ENDPOINTS                                     -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Attributes</h2>
+<p>Attributes define properties like "Color" or "Size" that can be assigned to product variants. All endpoints require authentication.</p>
+
+<!-- GET /api/attributes -->
+<div class="endpoint" id="get-attributes">
+  <div class="endpoint-header">
+    <span class="method-badge badge-get">GET</span>
+    <span class="endpoint-path">/api/attributes</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">List all attributes</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>Query parameters</h4>
+    <table>
+      <tr><th>Param</th><th>Type</th><th>Description</th></tr>
+      <tr><td><code>shopId</code></td><td>UUID</td><td><span class="optional">optional</span> · Filter by shop</td></tr>
+    </table>
+
+    <h4>Success response — <code>200 OK</code></h4>
+<pre><code>[
+  {
+    <span class="key">"id"</span>: <span class="str">"uuid"</span>,
+    <span class="key">"name"</span>: <span class="str">"Color"</span>,
+    <span class="key">"description"</span>: <span class="null">null</span>,
+    <span class="key">"shopId"</span>: <span class="str">"uuid"</span>,
+    <span class="key">"productAttributeValues"</span>: [
+      { <span class="key">"id"</span>: <span class="str">"uuid"</span>, <span class="key">"value"</span>: <span class="str">"Red"</span> },
+      { <span class="key">"id"</span>: <span class="str">"uuid"</span>, <span class="key">"value"</span>: <span class="str">"Blue"</span> }
+    ]
+  }
+]</code></pre>
+  </div>
+</div>
+
+<!-- GET /api/attributes/:id -->
+<div class="endpoint" id="get-attribute">
+  <div class="endpoint-header">
+    <span class="method-badge badge-get">GET</span>
+    <span class="endpoint-path">/api/attributes/:id</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Get attribute with usage stats</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>URL parameters</h4>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>UUID</td><td>Attribute ID</td></tr></table>
+
+    <h4>Success response — <code>200 OK</code></h4>
+    <p>Returns the serialized attribute with its values and product usage information.</p>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>attribute</code></td><td><code>NOT_FOUND</code></td><td>404 — Attribute does not exist</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- POST /api/attributes -->
+<div class="endpoint" id="post-attribute">
+  <div class="endpoint-header">
+    <span class="method-badge badge-post">POST</span>
+    <span class="endpoint-path">/api/attributes</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Create an attribute with values</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>Request body</h4>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Rules</th></tr>
+      <tr><td><code>name</code></td><td>string</td><td><span class="required">required</span> · non-empty · trimmed</td></tr>
+      <tr><td><code>shopId</code></td><td>string (UUID)</td><td><span class="required">required</span></td></tr>
+      <tr><td><code>description</code></td><td>string</td><td><span class="optional">optional</span> · trimmed</td></tr>
+      <tr><td><code>productAttributeValues</code></td><td>array</td><td><span class="required">required</span> · each item has <code>value</code> string</td></tr>
+    </table>
+
+    <h4>Example request</h4>
+<pre><code>{
+  <span class="key">"name"</span>: <span class="str">"Color"</span>,
+  <span class="key">"shopId"</span>: <span class="str">"uuid"</span>,
+  <span class="key">"description"</span>: <span class="str">"Product color options"</span>,
+  <span class="key">"productAttributeValues"</span>: [
+    { <span class="key">"value"</span>: <span class="str">"Red"</span> },
+    { <span class="key">"value"</span>: <span class="str">"Blue"</span> },
+    { <span class="key">"value"</span>: <span class="str">"Green"</span> }
+  ]
+}</code></pre>
+
+    <h4>Success response — <code>201 Created</code></h4>
+    <p>Returns the created attribute with its values.</p>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>attribute_name</code></td><td><code>MISSING</code></td><td>400 — Name not provided or empty</td></tr>
+      <tr><td><code>attribute_shop</code></td><td><code>MISSING</code></td><td>400 — Shop ID not provided</td></tr>
+      <tr><td><code>attribute_values</code></td><td><code>INVALID</code></td><td>400 — Values is not an array</td></tr>
+      <tr><td><code>attribute_value_empty</code></td><td><code>INVALID</code></td><td>400 — A value string is empty</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- PUT /api/attributes/:id -->
+<div class="endpoint" id="put-attribute">
+  <div class="endpoint-header">
+    <span class="method-badge badge-put">PUT</span>
+    <span class="endpoint-path">/api/attributes/:id</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Update an attribute</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>URL parameters</h4>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>UUID</td><td>Attribute ID</td></tr></table>
+
+    <h4>Request body</h4>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Rules</th></tr>
+      <tr><td><code>name</code></td><td>string</td><td><span class="optional">optional</span> · non-empty if provided · trimmed</td></tr>
+      <tr><td><code>description</code></td><td>string</td><td><span class="optional">optional</span></td></tr>
+      <tr><td><code>productAttributeValues</code></td><td>array</td><td><span class="optional">optional</span> · each item has <code>value</code> string · trimmed</td></tr>
+    </table>
+
+    <h4>Success response — <code>200 OK</code></h4>
+    <p>Returns the updated attribute object.</p>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>attribute_name</code></td><td><code>INVALID</code></td><td>400 — Name is empty string</td></tr>
+      <tr><td><code>attribute_values</code></td><td><code>INVALID</code></td><td>400 — Values is not an array</td></tr>
+      <tr><td><code>attribute_value_empty</code></td><td><code>INVALID</code></td><td>400 — A value string is empty</td></tr>
+      <tr><td><code>record_not_found</code></td><td><code>NOT_FOUND</code></td><td>404 — Attribute does not exist</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- DELETE /api/attributes/:id -->
+<div class="endpoint" id="delete-attribute">
+  <div class="endpoint-header">
+    <span class="method-badge badge-delete">DELETE</span>
+    <span class="endpoint-path">/api/attributes/:id</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Delete an attribute</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>URL parameters</h4>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>UUID</td><td>Attribute ID</td></tr></table>
+
+    <h4>Success response — <code>204 No Content</code></h4>
+    <p>Cascading delete removes all associated attribute values.</p>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>record_not_found</code></td><td><code>NOT_FOUND</code></td><td>404 — Attribute does not exist</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- DELETE /api/attributes/:attributeId/values/:valueId -->
+<div class="endpoint" id="delete-attr-value">
+  <div class="endpoint-header">
+    <span class="method-badge badge-delete">DELETE</span>
+    <span class="endpoint-path">/api/attributes/:attributeId/values/:valueId</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Delete a single attribute value</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>URL parameters</h4>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>attributeId</code></td><td>UUID</td><td>Attribute ID</td></tr>
+    <tr><td><code>valueId</code></td><td>UUID</td><td>Attribute value ID</td></tr></table>
+
+    <h4>Success response — <code>204 No Content</code></h4>
+
+    <h4>Possible errors</h4>
+    <table class="error-table">
+      <tr><td><code>record_not_found</code></td><td><code>NOT_FOUND</code></td><td>404 — Attribute value does not exist</td></tr>
+    </table>
+  </div>
+</div>
+
+<hr />
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- DASHBOARD ENDPOINT                                      -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Dashboard</h2>
+<p>Aggregated business analytics for all shops owned by the authenticated user.</p>
+
+<!-- GET /api/dashboard -->
+<div class="endpoint" id="get-dashboard">
+  <div class="endpoint-header">
+    <span class="method-badge badge-get">GET</span>
+    <span class="endpoint-path">/api/dashboard</span>
+    <span class="auth-badge auth-required">Auth required</span>
+    <span class="endpoint-desc">Get full dashboard analytics</span>
+  </div>
+  <div class="endpoint-body">
+    <h4>Success response — <code>200 OK</code></h4>
+<pre><code>{
+  <span class="key">"salesSnapshot"</span>: {
+    <span class="key">"todayRevenue"</span>: <span class="num">450.00</span>,
+    <span class="key">"todayOrders"</span>: <span class="num">12</span>,
+    <span class="key">"todayUnits"</span>: <span class="num">28</span>,
+    <span class="key">"yesterdayRevenue"</span>: <span class="num">380.00</span>,
+    <span class="key">"yesterdayOrders"</span>: <span class="num">9</span>,
+    <span class="key">"yesterdayUnits"</span>: <span class="num">22</span>
+  },
+  <span class="key">"revenueTimeline"</span>: [
+    { <span class="key">"date"</span>: <span class="str">"2026-03-22"</span>, <span class="key">"revenue"</span>: <span class="num">320.00</span> },
+    <span class="comment">// ... last 7 days</span>
+  ],
+  <span class="key">"weeklyComparison"</span>: {
+    <span class="key">"thisWeekRevenue"</span>: <span class="num">2100.00</span>,
+    <span class="key">"prevWeekRevenue"</span>: <span class="num">1800.00</span>,
+    <span class="key">"revenueChangePercent"</span>: <span class="num">16.67</span>
+  },
+  <span class="key">"recentOrders"</span>: [
+    {
+      <span class="key">"id"</span>: <span class="str">"uuid"</span>,
+      <span class="key">"customerEmail"</span>: <span class="str">"customer@example.com"</span>,
+      <span class="key">"customerName"</span>: <span class="str">"Jane Doe"</span>,
+      <span class="key">"status"</span>: <span class="str">"completed"</span>,
+      <span class="key">"totalAmount"</span>: <span class="num">45.99</span>,
+      <span class="key">"itemCount"</span>: <span class="num">2</span>,
+      <span class="key">"createdAt"</span>: <span class="str">"2026-03-29T08:15:00.000Z"</span>
+    }
+  ],
+  <span class="key">"inventoryAlerts"</span>: {
+    <span class="key">"alertVariants"</span>: [
+      {
+        <span class="key">"variantName"</span>: <span class="str">"Blue - Small"</span>,
+        <span class="key">"productName"</span>: <span class="str">"T-Shirt"</span>,
+        <span class="key">"stock"</span>: <span class="num">0</span>,
+        <span class="key">"status"</span>: <span class="str">"out_of_stock"</span>
+      }
+    ],
+    <span class="key">"outOfStockCount"</span>: <span class="num">2</span>,
+    <span class="key">"lowStockCount"</span>: <span class="num">5</span>,
+    <span class="key">"totalStock"</span>: <span class="num">1200</span>,
+    <span class="key">"totalStockValue"</span>: <span class="num">24000.00</span>
+  },
+  <span class="key">"topProducts"</span>: [
+    {
+      <span class="key">"productId"</span>: <span class="str">"uuid"</span>,
+      <span class="key">"productName"</span>: <span class="str">"Ceramic Tea Set"</span>,
+      <span class="key">"totalUnits"</span>: <span class="num">42</span>,
+      <span class="key">"totalRevenue"</span>: <span class="num">1260.00</span>
+    }
+  ],
+  <span class="key">"customerStats"</span>: {
+    <span class="key">"totalCustomers"</span>: <span class="num">85</span>,
+    <span class="key">"repeatBuyerCount"</span>: <span class="num">22</span>,
+    <span class="key">"newCustomersThisWeek"</span>: <span class="num">8</span>,
+    <span class="key">"repeatRate"</span>: <span class="num">0.26</span>
+  },
+  <span class="key">"totals"</span>: {
+    <span class="key">"totalRevenue"</span>: <span class="num">15400.00</span>,
+    <span class="key">"totalProducts"</span>: <span class="num">24</span>,
+    <span class="key">"totalAttributes"</span>: <span class="num">8</span>,
+    <span class="key">"totalOrders"</span>: <span class="num">312</span>
+  }
+}</code></pre>
+
+    <div class="info-box">
+      If the user has no shops, all fields return zero values or empty arrays.
+    </div>
+  </div>
+</div>
+
+</main>
+</body>
+</html>
