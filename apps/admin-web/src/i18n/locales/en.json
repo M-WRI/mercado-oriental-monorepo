@@ -1,0 +1,672 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "show": "Show",
+    "edit": "Edit",
+    "add": "Add",
+    "back": "Back",
+    "continue": "Continue",
+    "logout": "Logout",
+    "submitting": "Submitting...",
+    "create": "Create",
+    "noData": "No data yet",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "step": "Step {{current}} of {{total}}",
+    "daysAgo": "{{count}}d ago",
+    "hoursAgo": "{{count}}h ago",
+    "minutesAgo": "{{count}}m ago",
+    "daysOld": "{{count}}d old",
+    "variant": "variant",
+    "variant_plural": "variants",
+    "unit": "unit",
+    "unit_plural": "units",
+    "sold": "sold",
+    "left": "left",
+    "thisWeek": "This week",
+    "lastWeek": "Last week",
+    "vsLastWeek": "vs last week",
+    "value": "value",
+    "total": "total",
+    "selected": "{{count}} selected"
+  },
+
+  "nav": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "attributes": "Attributes",
+    "orders": "Orders",
+    "inventory": "Inventory",
+    "notifications": "Notifications"
+  },
+
+  "auth": {
+    "welcomeBack": "Welcome back",
+    "signInTo": "Sign in to Mercado Oriental",
+    "email": "Email",
+    "emailPlaceholder": "you@example.com",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "signingIn": "Signing in...",
+    "signIn": "Sign in",
+    "loginFailed": "Login failed. Please try again.",
+    "noAccount": "Don't have an account?",
+    "createOne": "Create one",
+    "createYourAccount": "Create your account",
+    "getStarted": "Get started with Mercado Oriental",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "choosePlaceholder": "Choose a password",
+    "creatingAccount": "Creating account...",
+    "createAccount": "Create account",
+    "registrationFailed": "Registration failed. Please try again.",
+    "hasAccount": "Already have an account?",
+    "emailRequired": "Email is required.",
+    "emailInvalid": "Please enter a valid email address.",
+    "passwordRequired": "Password is required.",
+    "passwordMinLength": "Password must be at least 6 characters."
+  },
+
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Overview of your business",
+    "loading": "Loading dashboard...",
+    "todayRevenue": "Today's revenue",
+    "yesterday": "Yesterday: {{amount}}",
+    "todayOrders": "Today's orders",
+    "unitsSold": "{{count}} units sold",
+    "totalRevenue": "Total revenue",
+    "ordersTotal": "{{count}} orders total",
+    "products": "Products",
+    "attributes": "{{count}} attributes",
+    "revenueOverTime": "Revenue over time",
+    "revenue": "Revenue",
+    "orders": "Orders",
+    "recentOrders": "Recent orders",
+    "customer": "Customer",
+    "amount": "Amount",
+    "items": "Items",
+    "statusColumn": "Status",
+    "status": {
+      "completed": "Completed",
+      "pending": "Pending",
+      "cancelled": "Cancelled"
+    },
+    "noOrders": "No orders yet",
+    "inventoryAlerts": "Inventory alerts",
+    "outOfStock": "out of stock",
+    "lowStock": "low stock",
+    "allStocked": "All stocked",
+    "noAlerts": "No alerts",
+    "topProducts": "Top products (30d)",
+    "noSalesData": "No sales data yet",
+    "customers": "Customers",
+    "totalCustomers": "Total customers",
+    "repeatBuyers": "Repeat buyers",
+    "repeatRate": "Repeat rate",
+    "newThisWeek": "New this week",
+    "repeatBuyer": "repeat buyer",
+    "repeatBuyer_plural": "repeat buyers"
+  },
+
+  "products": {
+    "title": "Products",
+    "createProduct": "Create Product",
+    "editProduct": "Edit product",
+    "editProduct_variantDuplicate": "Two or more variants have the same attribute combination. Each variant must be unique.",
+    "editProduct_variantNeedsAttribute": "Every variant must have at least one attribute value selected.",
+    "editProduct_createNewAttribute": "Create new attribute",
+    "editProduct_createNewAttributeHint": "Need another option (e.g. size or color)? Create an attribute for this shop, then pick its values on each variant below.",
+    "product": "Product",
+    "price": "Price",
+    "stockSold": "Stock / Sold",
+    "status": "Status",
+    "inStock": "In stock",
+    "lowStock": "Low stock",
+    "outOfStock": "Out of stock",
+    "notFound": "Product not found",
+    "created": "Created",
+    "activeStatus": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "activeStatusHint": "Inactive products are paused and hidden from customers.",
+    "activatedSuccess": "Product activated.",
+    "deactivatedSuccess": "Product deactivated.",
+    "deleteConfirmTitle": "Delete product",
+    "deleteConfirmMessage": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone. Order history will be preserved.",
+    "bulkDeleteConfirmTitle": "Delete {{count}} products",
+    "bulkDeleteConfirmMessage": "Are you sure you want to delete {{count}} products? This action cannot be undone. Order history will be preserved.",
+    "bulkDelete": "Delete ({{count}})",
+    "bulkDeleteSuccess": "{{count}} products deleted.",
+    "listInventorySubtitle": "Catalog, stock, and variants in one place. Expand a product to adjust quantities or remove variants.",
+    "noVariantsInList": "No variants yet. Edit the product to add SKUs.",
+    "selectProduct": "Select product",
+    "deleteVariantTitle": "Delete variant",
+    "deleteVariantMessage": "Remove \"{{name}}\"? This cannot be undone.",
+    "deleteVariantAria": "Delete variant",
+    "variants": "Variants",
+    "customers": "Customers",
+
+    "wizard": {
+      "info": "Product information",
+      "attributes": "Product attributes",
+      "variants": "Product variants",
+      "review": "Review & create",
+      "createProduct": "Create product"
+    },
+
+    "infoStep": {
+      "nameLabel": "Product name *",
+      "namePlaceholder": "e.g. Ceramic Tea Set",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Describe your product...",
+      "shopLabel": "Shop *",
+      "noShops": "No shops found. Create a shop first.",
+      "nameRequired": "Product name is required",
+      "shopRequired": "Please select a shop"
+    },
+
+    "attributesStep": {
+      "description": "Select existing attributes from your shop or create new ones. These define the properties your product can have (e.g. Size, Color).",
+      "shopAttributes": "Shop attributes",
+      "newAttributes": "New attributes",
+      "createNew": "Create new attribute",
+      "nameLabel": "Name *",
+      "namePlaceholder": "e.g. Color",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Optional description",
+      "valuesLabel": "Values (comma-separated)",
+      "valuesPlaceholder": "e.g. Red, Green, Blue"
+    },
+
+    "variantsStep": {
+      "description": "Add variants for your product. Each variant is a specific combination (e.g. \"iPhone 17 Blue 128GB\") with its own price and stock.",
+      "addAtLeastOne": "Add at least one variant",
+      "newVariant": "New variant",
+      "nameLabel": "Variant name *",
+      "namePlaceholder": "e.g. iPhone 17 Blue 128GB",
+      "priceLabel": "Price (€) *",
+      "pricePlaceholder": "0.00",
+      "stockLabel": "Stock",
+      "stockPlaceholder": "0",
+      "attributeValues": "Attribute values",
+      "addVariant": "Add variant"
+    },
+
+    "reviewStep": {
+      "description": "Review everything before creating your product.",
+      "product": "PRODUCT",
+      "attributes": "ATTRIBUTES",
+      "variants": "VARIANTS",
+      "totalStock": "Total stock:",
+      "noAttributes": "No attributes selected.",
+      "existing": "Existing",
+      "new": "New",
+      "shop": "Shop"
+    },
+
+    "overview": {
+      "totalRevenue": "Total Revenue",
+      "unitsSold": "Units Sold",
+      "totalStock": "Total Stock",
+      "availableStock": "Available to sell",
+      "reservedNote": "{{count}} reserved",
+      "avgSellingPrice": "Avg. Selling Price"
+    },
+
+    "sales": {
+      "salesOverTime": "Sales over time",
+      "units": "Units",
+      "revenue": "Revenue",
+      "noSalesData": "No sales data yet",
+      "totalUnits": "total units"
+    },
+
+    "inventory": {
+      "inventoryHealth": "Inventory health",
+      "totalUnits": "Total units",
+      "availableUnits": "Available units",
+      "onHand": "On hand",
+      "reserved": "Reserved",
+      "availableShort": "avail.",
+      "stockValue": "Stock value",
+      "outOfStock": "out of stock",
+      "lowStock": "low stock",
+      "allStocked": "All stocked"
+    },
+
+    "performance": {
+      "salesVelocity": "Sales velocity",
+      "unitsPerDay": "Units / day",
+      "unitsPerWeek": "Units / week",
+      "avgPrice": "Avg. price",
+      "lastSale": "Last sale",
+      "variantPerformance": "Variant performance",
+      "bestSeller": "Best seller",
+      "lowestSeller": "Lowest seller",
+      "noSalesYet": "No sales yet",
+      "customerInsights": "Customer insights",
+      "totalCustomers": "Total customers",
+      "repeatBuyers": "Repeat buyers",
+      "repeatRate": "Repeat rate",
+      "topBuyer": "Top buyer",
+      "spent": "spent"
+    },
+
+    "variantsTable": {
+      "variant": "Variant",
+      "attributes": "Attributes",
+      "price": "Price",
+      "stock": "Stock",
+      "available": "Available",
+      "onHand": "On hand",
+      "reserved": "Reserved",
+      "stockValue": "Stock value",
+      "sold": "Sold",
+      "revenue": "Revenue",
+      "lastSale": "Last sale"
+    },
+
+    "customersTable": {
+      "customer": "Customer",
+      "orders": "Orders",
+      "units": "Units",
+      "spent": "Spent",
+      "firstOrder": "First order",
+      "lastOrder": "Last order",
+      "repeat": "repeat"
+    }
+  },
+
+  "attributes": {
+    "title": "Attributes",
+    "addAttribute": "Add Attribute",
+    "editAttribute": "Edit attribute",
+    "notFound": "Attribute not found.",
+    "shopLabel": "Shop *",
+    "shopRequired": "Please select a shop for this attribute.",
+    "noShops": "No shops found. Create a shop first.",
+    "name": "Name",
+    "description": "Description",
+    "values": "Values",
+    "noValues": "No values",
+    "addValue": "Add Value",
+    "value": "Value",
+    "usedBy": "Used by",
+    "notUsed": "Not used",
+    "usedInProducts": "Used in products",
+    "valuesCommaSeparated": "Values (comma-separated)",
+    "nameRequired": "Attribute name is required.",
+    "deleteConfirmTitle": "Delete attribute",
+    "deleteConfirmMessage": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone.",
+    "bulkDeleteConfirmTitle": "Delete {{count}} attributes",
+    "bulkDeleteConfirmMessage": "Are you sure you want to delete {{count}} attributes? This action cannot be undone.",
+    "bulkDelete": "Delete ({{count}})",
+    "bulkDeleteSuccess": "{{count}} attributes deleted."
+  },
+
+  "orders": {
+    "title": "Orders",
+    "order": "Order",
+    "customer": "Customer",
+    "items": "Items",
+    "item": "item",
+    "itemPlural": "items",
+    "total": "Total",
+    "status": "Status",
+    "notFound": "Order not found",
+    "orderNumber": "Order #{{id}}",
+    "lineItems": "Line items",
+    "customerInfo": "Customer",
+    "shipping": "Shipping",
+    "noAddress": "No address provided",
+    "tracking": "Tracking",
+    "notes": "Notes",
+    "customerNote": "Customer note",
+    "internalNote": "Internal note",
+    "noNotes": "No notes yet",
+    "notePlaceholder": "Add an internal note...",
+    "cancelReason": "Cancellation reason",
+    "cancelReasonLabel": "Reason (optional)",
+    "cancelReasonPlaceholder": "Why is this order being cancelled?",
+    "cancelOrder": "Cancel order",
+    "cancelConfirmMessage": "Are you sure you want to cancel this order? This action cannot be undone.",
+    "shipOrder": "Ship order",
+    "shipOrderHint": "Enter a tracking number to mark this order as shipped.",
+    "trackingNumber": "Tracking number",
+    "carrier": "Carrier",
+    "statusUpdated": "Order status updated.",
+    "orderCancelled": "Order cancelled.",
+    "noteUpdated": "Note saved.",
+    "statuses": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "packed": "Packed",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "actions": {
+      "confirmed": "Confirm order",
+      "packed": "Mark packed",
+      "shipped": "Ship order",
+      "delivered": "Mark delivered",
+      "cancel": "Cancel order"
+    },
+    "filters": {
+      "all": "All"
+    },
+    "itemColumns": {
+      "product": "Product",
+      "qty": "Qty",
+      "unitPrice": "Unit price",
+      "lineTotal": "Total"
+    },
+    "restockTitle": "Record return",
+    "restockHint": "Add units back to stock for each line (e.g. customer return). Only delivered orders can be restocked.",
+    "restockSubmit": "Apply restock",
+    "restockSuccess": "Inventory updated for returned units."
+  },
+
+  "inventory": {
+    "title": "Inventory",
+    "subtitle": "View and adjust stock across all products and variants.",
+    "onHand": "On hand",
+    "reserved": "Reserved",
+    "available": "Available",
+    "threshold": "Alert threshold",
+    "status": "Status",
+    "variant": "Variant",
+    "addRemove": "Add / Remove",
+    "clearChanges": "Clear changes",
+    "applyBulk": "Apply adjustments",
+    "applyCount": "Apply ({{count}})",
+    "bulkSuccess": "{{count}} line(s) updated.",
+    "totalProducts": "{{count}} products",
+    "totalVariants": "{{count}} SKUs",
+    "totalAvailable": "Available units",
+    "alertCount_one": "{{count}} alert",
+    "alertCount_other": "{{count}} alerts",
+    "alertCount": "alerts"
+  },
+
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all read",
+    "markRead": "Mark read",
+    "empty": "No notifications yet.",
+    "types": {
+      "LOW_STOCK": "Low stock",
+      "NEW_ORDER": "New order",
+      "PAYMENT_FAILED": "Payment",
+      "NEW_MESSAGE": "Message",
+      "NEW_DISPUTE": "Dispute",
+      "DISPUTE_STATUS_CHANGE": "Dispute update",
+      "NEW_REVIEW": "Review"
+    }
+  },
+
+  "touchpoints": {
+    "messages": "Messages",
+    "noMessages": "No messages yet.",
+    "you": "You",
+    "customer": "Customer",
+    "messagePlaceholder": "Type a message...",
+    "send": "Send",
+    "messageSent": "Message sent.",
+    "disputes": "Disputes",
+    "noDisputes": "No disputes for this order.",
+    "openDispute": "Open dispute",
+    "disputeReasonPlaceholder": "Describe the reason for the dispute...",
+    "submitDispute": "Submit",
+    "disputeCreated": "Dispute opened.",
+    "disputeStatusUpdated": "Dispute status updated.",
+    "startReview": "Start review",
+    "resolve": "Mark resolved",
+    "close": "Close",
+    "replyPlaceholder": "Write a reply...",
+    "messagesCount": "messages",
+    "status": {
+      "open": "Open",
+      "under_review": "Under review",
+      "resolved": "Resolved",
+      "closed": "Closed"
+    }
+  },
+
+  "reviews": {
+    "title": "Reviews",
+    "noReviews": "No reviews yet.",
+    "yourReply": "Your reply",
+    "reply": "Reply",
+    "replyPlaceholder": "Write your reply...",
+    "sendReply": "Send reply",
+    "replySent": "Reply sent.",
+    "replyUpdated": "Reply updated.",
+    "replyDeleted": "Reply deleted."
+  },
+
+  "errors": {
+    "fallback": "Something went wrong. Please try again.",
+    "login_credentials": {
+      "MISSING": "Email and password are required.",
+      "INVALID": "Invalid email or password."
+    },
+    "login_email_format": {
+      "INVALID": "Please enter a valid email address."
+    },
+    "register_credentials": {
+      "MISSING": "Email and password are required."
+    },
+    "register_email_format": {
+      "INVALID": "Please enter a valid email address."
+    },
+    "register_password_length": {
+      "INVALID": "Password must be at least 6 characters."
+    },
+    "register_email": {
+      "DUPLICATE": "A user with this email already exists."
+    },
+    "auth_token": {
+      "MISSING": "Authentication required. Please sign in.",
+      "INVALID": "Your session has expired. Please sign in again."
+    },
+    "user": {
+      "NOT_FOUND": "User not found."
+    },
+    "shop": {
+      "NOT_FOUND": "Shop not found."
+    },
+    "shop_access": {
+      "FORBIDDEN": "You do not have access to this shop."
+    },
+    "shop_name": {
+      "MISSING": "Shop name is required.",
+      "INVALID": "Shop name cannot be empty."
+    },
+    "product": {
+      "NOT_FOUND": "Product not found."
+    },
+    "product_name": {
+      "MISSING": "Product name is required.",
+      "INVALID": "Product name cannot be empty."
+    },
+    "product_variants": {
+      "INVALID": "Product variants data is invalid.",
+      "MISSING": "A product must have at least one variant."
+    },
+    "product_shop": {
+      "MISSING": "Please select a shop for this product."
+    },
+    "attribute": {
+      "NOT_FOUND": "Attribute not found."
+    },
+    "attribute_in_use": {
+      "IN_USE": "This attribute is still used by product variants. Remove it from all products before deleting."
+    },
+    "attribute_value_in_use": {
+      "IN_USE": "This attribute value is still used by product variants. Remove it from all products before deleting."
+    },
+    "attribute_name": {
+      "MISSING": "Attribute name is required.",
+      "INVALID": "Attribute name cannot be empty."
+    },
+    "attribute_shop": {
+      "MISSING": "Please select a shop for this attribute."
+    },
+    "variant": {
+      "NOT_FOUND": "Variant not found."
+    },
+    "variant_name": {
+      "MISSING": "Variant name is required.",
+      "INVALID": "Variant name cannot be empty."
+    },
+    "variant_price": {
+      "MISSING": "Variant price is required.",
+      "INVALID": "Variant price must be a valid non-negative number."
+    },
+    "variant_stock": {
+      "INVALID": "Stock must be a valid non-negative number."
+    },
+    "variant_attribute_values": {
+      "MISSING": "Each variant must have at least one attribute value."
+    },
+    "variant_duplicate": {
+      "DUPLICATE": "Two or more variants have the same attribute combination. Each variant must be unique."
+    },
+    "attribute_values": {
+      "INVALID": "Attribute values must be a list."
+    },
+    "attribute_value_empty": {
+      "INVALID": "Attribute values cannot be empty."
+    },
+    "record_not_found": {
+      "NOT_FOUND": "The requested record was not found."
+    },
+    "record_already_exists": {
+      "DUPLICATE": "This record already exists."
+    },
+    "internal_server_error": {
+      "SERVER_ERROR": "An unexpected error occurred. Please try again."
+    },
+    "order": {
+      "NOT_FOUND": "Order not found."
+    },
+    "order_status": {
+      "MISSING": "Order status is required.",
+      "INVALID": "Invalid order status."
+    },
+    "order_status_transition": {
+      "INVALID": "This status transition is not allowed."
+    },
+    "order_tracking": {
+      "MISSING": "A tracking number is required to ship this order."
+    },
+    "notification": {
+      "NOT_FOUND": "Notification not found."
+    },
+    "attribute_value": {
+      "NOT_FOUND": "Attribute value not found."
+    },
+    "attribute_ids": {
+      "INVALID": "Please select at least one attribute."
+    },
+    "product_ids": {
+      "INVALID": "Please select at least one product."
+    },
+    "variant_stock_reserved": {
+      "INVALID": "Stock cannot be lower than the currently reserved quantity."
+    },
+    "order_item": {
+      "NOT_FOUND": "Order item not found."
+    },
+    "order_restock": {
+      "INVALID": "Only delivered orders can be restocked."
+    },
+    "restock_items": {
+      "INVALID": "Please provide valid restock items."
+    },
+    "restock_quantity": {
+      "INVALID": "Restock quantity cannot exceed the ordered quantity."
+    },
+    "inventory_adjust": {
+      "INVALID": "Please provide a valid variant, quantity, and reason."
+    },
+    "inventory_bulk": {
+      "INVALID": "Please provide valid inventory adjustments."
+    },
+    "inventory_movements": {
+      "MISSING": "A variant ID is required to view inventory movements."
+    },
+    "inventory_availability": {
+      "INVALID": "Not enough available stock for this operation."
+    },
+    "inventory_reservation": {
+      "INVALID": "Not enough reserved stock for this operation."
+    },
+    "message_sender": {
+      "INVALID": "Sender must be 'vendor' or 'customer'."
+    },
+    "message_body": {
+      "MISSING": "Message body is required."
+    },
+    "dispute": {
+      "NOT_FOUND": "Dispute not found.",
+      "DUPLICATE": "An active dispute already exists for this order."
+    },
+    "dispute_reason": {
+      "MISSING": "A reason is required to open a dispute."
+    },
+    "dispute_status": {
+      "INVALID": "Invalid dispute status."
+    },
+    "dispute_transition": {
+      "INVALID": "This dispute status transition is not allowed."
+    },
+    "dispute_closed": {
+      "INVALID": "Cannot add messages to a closed dispute."
+    },
+    "review": {
+      "NOT_FOUND": "Review not found."
+    },
+    "review_reply_body": {
+      "MISSING": "Reply body is required."
+    },
+    "review_reply": {
+      "NOT_FOUND": "No reply exists for this review."
+    }
+  },
+
+  "success": {
+    "login": "Welcome back!",
+    "register": "Account created successfully!",
+    "product_created": "Product created successfully.",
+    "product_updated": "Product updated successfully.",
+    "product_deleted": "Product deleted successfully.",
+    "shop_created": "Shop created successfully.",
+    "shop_updated": "Shop updated successfully.",
+    "shop_deleted": "Shop deleted successfully.",
+    "attribute_created": "Attribute created successfully.",
+    "attribute_updated": "Attribute updated successfully.",
+    "attribute_deleted": "Attribute deleted successfully.",
+    "attribute_value_deleted": "Attribute value deleted successfully.",
+    "variant_created": "Variant created successfully.",
+    "variant_updated": "Variant updated successfully.",
+    "variant_deleted": "Variant deleted successfully."
+  },
+
+  "filters": {
+    "all": "All",
+    "searchOrders": "Search by customer...",
+    "searchProducts": "Search by name...",
+    "sortDate": "Date",
+    "sortAmount": "Amount",
+    "sortName": "Name",
+    "rowsPerPage": "Rows per page",
+    "pageInfo": "{{from}}–{{to}} of {{total}}",
+    "totalResults": "{{count}} results"
+  }
+}

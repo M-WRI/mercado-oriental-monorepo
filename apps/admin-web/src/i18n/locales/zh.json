@@ -1,0 +1,672 @@
+{
+  "common": {
+    "loading": "加载中...",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "show": "查看",
+    "edit": "编辑",
+    "add": "添加",
+    "back": "返回",
+    "continue": "继续",
+    "logout": "退出登录",
+    "submitting": "提交中...",
+    "create": "创建",
+    "noData": "暂无数据",
+    "error": "出了点问题",
+    "retry": "重试",
+    "step": "第 {{current}} 步，共 {{total}} 步",
+    "daysAgo": "{{count}}天前",
+    "hoursAgo": "{{count}}小时前",
+    "minutesAgo": "{{count}}分钟前",
+    "daysOld": "{{count}}天",
+    "variant": "变体",
+    "variant_plural": "变体",
+    "unit": "件",
+    "unit_plural": "件",
+    "sold": "已售",
+    "left": "剩余",
+    "thisWeek": "本周",
+    "lastWeek": "上周",
+    "vsLastWeek": "对比上周",
+    "value": "价值",
+    "total": "合计",
+    "selected": "已选 {{count}} 项"
+  },
+
+  "nav": {
+    "dashboard": "仪表板",
+    "products": "产品",
+    "attributes": "属性",
+    "orders": "订单",
+    "inventory": "库存",
+    "notifications": "通知"
+  },
+
+  "auth": {
+    "welcomeBack": "欢迎回来",
+    "signInTo": "登录 Mercado Oriental",
+    "email": "电子邮件",
+    "emailPlaceholder": "you@example.com",
+    "password": "密码",
+    "passwordPlaceholder": "输入密码",
+    "signingIn": "登录中...",
+    "signIn": "登录",
+    "loginFailed": "登录失败，请重试。",
+    "noAccount": "还没有账户？",
+    "createOne": "创建账户",
+    "createYourAccount": "创建您的账户",
+    "getStarted": "开始使用 Mercado Oriental",
+    "name": "姓名",
+    "namePlaceholder": "您的姓名",
+    "choosePlaceholder": "设置密码",
+    "creatingAccount": "创建账户中...",
+    "createAccount": "创建账户",
+    "registrationFailed": "注册失败，请重试。",
+    "hasAccount": "已有账户？",
+    "emailRequired": "电子邮件为必填项。",
+    "emailInvalid": "请输入有效的邮箱地址。",
+    "passwordRequired": "密码为必填项。",
+    "passwordMinLength": "密码至少需要6个字符。"
+  },
+
+  "dashboard": {
+    "title": "仪表板",
+    "subtitle": "业务概览",
+    "loading": "加载仪表板...",
+    "todayRevenue": "今日收入",
+    "yesterday": "昨日：{{amount}}",
+    "todayOrders": "今日订单",
+    "unitsSold": "{{count}} 件已售",
+    "totalRevenue": "总收入",
+    "ordersTotal": "共 {{count}} 个订单",
+    "products": "产品",
+    "attributes": "{{count}} 个属性",
+    "revenueOverTime": "收入趋势",
+    "revenue": "收入",
+    "orders": "订单",
+    "recentOrders": "最近订单",
+    "customer": "客户",
+    "amount": "金额",
+    "items": "数量",
+    "statusColumn": "状态",
+    "status": {
+      "completed": "已完成",
+      "pending": "待处理",
+      "cancelled": "已取消"
+    },
+    "noOrders": "暂无订单",
+    "inventoryAlerts": "库存警报",
+    "outOfStock": "缺货",
+    "lowStock": "库存不足",
+    "allStocked": "库存充足",
+    "noAlerts": "无警报",
+    "topProducts": "热销产品（30天）",
+    "noSalesData": "暂无销售数据",
+    "customers": "客户",
+    "totalCustomers": "客户总数",
+    "repeatBuyers": "回头客",
+    "repeatRate": "复购率",
+    "newThisWeek": "本周新增",
+    "repeatBuyer": "回头客",
+    "repeatBuyer_plural": "回头客"
+  },
+
+  "products": {
+    "title": "产品",
+    "createProduct": "创建产品",
+    "editProduct": "编辑产品",
+    "editProduct_variantDuplicate": "两个或更多变体具有相同的属性组合，每个变体必须唯一。",
+    "editProduct_variantNeedsAttribute": "每个变体必须至少选择一个属性值。",
+    "editProduct_createNewAttribute": "新建属性",
+    "editProduct_createNewAttributeHint": "需要新的选项（如尺码或颜色）？先为本店铺创建属性，然后在下方各变体中选择对应的取值。",
+    "product": "产品",
+    "price": "价格",
+    "stockSold": "库存 / 已售",
+    "status": "状态",
+    "inStock": "有货",
+    "lowStock": "库存不足",
+    "outOfStock": "缺货",
+    "notFound": "未找到产品",
+    "created": "创建于",
+    "activeStatus": "状态",
+    "active": "上架中",
+    "inactive": "已下架",
+    "activeStatusHint": "下架的产品将暂停展示，客户不可见。",
+    "activatedSuccess": "产品已上架。",
+    "deactivatedSuccess": "产品已下架。",
+    "deleteConfirmTitle": "删除产品",
+    "deleteConfirmMessage": "确定要删除「{{name}}」吗？此操作不可撤销，订单记录将保留。",
+    "bulkDeleteConfirmTitle": "删除 {{count}} 个产品",
+    "bulkDeleteConfirmMessage": "确定要删除 {{count}} 个产品吗？此操作不可撤销，订单记录将保留。",
+    "bulkDelete": "删除 ({{count}})",
+    "bulkDeleteSuccess": "已删除 {{count}} 个产品。",
+    "listInventorySubtitle": "目录、库存与变体集中管理。展开产品可调整数量或删除 SKU。",
+    "noVariantsInList": "尚无变体。请编辑产品以添加 SKU。",
+    "selectProduct": "选择产品",
+    "deleteVariantTitle": "删除变体",
+    "deleteVariantMessage": "确定删除「{{name}}」吗？此操作不可撤销。",
+    "deleteVariantAria": "删除变体",
+    "variants": "变体",
+    "customers": "客户",
+
+    "wizard": {
+      "info": "产品信息",
+      "attributes": "产品属性",
+      "variants": "产品变体",
+      "review": "审核并创建",
+      "createProduct": "创建产品"
+    },
+
+    "infoStep": {
+      "nameLabel": "产品名称 *",
+      "namePlaceholder": "例如：陶瓷茶具套装",
+      "descriptionLabel": "描述",
+      "descriptionPlaceholder": "描述您的产品...",
+      "shopLabel": "店铺 *",
+      "noShops": "未找到店铺，请先创建一个。",
+      "nameRequired": "产品名称为必填项",
+      "shopRequired": "请选择一个店铺"
+    },
+
+    "attributesStep": {
+      "description": "从您的店铺选择现有属性或创建新属性。这些定义了产品可以具有的特性（例如：尺寸、颜色）。",
+      "shopAttributes": "店铺属性",
+      "newAttributes": "新属性",
+      "createNew": "创建新属性",
+      "nameLabel": "名称 *",
+      "namePlaceholder": "例如：颜色",
+      "descriptionLabel": "描述",
+      "descriptionPlaceholder": "可选描述",
+      "valuesLabel": "值（用逗号分隔）",
+      "valuesPlaceholder": "例如：红色、绿色、蓝色"
+    },
+
+    "variantsStep": {
+      "description": "为您的产品添加变体。每个变体是一个特定组合（例如 \"iPhone 17 蓝色 128GB\"），有自己的价格和库存。",
+      "addAtLeastOne": "请至少添加一个变体",
+      "newVariant": "新变体",
+      "nameLabel": "变体名称 *",
+      "namePlaceholder": "例如：iPhone 17 蓝色 128GB",
+      "priceLabel": "价格 (€) *",
+      "pricePlaceholder": "0.00",
+      "stockLabel": "库存",
+      "stockPlaceholder": "0",
+      "attributeValues": "属性值",
+      "addVariant": "添加变体"
+    },
+
+    "reviewStep": {
+      "description": "创建前请检查所有信息。",
+      "product": "产品",
+      "attributes": "属性",
+      "variants": "变体",
+      "totalStock": "总库存：",
+      "noAttributes": "未选择属性。",
+      "existing": "已有",
+      "new": "新建",
+      "shop": "店铺"
+    },
+
+    "overview": {
+      "totalRevenue": "总收入",
+      "unitsSold": "已售数量",
+      "totalStock": "总库存",
+      "availableStock": "可售数量",
+      "reservedNote": "已预留 {{count}}",
+      "avgSellingPrice": "平均售价"
+    },
+
+    "sales": {
+      "salesOverTime": "销售趋势",
+      "units": "数量",
+      "revenue": "收入",
+      "noSalesData": "暂无销售数据",
+      "totalUnits": "总数量"
+    },
+
+    "inventory": {
+      "inventoryHealth": "库存状况",
+      "totalUnits": "总数量",
+      "availableUnits": "可售数量",
+      "onHand": "实物库存",
+      "reserved": "预留",
+      "availableShort": "可售",
+      "stockValue": "库存价值",
+      "outOfStock": "缺货",
+      "lowStock": "库存不足",
+      "allStocked": "库存充足"
+    },
+
+    "performance": {
+      "salesVelocity": "销售速度",
+      "unitsPerDay": "件 / 天",
+      "unitsPerWeek": "件 / 周",
+      "avgPrice": "平均价格",
+      "lastSale": "最近一次销售",
+      "variantPerformance": "变体表现",
+      "bestSeller": "最畅销",
+      "lowestSeller": "最少销售",
+      "noSalesYet": "暂无销售",
+      "customerInsights": "客户洞察",
+      "totalCustomers": "客户总数",
+      "repeatBuyers": "回头客",
+      "repeatRate": "复购率",
+      "topBuyer": "最大买家",
+      "spent": "消费"
+    },
+
+    "variantsTable": {
+      "variant": "变体",
+      "attributes": "属性",
+      "price": "价格",
+      "stock": "库存",
+      "available": "可售",
+      "onHand": "实物",
+      "reserved": "预留",
+      "stockValue": "库存价值",
+      "sold": "已售",
+      "revenue": "收入",
+      "lastSale": "最近销售"
+    },
+
+    "customersTable": {
+      "customer": "客户",
+      "orders": "订单",
+      "units": "数量",
+      "spent": "消费",
+      "firstOrder": "首次下单",
+      "lastOrder": "最近下单",
+      "repeat": "回头客"
+    }
+  },
+
+  "attributes": {
+    "title": "属性",
+    "addAttribute": "添加属性",
+    "editAttribute": "编辑属性",
+    "notFound": "未找到该属性。",
+    "shopLabel": "店铺 *",
+    "shopRequired": "请为此属性选择一个店铺。",
+    "noShops": "暂无店铺，请先创建店铺。",
+    "name": "名称",
+    "description": "描述",
+    "values": "值",
+    "noValues": "无值",
+    "addValue": "添加值",
+    "value": "值",
+    "usedBy": "使用于",
+    "notUsed": "未使用",
+    "usedInProducts": "使用于产品",
+    "valuesCommaSeparated": "值（用逗号分隔）",
+    "nameRequired": "属性名称为必填项。",
+    "deleteConfirmTitle": "删除属性",
+    "deleteConfirmMessage": "确定要删除「{{name}}」吗？此操作不可撤销。",
+    "bulkDeleteConfirmTitle": "删除 {{count}} 个属性",
+    "bulkDeleteConfirmMessage": "确定要删除 {{count}} 个属性吗？此操作不可撤销。",
+    "bulkDelete": "删除 ({{count}})",
+    "bulkDeleteSuccess": "已删除 {{count}} 个属性。"
+  },
+
+  "orders": {
+    "title": "订单",
+    "order": "订单",
+    "customer": "客户",
+    "items": "商品",
+    "item": "件商品",
+    "itemPlural": "件商品",
+    "total": "合计",
+    "status": "状态",
+    "notFound": "未找到订单",
+    "orderNumber": "订单 #{{id}}",
+    "lineItems": "商品明细",
+    "customerInfo": "客户信息",
+    "shipping": "配送",
+    "noAddress": "未提供地址",
+    "tracking": "物流追踪",
+    "notes": "备注",
+    "customerNote": "客户备注",
+    "internalNote": "内部备注",
+    "noNotes": "暂无备注",
+    "notePlaceholder": "添加内部备注...",
+    "cancelReason": "取消原因",
+    "cancelReasonLabel": "原因（可选）",
+    "cancelReasonPlaceholder": "为什么取消此订单？",
+    "cancelOrder": "取消订单",
+    "cancelConfirmMessage": "确定要取消此订单吗？此操作不可撤销。",
+    "shipOrder": "发货",
+    "shipOrderHint": "输入物流单号以将此订单标记为已发货。",
+    "trackingNumber": "物流单号",
+    "carrier": "物流公司",
+    "statusUpdated": "订单状态已更新。",
+    "orderCancelled": "订单已取消。",
+    "noteUpdated": "备注已保存。",
+    "statuses": {
+      "pending": "待处理",
+      "confirmed": "已确认",
+      "packed": "已打包",
+      "shipped": "已发货",
+      "delivered": "已送达",
+      "cancelled": "已取消"
+    },
+    "actions": {
+      "confirmed": "确认订单",
+      "packed": "标记已打包",
+      "shipped": "发货",
+      "delivered": "标记已送达",
+      "cancel": "取消订单"
+    },
+    "filters": {
+      "all": "全部"
+    },
+    "itemColumns": {
+      "product": "商品",
+      "qty": "数量",
+      "unitPrice": "单价",
+      "lineTotal": "小计"
+    },
+    "restockTitle": "登记退货入库",
+    "restockHint": "按行填写退回数量以增加库存（例如客户退货）。仅已送达订单可入库。",
+    "restockSubmit": "确认入库",
+    "restockSuccess": "已为退回商品更新库存。"
+  },
+
+  "inventory": {
+    "title": "库存",
+    "subtitle": "查看并调整所有产品和变体的库存。",
+    "onHand": "实物库存",
+    "reserved": "预留",
+    "available": "可售",
+    "threshold": "警报阈值",
+    "status": "状态",
+    "variant": "变体",
+    "addRemove": "增加 / 减少",
+    "clearChanges": "清除更改",
+    "applyBulk": "应用调整",
+    "applyCount": "应用 ({{count}})",
+    "bulkSuccess": "已更新 {{count}} 行。",
+    "totalProducts": "{{count}} 个产品",
+    "totalVariants": "{{count}} 个SKU",
+    "totalAvailable": "可售数量",
+    "alertCount_one": "{{count}} 个警报",
+    "alertCount_other": "{{count}} 个警报",
+    "alertCount": "警报"
+  },
+
+  "notifications": {
+    "title": "通知",
+    "markAllRead": "全部标为已读",
+    "markRead": "标为已读",
+    "empty": "暂无通知。",
+    "types": {
+      "LOW_STOCK": "库存不足",
+      "NEW_ORDER": "新订单",
+      "PAYMENT_FAILED": "支付",
+      "NEW_MESSAGE": "消息",
+      "NEW_DISPUTE": "争议",
+      "DISPUTE_STATUS_CHANGE": "争议更新",
+      "NEW_REVIEW": "评价"
+    }
+  },
+
+  "touchpoints": {
+    "messages": "消息",
+    "noMessages": "暂无消息。",
+    "you": "你",
+    "customer": "客户",
+    "messagePlaceholder": "输入消息...",
+    "send": "发送",
+    "messageSent": "消息已发送。",
+    "disputes": "争议",
+    "noDisputes": "该订单暂无争议。",
+    "openDispute": "发起争议",
+    "disputeReasonPlaceholder": "描述争议原因...",
+    "submitDispute": "提交",
+    "disputeCreated": "争议已创建。",
+    "disputeStatusUpdated": "争议状态已更新。",
+    "startReview": "开始审核",
+    "resolve": "标记为已解决",
+    "close": "关闭",
+    "replyPlaceholder": "写回复...",
+    "messagesCount": "条消息",
+    "status": {
+      "open": "待处理",
+      "under_review": "审核中",
+      "resolved": "已解决",
+      "closed": "已关闭"
+    }
+  },
+
+  "reviews": {
+    "title": "评价",
+    "noReviews": "暂无评价。",
+    "yourReply": "你的回复",
+    "reply": "回复",
+    "replyPlaceholder": "写你的回复...",
+    "sendReply": "发送回复",
+    "replySent": "回复已发送。",
+    "replyUpdated": "回复已更新。",
+    "replyDeleted": "回复已删除。"
+  },
+
+  "errors": {
+    "fallback": "出了点问题，请重试。",
+    "login_credentials": {
+      "MISSING": "邮箱和密码为必填项。",
+      "INVALID": "邮箱或密码无效。"
+    },
+    "login_email_format": {
+      "INVALID": "请输入有效的邮箱地址。"
+    },
+    "register_credentials": {
+      "MISSING": "邮箱和密码为必填项。"
+    },
+    "register_email_format": {
+      "INVALID": "请输入有效的邮箱地址。"
+    },
+    "register_password_length": {
+      "INVALID": "密码至少需要6个字符。"
+    },
+    "register_email": {
+      "DUPLICATE": "该邮箱已被注册。"
+    },
+    "auth_token": {
+      "MISSING": "需要登录验证，请先登录。",
+      "INVALID": "您的会话已过期，请重新登录。"
+    },
+    "user": {
+      "NOT_FOUND": "用户未找到。"
+    },
+    "shop": {
+      "NOT_FOUND": "店铺未找到。"
+    },
+    "shop_access": {
+      "FORBIDDEN": "您无权访问该店铺。"
+    },
+    "shop_name": {
+      "MISSING": "店铺名称为必填项。",
+      "INVALID": "店铺名称不能为空。"
+    },
+    "product": {
+      "NOT_FOUND": "产品未找到。"
+    },
+    "product_name": {
+      "MISSING": "产品名称为必填项。",
+      "INVALID": "产品名称不能为空。"
+    },
+    "product_variants": {
+      "INVALID": "产品变体数据无效。",
+      "MISSING": "产品必须至少有一个变体。"
+    },
+    "product_shop": {
+      "MISSING": "请为该产品选择一个店铺。"
+    },
+    "attribute": {
+      "NOT_FOUND": "属性未找到。"
+    },
+    "attribute_in_use": {
+      "IN_USE": "此属性仍被产品变体使用。请先从所有产品中移除后再删除。"
+    },
+    "attribute_value_in_use": {
+      "IN_USE": "此属性值仍被产品变体使用。请先从所有产品中移除后再删除。"
+    },
+    "attribute_name": {
+      "MISSING": "属性名称为必填项。",
+      "INVALID": "属性名称不能为空。"
+    },
+    "attribute_shop": {
+      "MISSING": "请为该属性选择一个店铺。"
+    },
+    "variant": {
+      "NOT_FOUND": "变体未找到。"
+    },
+    "variant_name": {
+      "MISSING": "变体名称为必填项。",
+      "INVALID": "变体名称不能为空。"
+    },
+    "variant_price": {
+      "MISSING": "变体价格为必填项。",
+      "INVALID": "价格必须为有效的非负数。"
+    },
+    "variant_stock": {
+      "INVALID": "库存必须为有效的非负数。"
+    },
+    "variant_attribute_values": {
+      "MISSING": "每个变体必须至少有一个属性值。"
+    },
+    "variant_duplicate": {
+      "DUPLICATE": "两个或更多变体具有相同的属性组合，每个变体必须唯一。"
+    },
+    "attribute_values": {
+      "INVALID": "属性值必须是一个列表。"
+    },
+    "attribute_value_empty": {
+      "INVALID": "属性值不能为空。"
+    },
+    "record_not_found": {
+      "NOT_FOUND": "未找到请求的记录。"
+    },
+    "record_already_exists": {
+      "DUPLICATE": "该记录已存在。"
+    },
+    "internal_server_error": {
+      "SERVER_ERROR": "发生了意外错误，请重试。"
+    },
+    "order": {
+      "NOT_FOUND": "未找到订单。"
+    },
+    "order_status": {
+      "MISSING": "订单状态为必填项。",
+      "INVALID": "无效的订单状态。"
+    },
+    "order_status_transition": {
+      "INVALID": "不允许此状态转换。"
+    },
+    "order_tracking": {
+      "MISSING": "发货需要物流单号。"
+    },
+    "notification": {
+      "NOT_FOUND": "通知未找到。"
+    },
+    "attribute_value": {
+      "NOT_FOUND": "属性值未找到。"
+    },
+    "attribute_ids": {
+      "INVALID": "请至少选择一个属性。"
+    },
+    "product_ids": {
+      "INVALID": "请至少选择一个产品。"
+    },
+    "variant_stock_reserved": {
+      "INVALID": "库存不能低于当前预留数量。"
+    },
+    "order_item": {
+      "NOT_FOUND": "订单商品未找到。"
+    },
+    "order_restock": {
+      "INVALID": "仅已送达的订单可以入库。"
+    },
+    "restock_items": {
+      "INVALID": "请提供有效的退货入库数据。"
+    },
+    "restock_quantity": {
+      "INVALID": "退货数量不能超过订购数量。"
+    },
+    "inventory_adjust": {
+      "INVALID": "请提供有效的变体、数量和原因。"
+    },
+    "inventory_bulk": {
+      "INVALID": "请提供有效的库存调整数据。"
+    },
+    "inventory_movements": {
+      "MISSING": "查看库存变动需要提供变体ID。"
+    },
+    "inventory_availability": {
+      "INVALID": "可用库存不足，无法执行此操作。"
+    },
+    "inventory_reservation": {
+      "INVALID": "预留库存不足，无法执行此操作。"
+    },
+    "message_sender": {
+      "INVALID": "发送者必须是“卖家”或“客户”。"
+    },
+    "message_body": {
+      "MISSING": "消息内容为必填项。"
+    },
+    "dispute": {
+      "NOT_FOUND": "争议未找到。",
+      "DUPLICATE": "该订单已有一个活跃的争议。"
+    },
+    "dispute_reason": {
+      "MISSING": "开启争议需要提供原因。"
+    },
+    "dispute_status": {
+      "INVALID": "无效的争议状态。"
+    },
+    "dispute_transition": {
+      "INVALID": "不允许此争议状态转换。"
+    },
+    "dispute_closed": {
+      "INVALID": "无法向已关闭的争议添加消息。"
+    },
+    "review": {
+      "NOT_FOUND": "评价未找到。"
+    },
+    "review_reply_body": {
+      "MISSING": "回复内容为必填项。"
+    },
+    "review_reply": {
+      "NOT_FOUND": "该评价暂无回复。"
+    }
+  },
+
+  "success": {
+    "login": "欢迎回来！",
+    "register": "账户创建成功！",
+    "product_created": "产品创建成功。",
+    "product_updated": "产品更新成功。",
+    "product_deleted": "产品删除成功。",
+    "shop_created": "店铺创建成功。",
+    "shop_updated": "店铺更新成功。",
+    "shop_deleted": "店铺删除成功。",
+    "attribute_created": "属性创建成功。",
+    "attribute_updated": "属性更新成功。",
+    "attribute_deleted": "属性删除成功。",
+    "attribute_value_deleted": "属性值删除成功。",
+    "variant_created": "变体创建成功。",
+    "variant_updated": "变体更新成功。",
+    "variant_deleted": "变体删除成功。"
+  },
+
+  "filters": {
+    "all": "全部",
+    "searchOrders": "按客户搜索...",
+    "searchProducts": "按名称搜索...",
+    "sortDate": "日期",
+    "sortAmount": "金额",
+    "sortName": "名称",
+    "rowsPerPage": "每页行数",
+    "pageInfo": "{{from}}–{{to}} / 共 {{total}}",
+    "totalResults": "共 {{count}} 条结果"
+  }
+}

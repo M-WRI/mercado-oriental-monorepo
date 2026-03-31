@@ -1,0 +1,249 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                   String                @id @default(uuid())
+  email                String                @unique
+  password             String
+  name                 String?
+  shops                Shop[]
+  notifications        Notification[]
+  inventoryMovements   InventoryMovement[]
+  priceChanges         PriceHistory[]
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+}
+
+model Shop {
+  id String @id @default(uuid())
+  name String
+  description String?
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  defaultLowStockThreshold Int @default(5)
+  products Product[]
+  attributes ProductAttribute[]
+  orders Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id String @id @default(uuid())
+  name String
+  description String?
+  isActive Boolean @default(true)
+  shopId String
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  productVariants ProductVariant[]
+  reviews ProductReview[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductVariant {
+  id String @id @default(uuid())
+  name String
+  price Float
+  stock Int @default(0)
+  reservedStock Int @default(0)
+  lowStockThreshold Int?
+  productId String
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productVariantAttributeValues ProductVariantAttributeValue[]
+  orderItems OrderItem[]
+  inventoryMovements InventoryMovement[]
+  priceHistory PriceHistory[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductAttribute {
+  id String @id @default(uuid())
+  name String
+  description String?
+  shopId String
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  productAttributeValues ProductAttributeValue[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductAttributeValue {
+  id String @id @default(uuid())
+  value String
+  productAttributeId String
+  productAttribute ProductAttribute @relation(fields: [productAttributeId], references: [id], onDelete: Cascade)
+  productVariantAttributeValues ProductVariantAttributeValue[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Customer {
+  id        String          @id @default(uuid())
+  email     String          @unique
+  password  String
+  name      String?
+  phone     String?
+  orders    Order[]
+  reviews   ProductReview[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+model Order {
+  id String @id @default(uuid())
+  customerEmail String
+  customerName String?
+  customerId String?
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  status String @default("pending")
+  totalAmount Float
+
+  shippingAddress String?
+  trackingNumber  String?
+  carrier         String?
+  customerNote    String?
+  internalNote    String?
+  cancelReason    String?
+
+  confirmedAt DateTime?
+  packedAt    DateTime?
+  shippedAt   DateTime?
+  deliveredAt DateTime?
+  cancelledAt DateTime?
+
+  shopId String
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+  orderMessages OrderMessage[]
+  disputes Dispute[]
+  inventoryMovements InventoryMovement[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderItem {
+  id               String          @id @default(uuid())
+  quantity         Int
+  unitPrice        Float
+  productName      String          @default("")
+  variantName      String          @default("")
+  attributeSummary String          @default("")
+  orderId          String
+  order            Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productVariantId String?
+  productVariant   ProductVariant? @relation(fields: [productVariantId], references: [id], onDelete: SetNull)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+}
+
+model ProductVariantAttributeValue {
+  id String @id @default(uuid())
+  productVariantId String
+  productVariant ProductVariant @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
+  productAttributeValueId String
+  productAttributeValue ProductAttributeValue @relation(fields: [productAttributeValueId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InventoryMovement {
+  id String @id @default(uuid())
+  productVariantId String
+  productVariant ProductVariant @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
+  stockDelta Int       @default(0)
+  reservedDelta Int    @default(0)
+  reason String
+  orderId String?
+  order Order? @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  userId String?
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  note String?
+  createdAt DateTime @default(now())
+}
+
+model PriceHistory {
+  id String @id @default(uuid())
+  productVariantId String
+  productVariant ProductVariant @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
+  oldPrice Float
+  newPrice Float
+  userId String?
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+}
+
+model OrderMessage {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  sender    String   // "vendor" | "customer"
+  body      String
+  createdAt DateTime @default(now())
+}
+
+model Dispute {
+  id        String           @id @default(uuid())
+  orderId   String
+  order     Order            @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  reason    String
+  status    String           @default("open") // open | under_review | resolved | closed
+  resolvedAt DateTime?
+  messages  DisputeMessage[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model DisputeMessage {
+  id        String   @id @default(uuid())
+  disputeId String
+  dispute   Dispute  @relation(fields: [disputeId], references: [id], onDelete: Cascade)
+  sender    String   // "vendor" | "customer"
+  body      String
+  createdAt DateTime @default(now())
+}
+
+model ProductReview {
+  id             String        @id @default(uuid())
+  productId      String
+  product        Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  customerId     String?
+  customer       Customer?     @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  customerEmail  String
+  customerName   String?
+  rating         Int           // 1-5
+  title          String?
+  body           String
+  reply          ReviewReply?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model ReviewReply {
+  id        String        @id @default(uuid())
+  reviewId  String        @unique
+  review    ProductReview @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  body      String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model Notification {
+  id String @id @default(uuid())
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type String
+  title String
+  body String
+  payload Json?
+  readAt DateTime?
+  dedupeKey String? @unique
+  createdAt DateTime @default(now())
+}

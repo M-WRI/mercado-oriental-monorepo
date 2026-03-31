@@ -1,0 +1,672 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "show": "Ver",
+    "edit": "Editar",
+    "add": "Añadir",
+    "back": "Atrás",
+    "continue": "Continuar",
+    "logout": "Cerrar sesión",
+    "submitting": "Enviando...",
+    "create": "Crear",
+    "noData": "Sin datos aún",
+    "error": "Algo salió mal",
+    "retry": "Reintentar",
+    "step": "Paso {{current}} de {{total}}",
+    "daysAgo": "hace {{count}}d",
+    "hoursAgo": "hace {{count}}h",
+    "minutesAgo": "hace {{count}}m",
+    "daysOld": "{{count}}d",
+    "variant": "variante",
+    "variant_plural": "variantes",
+    "unit": "unidad",
+    "unit_plural": "unidades",
+    "sold": "vendido",
+    "left": "restante",
+    "thisWeek": "Esta semana",
+    "lastWeek": "Semana pasada",
+    "vsLastWeek": "vs semana pasada",
+    "value": "valor",
+    "total": "total",
+    "selected": "{{count}} seleccionados"
+  },
+
+  "nav": {
+    "dashboard": "Panel",
+    "products": "Productos",
+    "attributes": "Atributos",
+    "orders": "Pedidos",
+    "inventory": "Inventario",
+    "notifications": "Notificaciones"
+  },
+
+  "auth": {
+    "welcomeBack": "Bienvenido de nuevo",
+    "signInTo": "Inicia sesión en Mercado Oriental",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "tu@ejemplo.com",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "signingIn": "Iniciando sesión...",
+    "signIn": "Iniciar sesión",
+    "loginFailed": "Error al iniciar sesión. Inténtalo de nuevo.",
+    "noAccount": "¿No tienes una cuenta?",
+    "createOne": "Crea una",
+    "createYourAccount": "Crea tu cuenta",
+    "getStarted": "Comienza con Mercado Oriental",
+    "name": "Nombre",
+    "namePlaceholder": "Tu nombre",
+    "choosePlaceholder": "Elige una contraseña",
+    "creatingAccount": "Creando cuenta...",
+    "createAccount": "Crear cuenta",
+    "registrationFailed": "Error al registrarse. Inténtalo de nuevo.",
+    "hasAccount": "¿Ya tienes una cuenta?",
+    "emailRequired": "El correo electrónico es obligatorio.",
+    "emailInvalid": "Por favor, introduce un correo electrónico válido.",
+    "passwordRequired": "La contraseña es obligatoria.",
+    "passwordMinLength": "La contraseña debe tener al menos 6 caracteres."
+  },
+
+  "dashboard": {
+    "title": "Panel",
+    "subtitle": "Resumen de tu negocio",
+    "loading": "Cargando panel...",
+    "todayRevenue": "Ingresos de hoy",
+    "yesterday": "Ayer: {{amount}}",
+    "todayOrders": "Pedidos de hoy",
+    "unitsSold": "{{count}} unidades vendidas",
+    "totalRevenue": "Ingresos totales",
+    "ordersTotal": "{{count}} pedidos en total",
+    "products": "Productos",
+    "attributes": "{{count}} atributos",
+    "revenueOverTime": "Ingresos en el tiempo",
+    "revenue": "Ingresos",
+    "orders": "Pedidos",
+    "recentOrders": "Pedidos recientes",
+    "customer": "Cliente",
+    "amount": "Monto",
+    "items": "Artículos",
+    "statusColumn": "Estado",
+    "status": {
+      "completed": "Completado",
+      "pending": "Pendiente",
+      "cancelled": "Cancelado"
+    },
+    "noOrders": "Sin pedidos aún",
+    "inventoryAlerts": "Alertas de inventario",
+    "outOfStock": "agotado",
+    "lowStock": "stock bajo",
+    "allStocked": "Todo abastecido",
+    "noAlerts": "Sin alertas",
+    "topProducts": "Productos destacados (30d)",
+    "noSalesData": "Sin datos de ventas aún",
+    "customers": "Clientes",
+    "totalCustomers": "Total de clientes",
+    "repeatBuyers": "Compradores recurrentes",
+    "repeatRate": "Tasa de repetición",
+    "newThisWeek": "Nuevos esta semana",
+    "repeatBuyer": "comprador recurrente",
+    "repeatBuyer_plural": "compradores recurrentes"
+  },
+
+  "products": {
+    "title": "Productos",
+    "createProduct": "Crear producto",
+    "editProduct": "Editar producto",
+    "editProduct_variantDuplicate": "Dos o más variantes tienen la misma combinación de atributos. Cada variante debe ser única.",
+    "editProduct_variantNeedsAttribute": "Cada variante debe tener al menos un valor de atributo seleccionado.",
+    "editProduct_createNewAttribute": "Crear nuevo atributo",
+    "editProduct_createNewAttributeHint": "¿Necesitas otra opción (talla, color, etc.)? Crea un atributo para esta tienda y luego elige sus valores en cada variante.",
+    "product": "Producto",
+    "price": "Precio",
+    "stockSold": "Stock / Vendido",
+    "status": "Estado",
+    "inStock": "En stock",
+    "lowStock": "Stock bajo",
+    "outOfStock": "Agotado",
+    "notFound": "Producto no encontrado",
+    "created": "Creado",
+    "activeStatus": "Estado",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "activeStatusHint": "Los productos inactivos están pausados y no son visibles para los clientes.",
+    "activatedSuccess": "Producto activado.",
+    "deactivatedSuccess": "Producto desactivado.",
+    "deleteConfirmTitle": "Eliminar producto",
+    "deleteConfirmMessage": "¿Seguro que deseas eliminar \"{{name}}\"? Esta acción no se puede deshacer. El historial de pedidos se conservará.",
+    "bulkDeleteConfirmTitle": "Eliminar {{count}} productos",
+    "bulkDeleteConfirmMessage": "¿Seguro que deseas eliminar {{count}} productos? Esta acción no se puede deshacer. El historial de pedidos se conservará.",
+    "bulkDelete": "Eliminar ({{count}})",
+    "bulkDeleteSuccess": "{{count}} productos eliminados.",
+    "listInventorySubtitle": "Catálogo, stock y variantes en un solo lugar. Despliega un producto para ajustar cantidades o eliminar variantes.",
+    "noVariantsInList": "Aún no hay variantes. Edita el producto para añadir SKUs.",
+    "selectProduct": "Seleccionar producto",
+    "deleteVariantTitle": "Eliminar variante",
+    "deleteVariantMessage": "¿Eliminar \"{{name}}\"? Esta acción no se puede deshacer.",
+    "deleteVariantAria": "Eliminar variante",
+    "variants": "Variantes",
+    "customers": "Clientes",
+
+    "wizard": {
+      "info": "Información del producto",
+      "attributes": "Atributos del producto",
+      "variants": "Variantes del producto",
+      "review": "Revisar y crear",
+      "createProduct": "Crear producto"
+    },
+
+    "infoStep": {
+      "nameLabel": "Nombre del producto *",
+      "namePlaceholder": "ej. Juego de té de cerámica",
+      "descriptionLabel": "Descripción",
+      "descriptionPlaceholder": "Describe tu producto...",
+      "shopLabel": "Tienda *",
+      "noShops": "No se encontraron tiendas. Crea una primero.",
+      "nameRequired": "El nombre del producto es obligatorio",
+      "shopRequired": "Selecciona una tienda"
+    },
+
+    "attributesStep": {
+      "description": "Selecciona atributos existentes de tu tienda o crea nuevos. Estos definen las propiedades que puede tener tu producto (ej. Talla, Color).",
+      "shopAttributes": "Atributos de la tienda",
+      "newAttributes": "Nuevos atributos",
+      "createNew": "Crear nuevo atributo",
+      "nameLabel": "Nombre *",
+      "namePlaceholder": "ej. Color",
+      "descriptionLabel": "Descripción",
+      "descriptionPlaceholder": "Descripción opcional",
+      "valuesLabel": "Valores (separados por comas)",
+      "valuesPlaceholder": "ej. Rojo, Verde, Azul"
+    },
+
+    "variantsStep": {
+      "description": "Añade variantes para tu producto. Cada variante es una combinación específica (ej. \"iPhone 17 Azul 128GB\") con su propio precio y stock.",
+      "addAtLeastOne": "Añade al menos una variante",
+      "newVariant": "Nueva variante",
+      "nameLabel": "Nombre de variante *",
+      "namePlaceholder": "ej. iPhone 17 Azul 128GB",
+      "priceLabel": "Precio (€) *",
+      "pricePlaceholder": "0,00",
+      "stockLabel": "Stock",
+      "stockPlaceholder": "0",
+      "attributeValues": "Valores de atributo",
+      "addVariant": "Añadir variante"
+    },
+
+    "reviewStep": {
+      "description": "Revisa todo antes de crear tu producto.",
+      "product": "PRODUCTO",
+      "attributes": "ATRIBUTOS",
+      "variants": "VARIANTES",
+      "totalStock": "Stock total:",
+      "noAttributes": "No se seleccionaron atributos.",
+      "existing": "Existente",
+      "new": "Nuevo",
+      "shop": "Tienda"
+    },
+
+    "overview": {
+      "totalRevenue": "Ingresos totales",
+      "unitsSold": "Unidades vendidas",
+      "totalStock": "Stock total",
+      "availableStock": "Disponible para vender",
+      "reservedNote": "{{count}} reservados",
+      "avgSellingPrice": "Precio medio de venta"
+    },
+
+    "sales": {
+      "salesOverTime": "Ventas en el tiempo",
+      "units": "Unidades",
+      "revenue": "Ingresos",
+      "noSalesData": "Sin datos de ventas aún",
+      "totalUnits": "unidades totales"
+    },
+
+    "inventory": {
+      "inventoryHealth": "Salud del inventario",
+      "totalUnits": "Unidades totales",
+      "availableUnits": "Unidades disponibles",
+      "onHand": "En almacén",
+      "reserved": "Reservado",
+      "availableShort": "disp.",
+      "stockValue": "Valor del stock",
+      "outOfStock": "agotado",
+      "lowStock": "stock bajo",
+      "allStocked": "Todo abastecido"
+    },
+
+    "performance": {
+      "salesVelocity": "Velocidad de ventas",
+      "unitsPerDay": "Unidades / día",
+      "unitsPerWeek": "Unidades / semana",
+      "avgPrice": "Precio medio",
+      "lastSale": "Última venta",
+      "variantPerformance": "Rendimiento por variante",
+      "bestSeller": "Más vendido",
+      "lowestSeller": "Menos vendido",
+      "noSalesYet": "Sin ventas aún",
+      "customerInsights": "Información de clientes",
+      "totalCustomers": "Total de clientes",
+      "repeatBuyers": "Compradores recurrentes",
+      "repeatRate": "Tasa de repetición",
+      "topBuyer": "Mayor comprador",
+      "spent": "gastado"
+    },
+
+    "variantsTable": {
+      "variant": "Variante",
+      "attributes": "Atributos",
+      "price": "Precio",
+      "stock": "Stock",
+      "available": "Disponible",
+      "onHand": "En almacén",
+      "reserved": "Reservado",
+      "stockValue": "Valor del stock",
+      "sold": "Vendido",
+      "revenue": "Ingresos",
+      "lastSale": "Última venta"
+    },
+
+    "customersTable": {
+      "customer": "Cliente",
+      "orders": "Pedidos",
+      "units": "Unidades",
+      "spent": "Gastado",
+      "firstOrder": "Primer pedido",
+      "lastOrder": "Último pedido",
+      "repeat": "recurrente"
+    }
+  },
+
+  "attributes": {
+    "title": "Atributos",
+    "addAttribute": "Añadir atributo",
+    "editAttribute": "Editar atributo",
+    "notFound": "Atributo no encontrado.",
+    "shopLabel": "Tienda *",
+    "shopRequired": "Selecciona una tienda para este atributo.",
+    "noShops": "No hay tiendas. Crea una primero.",
+    "name": "Nombre",
+    "description": "Descripción",
+    "values": "Valores",
+    "noValues": "Sin valores",
+    "addValue": "Añadir valor",
+    "value": "Valor",
+    "usedBy": "Usado por",
+    "notUsed": "No utilizado",
+    "usedInProducts": "Usado en productos",
+    "valuesCommaSeparated": "Valores (separados por comas)",
+    "nameRequired": "El nombre del atributo es obligatorio.",
+    "deleteConfirmTitle": "Eliminar atributo",
+    "deleteConfirmMessage": "¿Seguro que deseas eliminar \"{{name}}\"? Esta acción no se puede deshacer.",
+    "bulkDeleteConfirmTitle": "Eliminar {{count}} atributos",
+    "bulkDeleteConfirmMessage": "¿Seguro que deseas eliminar {{count}} atributos? Esta acción no se puede deshacer.",
+    "bulkDelete": "Eliminar ({{count}})",
+    "bulkDeleteSuccess": "{{count}} atributos eliminados."
+  },
+
+  "orders": {
+    "title": "Pedidos",
+    "order": "Pedido",
+    "customer": "Cliente",
+    "items": "Artículos",
+    "item": "artículo",
+    "itemPlural": "artículos",
+    "total": "Total",
+    "status": "Estado",
+    "notFound": "Pedido no encontrado",
+    "orderNumber": "Pedido #{{id}}",
+    "lineItems": "Artículos",
+    "customerInfo": "Cliente",
+    "shipping": "Envío",
+    "noAddress": "Sin dirección proporcionada",
+    "tracking": "Seguimiento",
+    "notes": "Notas",
+    "customerNote": "Nota del cliente",
+    "internalNote": "Nota interna",
+    "noNotes": "Sin notas aún",
+    "notePlaceholder": "Añadir una nota interna...",
+    "cancelReason": "Motivo de cancelación",
+    "cancelReasonLabel": "Motivo (opcional)",
+    "cancelReasonPlaceholder": "¿Por qué se cancela este pedido?",
+    "cancelOrder": "Cancelar pedido",
+    "cancelConfirmMessage": "¿Seguro que deseas cancelar este pedido? Esta acción no se puede deshacer.",
+    "shipOrder": "Enviar pedido",
+    "shipOrderHint": "Ingresa un número de seguimiento para marcar este pedido como enviado.",
+    "trackingNumber": "Número de seguimiento",
+    "carrier": "Transportista",
+    "statusUpdated": "Estado del pedido actualizado.",
+    "orderCancelled": "Pedido cancelado.",
+    "noteUpdated": "Nota guardada.",
+    "statuses": {
+      "pending": "Pendiente",
+      "confirmed": "Confirmado",
+      "packed": "Empacado",
+      "shipped": "Enviado",
+      "delivered": "Entregado",
+      "cancelled": "Cancelado"
+    },
+    "actions": {
+      "confirmed": "Confirmar pedido",
+      "packed": "Marcar empacado",
+      "shipped": "Enviar pedido",
+      "delivered": "Marcar entregado",
+      "cancel": "Cancelar pedido"
+    },
+    "filters": {
+      "all": "Todos"
+    },
+    "itemColumns": {
+      "product": "Producto",
+      "qty": "Cant.",
+      "unitPrice": "Precio unitario",
+      "lineTotal": "Total"
+    },
+    "restockTitle": "Registrar devolución",
+    "restockHint": "Añade unidades de vuelta al stock por línea (p. ej. devolución del cliente). Solo pedidos entregados.",
+    "restockSubmit": "Aplicar reabastecimiento",
+    "restockSuccess": "Inventario actualizado por las unidades devueltas."
+  },
+
+  "inventory": {
+    "title": "Inventario",
+    "subtitle": "Consulta y ajusta el stock de todos los productos y variantes.",
+    "onHand": "En almacén",
+    "reserved": "Reservado",
+    "available": "Disponible",
+    "threshold": "Umbral de alerta",
+    "status": "Estado",
+    "variant": "Variante",
+    "addRemove": "Añadir / Quitar",
+    "clearChanges": "Descartar cambios",
+    "applyBulk": "Aplicar ajustes",
+    "applyCount": "Aplicar ({{count}})",
+    "bulkSuccess": "{{count}} línea(s) actualizada(s).",
+    "totalProducts": "{{count}} productos",
+    "totalVariants": "{{count}} SKUs",
+    "totalAvailable": "Unidades disponibles",
+    "alertCount_one": "{{count}} alerta",
+    "alertCount_other": "{{count}} alertas",
+    "alertCount": "alertas"
+  },
+
+  "notifications": {
+    "title": "Notificaciones",
+    "markAllRead": "Marcar todas leídas",
+    "markRead": "Marcar leída",
+    "empty": "Aún no hay notificaciones.",
+    "types": {
+      "LOW_STOCK": "Stock bajo",
+      "NEW_ORDER": "Nuevo pedido",
+      "PAYMENT_FAILED": "Pago",
+      "NEW_MESSAGE": "Mensaje",
+      "NEW_DISPUTE": "Disputa",
+      "DISPUTE_STATUS_CHANGE": "Actualización de disputa",
+      "NEW_REVIEW": "Reseña"
+    }
+  },
+
+  "touchpoints": {
+    "messages": "Mensajes",
+    "noMessages": "Aún no hay mensajes.",
+    "you": "Tú",
+    "customer": "Cliente",
+    "messagePlaceholder": "Escribe un mensaje...",
+    "send": "Enviar",
+    "messageSent": "Mensaje enviado.",
+    "disputes": "Disputas",
+    "noDisputes": "No hay disputas para este pedido.",
+    "openDispute": "Abrir disputa",
+    "disputeReasonPlaceholder": "Describe el motivo de la disputa...",
+    "submitDispute": "Enviar",
+    "disputeCreated": "Disputa abierta.",
+    "disputeStatusUpdated": "Estado de la disputa actualizado.",
+    "startReview": "Iniciar revisión",
+    "resolve": "Marcar resuelta",
+    "close": "Cerrar",
+    "replyPlaceholder": "Escribe una respuesta...",
+    "messagesCount": "mensajes",
+    "status": {
+      "open": "Abierta",
+      "under_review": "En revisión",
+      "resolved": "Resuelta",
+      "closed": "Cerrada"
+    }
+  },
+
+  "reviews": {
+    "title": "Reseñas",
+    "noReviews": "Aún no hay reseñas.",
+    "yourReply": "Tu respuesta",
+    "reply": "Responder",
+    "replyPlaceholder": "Escribe tu respuesta...",
+    "sendReply": "Enviar respuesta",
+    "replySent": "Respuesta enviada.",
+    "replyUpdated": "Respuesta actualizada.",
+    "replyDeleted": "Respuesta eliminada."
+  },
+
+  "errors": {
+    "fallback": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "login_credentials": {
+      "MISSING": "El correo y la contraseña son obligatorios.",
+      "INVALID": "Correo o contraseña inválidos."
+    },
+    "login_email_format": {
+      "INVALID": "Por favor, introduce un correo electrónico válido."
+    },
+    "register_credentials": {
+      "MISSING": "El correo y la contraseña son obligatorios."
+    },
+    "register_email_format": {
+      "INVALID": "Por favor, introduce un correo electrónico válido."
+    },
+    "register_password_length": {
+      "INVALID": "La contraseña debe tener al menos 6 caracteres."
+    },
+    "register_email": {
+      "DUPLICATE": "Ya existe un usuario con este correo."
+    },
+    "auth_token": {
+      "MISSING": "Se requiere autenticación. Por favor, inicia sesión.",
+      "INVALID": "Tu sesión ha expirado. Por favor, inicia sesión de nuevo."
+    },
+    "user": {
+      "NOT_FOUND": "Usuario no encontrado."
+    },
+    "shop": {
+      "NOT_FOUND": "Tienda no encontrada."
+    },
+    "shop_access": {
+      "FORBIDDEN": "No tienes acceso a esta tienda."
+    },
+    "shop_name": {
+      "MISSING": "El nombre de la tienda es obligatorio.",
+      "INVALID": "El nombre de la tienda no puede estar vacío."
+    },
+    "product": {
+      "NOT_FOUND": "Producto no encontrado."
+    },
+    "product_name": {
+      "MISSING": "El nombre del producto es obligatorio.",
+      "INVALID": "El nombre del producto no puede estar vacío."
+    },
+    "product_variants": {
+      "INVALID": "Los datos de las variantes no son válidos.",
+      "MISSING": "Un producto debe tener al menos una variante."
+    },
+    "product_shop": {
+      "MISSING": "Por favor, selecciona una tienda para este producto."
+    },
+    "attribute": {
+      "NOT_FOUND": "Atributo no encontrado."
+    },
+    "attribute_in_use": {
+      "IN_USE": "Este atributo todavía es usado por variantes de productos. Elimínalo de todos los productos antes de borrarlo."
+    },
+    "attribute_value_in_use": {
+      "IN_USE": "Este valor de atributo todavía es usado por variantes de productos. Elimínalo de todos los productos antes de borrarlo."
+    },
+    "attribute_name": {
+      "MISSING": "El nombre del atributo es obligatorio.",
+      "INVALID": "El nombre del atributo no puede estar vacío."
+    },
+    "attribute_shop": {
+      "MISSING": "Por favor, selecciona una tienda para este atributo."
+    },
+    "variant": {
+      "NOT_FOUND": "Variante no encontrada."
+    },
+    "variant_name": {
+      "MISSING": "El nombre de la variante es obligatorio.",
+      "INVALID": "El nombre de la variante no puede estar vacío."
+    },
+    "variant_price": {
+      "MISSING": "El precio de la variante es obligatorio.",
+      "INVALID": "El precio debe ser un número no negativo válido."
+    },
+    "variant_stock": {
+      "INVALID": "El stock debe ser un número no negativo válido."
+    },
+    "variant_attribute_values": {
+      "MISSING": "Cada variante debe tener al menos un valor de atributo."
+    },
+    "variant_duplicate": {
+      "DUPLICATE": "Dos o más variantes tienen la misma combinación de atributos. Cada variante debe ser única."
+    },
+    "attribute_values": {
+      "INVALID": "Los valores del atributo deben ser una lista."
+    },
+    "attribute_value_empty": {
+      "INVALID": "Los valores del atributo no pueden estar vacíos."
+    },
+    "record_not_found": {
+      "NOT_FOUND": "El registro solicitado no fue encontrado."
+    },
+    "record_already_exists": {
+      "DUPLICATE": "Este registro ya existe."
+    },
+    "internal_server_error": {
+      "SERVER_ERROR": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo."
+    },
+    "order": {
+      "NOT_FOUND": "Pedido no encontrado."
+    },
+    "order_status": {
+      "MISSING": "El estado del pedido es obligatorio.",
+      "INVALID": "Estado del pedido no válido."
+    },
+    "order_status_transition": {
+      "INVALID": "Esta transición de estado no está permitida."
+    },
+    "order_tracking": {
+      "MISSING": "Se requiere un número de seguimiento para enviar este pedido."
+    },
+    "notification": {
+      "NOT_FOUND": "Notificación no encontrada."
+    },
+    "attribute_value": {
+      "NOT_FOUND": "Valor de atributo no encontrado."
+    },
+    "attribute_ids": {
+      "INVALID": "Selecciona al menos un atributo."
+    },
+    "product_ids": {
+      "INVALID": "Selecciona al menos un producto."
+    },
+    "variant_stock_reserved": {
+      "INVALID": "El stock no puede ser inferior a la cantidad actualmente reservada."
+    },
+    "order_item": {
+      "NOT_FOUND": "Artículo del pedido no encontrado."
+    },
+    "order_restock": {
+      "INVALID": "Solo los pedidos entregados pueden ser reabastecidos."
+    },
+    "restock_items": {
+      "INVALID": "Proporciona artículos de reabastecimiento válidos."
+    },
+    "restock_quantity": {
+      "INVALID": "La cantidad de reabastecimiento no puede exceder la cantidad pedida."
+    },
+    "inventory_adjust": {
+      "INVALID": "Proporciona una variante, cantidad y motivo válidos."
+    },
+    "inventory_bulk": {
+      "INVALID": "Proporciona ajustes de inventario válidos."
+    },
+    "inventory_movements": {
+      "MISSING": "Se requiere un ID de variante para ver los movimientos de inventario."
+    },
+    "inventory_availability": {
+      "INVALID": "No hay suficiente stock disponible para esta operación."
+    },
+    "inventory_reservation": {
+      "INVALID": "No hay suficiente stock reservado para esta operación."
+    },
+    "message_sender": {
+      "INVALID": "El remitente debe ser 'vendedor' o 'cliente'."
+    },
+    "message_body": {
+      "MISSING": "El cuerpo del mensaje es obligatorio."
+    },
+    "dispute": {
+      "NOT_FOUND": "Disputa no encontrada.",
+      "DUPLICATE": "Ya existe una disputa activa para este pedido."
+    },
+    "dispute_reason": {
+      "MISSING": "Se requiere un motivo para abrir una disputa."
+    },
+    "dispute_status": {
+      "INVALID": "Estado de disputa no válido."
+    },
+    "dispute_transition": {
+      "INVALID": "Esta transición de estado de disputa no está permitida."
+    },
+    "dispute_closed": {
+      "INVALID": "No se pueden agregar mensajes a una disputa cerrada."
+    },
+    "review": {
+      "NOT_FOUND": "Reseña no encontrada."
+    },
+    "review_reply_body": {
+      "MISSING": "El cuerpo de la respuesta es obligatorio."
+    },
+    "review_reply": {
+      "NOT_FOUND": "No existe respuesta para esta reseña."
+    }
+  },
+
+  "success": {
+    "login": "¡Bienvenido de nuevo!",
+    "register": "¡Cuenta creada exitosamente!",
+    "product_created": "Producto creado exitosamente.",
+    "product_updated": "Producto actualizado exitosamente.",
+    "product_deleted": "Producto eliminado exitosamente.",
+    "shop_created": "Tienda creada exitosamente.",
+    "shop_updated": "Tienda actualizada exitosamente.",
+    "shop_deleted": "Tienda eliminada exitosamente.",
+    "attribute_created": "Atributo creado exitosamente.",
+    "attribute_updated": "Atributo actualizado exitosamente.",
+    "attribute_deleted": "Atributo eliminado exitosamente.",
+    "attribute_value_deleted": "Valor de atributo eliminado exitosamente.",
+    "variant_created": "Variante creada exitosamente.",
+    "variant_updated": "Variante actualizada exitosamente.",
+    "variant_deleted": "Variante eliminada exitosamente."
+  },
+
+  "filters": {
+    "all": "Todos",
+    "searchOrders": "Buscar por cliente...",
+    "searchProducts": "Buscar por nombre...",
+    "sortDate": "Fecha",
+    "sortAmount": "Monto",
+    "sortName": "Nombre",
+    "rowsPerPage": "Filas por página",
+    "pageInfo": "{{from}}–{{to}} de {{total}}",
+    "totalResults": "{{count}} resultados"
+  }
+}

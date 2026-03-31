@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: mercado
+      POSTGRES_PASSWORD: mercado
+      POSTGRES_DB: mercado
+    # Host 5433 avoids clashing with a local Postgres on 5432. API uses internal hostname `db`.
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mercado -d mercado"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    ports:
+      # Override if 8000 is busy: HOST_API_PORT=8001 docker compose up
+      - "${HOST_API_PORT:-8000}:8000"
+    environment:
+      DATABASE_URL: postgresql://mercado:mercado@db:5432/mercado
+      JWT_SECRET: ${JWT_SECRET:-dev-docker-secret}
+      PORT: "8000"
+      # Local Docker: sync schema without migration files. For production images, set PRISMA_DB_PUSH=false and ship prisma/migrations.
+      PRISMA_DB_PUSH: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
