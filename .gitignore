@@ -1,0 +1,80 @@
+# --- Dependencies (root, apps, packages) ---
+node_modules/
+
+# Use pnpm in this repo — ignore other lockfiles if they appear
+package-lock.json
+yarn.lock
+.pnpm-store/
+pnpm-store/
+
+# --- Environment & secrets ---
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# --- Build outputs ---
+dist/
+build/
+out/
+.next/
+.nuxt/
+.output/
+.vercel/
+.turbo/
+*.tsbuildinfo
+
+# Vite
+dist-ssr/
+.vite/
+
+# --- Testing & coverage ---
+coverage/
+.nyc_output/
+*.lcov
+
+# --- Logs & debug ---
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# --- Caches ---
+.cache/
+.parcel-cache/
+.eslintcache
+*.pid
+*.seed
+*.pid.lock
+
+# --- Runtime / local data ---
+*.local
+.tmp/
+temp/
+tmp/
+
+# Local SQLite (if used during dev)
+*.db
+*.db-journal
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Editors ---
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*~
+
+# --- Optional tooling ---
+*.pem
