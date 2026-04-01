@@ -22,19 +22,30 @@ export function createApp() {
   app.use(express.json());
   app.use(cors());
 
-  app.use("/api/auth", authRoutes);
-  app.use("/api/store/auth", storeAuthRoutes);
-  app.use("/api/store/products", storeProductRoutes);
-  app.use("/api/store/orders", storeOrderRoutes);
-  app.use("/api/shops", authMiddleware, shopRoutes);
-  app.use("/api/attributes", authMiddleware, attributeRoutes);
-  app.use("/api/products", authMiddleware, productRoutes);
-  app.use("/api/dashboard", authMiddleware, dashboardRoutes);
-  app.use("/api/orders", authMiddleware, orderRoutes);
-  app.use("/api/inventory", authMiddleware, inventoryRoutes);
-  app.use("/api/notifications", authMiddleware, notificationsRoutes);
-  app.use("/api/touchpoints", authMiddleware, touchpointsRoutes);
-  app.use("/api/reviews", authMiddleware, reviewsRoutes);
+  const adminRouter = express.Router();
+  adminRouter.use("/auth", authRoutes);
+
+  const protectedAdminRouter = express.Router();
+  protectedAdminRouter.use(authMiddleware);
+  protectedAdminRouter.use("/shops", shopRoutes);
+  protectedAdminRouter.use("/attributes", attributeRoutes);
+  protectedAdminRouter.use("/products", productRoutes);
+  protectedAdminRouter.use("/dashboard", dashboardRoutes);
+  protectedAdminRouter.use("/orders", orderRoutes);
+  protectedAdminRouter.use("/inventory", inventoryRoutes);
+  protectedAdminRouter.use("/notifications", notificationsRoutes);
+  protectedAdminRouter.use("/touchpoints", touchpointsRoutes);
+  protectedAdminRouter.use("/reviews", reviewsRoutes);
+
+  adminRouter.use(protectedAdminRouter);
+
+  const storeRouter = express.Router();
+  storeRouter.use("/auth", storeAuthRoutes);
+  storeRouter.use("/products", storeProductRoutes);
+  storeRouter.use("/orders", storeOrderRoutes);
+
+  app.use("/api/admin", adminRouter);
+  app.use("/api/store", storeRouter);
 
   app.use(errorMiddleware);
 

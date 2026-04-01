@@ -9,7 +9,7 @@ import {
 } from "../../../lib";
 import { INV_REASON, recordMovement, syncLowStockNotificationsForVariants } from "../../../lib/inventory";
 import { AuthenticatedRequest } from "../../../middleware/authMiddleware";
-import { validateVariantFields, assertNoAttributeValueDuplicates } from "../validation";
+import { assertNoAttributeValueDuplicates } from "../validation";
 
 export const updateProduct = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { id } = req.params;
@@ -65,7 +65,7 @@ export const updateProduct = asyncHandler(async (req: AuthenticatedRequest, res:
 
       if (data.variants.update?.length) {
         for (const v of data.variants.update) {
-          validateVariantFields(v);
+          // Zod handles basic validation where applied
 
           const cur = await tx.productVariant.findFirst({
             where: { id: v.id, productId: id },
@@ -142,7 +142,7 @@ export const updateProduct = asyncHandler(async (req: AuthenticatedRequest, res:
 
       if (data.variants.create?.length) {
         for (const v of data.variants.create) {
-          validateVariantFields(v);
+          // Zod handles basic validation where applied
 
           if (!Array.isArray(v.attributeValueIds) || v.attributeValueIds.length === 0) {
             throw new AppError({

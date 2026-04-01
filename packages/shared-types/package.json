@@ -1,0 +1,17 @@
+{
+  "name": "@mercado/shared-types",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@mercado/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

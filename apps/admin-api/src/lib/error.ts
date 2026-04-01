@@ -15,26 +15,31 @@ export class AppError extends Error {
   public readonly case: string;
   public readonly code: ErrorCode;
   public readonly statusCode: number;
+  public readonly payload?: any;
 
   constructor({
     case: errorCase,
     code,
     statusCode = 400,
+    payload,
   }: {
     case: string;
     code: ErrorCode;
     statusCode?: number;
+    payload?: any;
   }) {
     super(errorCase);
     this.case = errorCase;
     this.code = code;
     this.statusCode = statusCode;
+    this.payload = payload;
   }
 
   toJSON() {
     return {
       case: this.case,
       code: this.code,
+      payload: this.payload,
     };
   }
 }
