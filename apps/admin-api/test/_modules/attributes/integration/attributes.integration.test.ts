@@ -22,7 +22,7 @@ describe.skipIf(!hasTestDatabase)("attributes (integration)", () => {
     const shop = await createShopForUser(app, token);
 
     const createRes = await request(app)
-      .post("/api/attributes")
+      .post("/api/admin/attributes")
       .set("Authorization", `Bearer ${token}`)
       .send({
         name: "Size",
@@ -36,7 +36,7 @@ describe.skipIf(!hasTestDatabase)("attributes (integration)", () => {
     const attributeId = createRes.body.id as string;
 
     const listRes = await request(app)
-      .get("/api/attributes")
+      .get("/api/admin/attributes")
       .query({ shopId: shop.id })
       .set("Authorization", `Bearer ${token}`);
 
@@ -45,7 +45,7 @@ describe.skipIf(!hasTestDatabase)("attributes (integration)", () => {
     expect(listRes.body.some((a: { id: string }) => a.id === attributeId)).toBe(true);
 
     const getRes = await request(app)
-      .get(`/api/attributes/${attributeId}`)
+      .get(`/api/admin/attributes/${attributeId}`)
       .set("Authorization", `Bearer ${token}`);
 
     expect(getRes.status).toBe(200);

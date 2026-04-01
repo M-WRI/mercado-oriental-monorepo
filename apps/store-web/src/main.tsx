@@ -29,7 +29,7 @@ createRoot(document.getElementById("root")!).render(
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <ToastProvider>
-          <AuthProvider tokenStorageKey="customerToken" meUrl="/store/auth/me">
+          <AuthProvider tokenStorageKey="customerToken" meUrl="/auth/me">
             <CartProvider>
               <RouterProvider router={router} />
             </CartProvider>

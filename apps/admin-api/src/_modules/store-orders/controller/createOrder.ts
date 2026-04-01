@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { prisma, AppError, ERROR_CODES, asyncHandler } from "../../../lib";
-import { applyInitialOrderInventory } from "../../../lib/inventory/orderInventory";
+import { applyInitialOrderInventory, applyOrderStatusInventoryChange } from "../../../lib/inventory/orderInventory";
 import { syncLowStockNotificationsForVariants } from "../../../lib/inventory/lowStock";
 import { notifyNewOrder } from "../../../lib/notifications/notify";
 import { CustomerAuthenticatedRequest } from "../../../middleware/customerAuthMiddleware";
@@ -110,12 +110,35 @@ export const createOrder = asyncHandler(async (req: CustomerAuthenticatedRequest
       },
     });
 
+    // Reserve stock (pending → reservedStock++)
     const touched = await applyInitialOrderInventory(tx as any, created.id);
-    if (touched.length) {
-      await syncLowStockNotificationsForVariants(touched);
+
+    // Auto-confirm: deduct stock immediately (reservedStock--, stock--)
+    const orderForTransition = {
+      id: created.id,
+      status: "pending",
+      orderItems: created.orderItems.map((oi) => ({
+        productVariantId: oi.productVariantId,
+        quantity: oi.quantity,
+      })),
+    };
+    const confirmedTouched = await applyOrderStatusInventoryChange(
+      tx as any,
+      orderForTransition,
+      "confirmed"
+    );
+
+    await tx.order.update({
+      where: { id: created.id },
+      data: { status: "confirmed", confirmedAt: new Date() },
+    });
+
+    const allTouched = [...new Set([...touched, ...confirmedTouched])];
+    if (allTouched.length) {
+      await syncLowStockNotificationsForVariants(allTouched);
     }
 
-    return created;
+    return { ...created, status: "confirmed" };
   });
 
   notifyNewOrder(order.id).catch(() => {});

@@ -9,7 +9,7 @@ export async function registerRandomUser(
 ) {
   const email = makeIntegrationTestEmail("user");
   const password = options?.password ?? "secret12";
-  const res = await request(app).post("/api/auth/register").send({
+  const res = await request(app).post("/api/admin/auth/register").send({
     email,
     password,
     ...(options?.name !== undefined ? { name: options.name } : {}),

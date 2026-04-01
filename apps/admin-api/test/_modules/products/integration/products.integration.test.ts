@@ -24,7 +24,7 @@ describe.skipIf(!hasTestDatabase)("products (integration)", () => {
     const valueId = await createAttributeWithOneValue(app, token, shop.id);
 
     const createRes = await request(app)
-      .post("/api/products")
+      .post("/api/admin/products")
       .set("Authorization", `Bearer ${token}`)
       .send({
         name: "Test Product",
@@ -47,17 +47,17 @@ describe.skipIf(!hasTestDatabase)("products (integration)", () => {
     const productId = createRes.body.id as string;
 
     const listRes = await request(app)
-      .get("/api/products")
+      .get("/api/admin/products")
       .set("Authorization", `Bearer ${token}`);
 
     expect(listRes.status).toBe(200);
-    expect(Array.isArray(listRes.body)).toBe(true);
-    const row = listRes.body.find((p: { id: string }) => p.id === productId);
+    expect(Array.isArray(listRes.body.data)).toBe(true);
+    const row = listRes.body.data.find((p: { id: string }) => p.id === productId);
     expect(row).toBeDefined();
     expect(row.name).toBe("Test Product");
 
     const showRes = await request(app)
-      .get(`/api/products/${productId}`)
+      .get(`/api/admin/products/${productId}`)
       .set("Authorization", `Bearer ${token}`);
 
     expect(showRes.status).toBe(200);
@@ -75,7 +75,7 @@ describe.skipIf(!hasTestDatabase)("products (integration)", () => {
     const valueIdA = await createAttributeWithOneValue(app, tokenA, shopA.id);
 
     const createRes = await request(app)
-      .post("/api/products")
+      .post("/api/admin/products")
       .set("Authorization", `Bearer ${tokenA}`)
       .send({
         name: "Vendor A Product",
@@ -99,14 +99,14 @@ describe.skipIf(!hasTestDatabase)("products (integration)", () => {
     const { token: tokenB } = await registerRandomUser(app);
 
     const listRes = await request(app)
-      .get("/api/products")
+      .get("/api/admin/products")
       .set("Authorization", `Bearer ${tokenB}`);
 
     expect(listRes.status).toBe(200);
-    expect(listRes.body.some((p: { id: string }) => p.id === productId)).toBe(false);
+    expect(listRes.body.data.some((p: { id: string }) => p.id === productId)).toBe(false);
 
     const showRes = await request(app)
-      .get(`/api/products/${productId}`)
+      .get(`/api/admin/products/${productId}`)
       .set("Authorization", `Bearer ${tokenB}`);
 
     expect(showRes.status).toBe(404);

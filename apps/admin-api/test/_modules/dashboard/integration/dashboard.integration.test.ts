@@ -20,7 +20,7 @@ describe.skipIf(!hasTestDatabase)("dashboard (integration)", () => {
     const { token } = await registerRandomUser(app);
 
     const res = await request(app)
-      .get("/api/dashboard")
+      .get("/api/admin/dashboard")
       .set("Authorization", `Bearer ${token}`);
 
     expect(res.status).toBe(200);

@@ -49,28 +49,28 @@ describe.skipIf(!hasTestDatabase)("inventory (integration)", () => {
     await seedOrderViaDb(shop.id, variantId, { status: "pending", quantity: 3 });
 
     const pRes1 = await request(app)
-      .get("/api/products")
+      .get("/api/admin/products")
       .set("Authorization", `Bearer ${token}`);
     expect(pRes1.status).toBe(200);
-    const row1 = findVariant(pRes1.body, variantId);
+    const row1 = findVariant(pRes1.body.data, variantId);
     expect(row1.reservedStock).toBe(3);
     expect(row1.stock).toBe(20);
     expect(row1.availableStock).toBe(17);
 
     const order = await seedOrderViaDb(shop.id, variantId, { status: "pending", quantity: 1 });
-    const listOrders = await request(app).get("/api/orders").set("Authorization", `Bearer ${token}`);
-    const o = listOrders.body.find((x: { id: string }) => x.id === order.id);
+    const listOrders = await request(app).get("/api/admin/orders").set("Authorization", `Bearer ${token}`);
+    const o = listOrders.body.data.find((x: { id: string }) => x.id === order.id);
     expect(o).toBeDefined();
 
     await request(app)
-      .put(`/api/orders/${order.id}/status`)
+      .put(`/api/admin/orders/${order.id}/status`)
       .set("Authorization", `Bearer ${token}`)
       .send({ status: "confirmed" });
 
     const pRes2 = await request(app)
-      .get("/api/products")
+      .get("/api/admin/products")
       .set("Authorization", `Bearer ${token}`);
-    const row2 = findVariant(pRes2.body, variantId);
+    const row2 = findVariant(pRes2.body.data, variantId);
     expect(row2.reservedStock).toBe(3);
     expect(row2.stock).toBe(19);
     expect(row2.availableStock).toBe(16);
@@ -82,7 +82,7 @@ describe.skipIf(!hasTestDatabase)("inventory (integration)", () => {
     const { variantId } = await seedProductWithVariant(shop.id, { stock: 10 });
 
     const bulkRes = await request(app)
-      .post("/api/inventory/bulk-adjust")
+      .post("/api/admin/inventory/bulk-adjust")
       .set("Authorization", `Bearer ${token}`)
       .send({
         items: [{ variantId, stockDelta: -8, note: "test bulk" }],
@@ -90,19 +90,19 @@ describe.skipIf(!hasTestDatabase)("inventory (integration)", () => {
     expect(bulkRes.status).toBe(200);
 
     const pRes = await request(app)
-      .get("/api/products")
+      .get("/api/admin/products")
       .set("Authorization", `Bearer ${token}`);
-    const row = findVariant(pRes.body, variantId);
+    const row = findVariant(pRes.body.data, variantId);
     expect(row.stock).toBe(2);
 
-    const nRes = await request(app).get("/api/notifications").set("Authorization", `Bearer ${token}`);
+    const nRes = await request(app).get("/api/admin/notifications").set("Authorization", `Bearer ${token}`);
     expect(nRes.status).toBe(200);
     const low = nRes.body.filter((n: { type: string }) => n.type === "LOW_STOCK");
     expect(low.length).toBeGreaterThanOrEqual(1);
     expect(low.some((n: { readAt: unknown }) => n.readAt == null)).toBe(true);
 
     const mark = await request(app)
-      .patch(`/api/notifications/${low[0].id}/read`)
+      .patch(`/api/admin/notifications/${low[0].id}/read`)
       .set("Authorization", `Bearer ${token}`);
     expect(mark.status).toBe(200);
     expect(mark.body.readAt).toBeTruthy();
@@ -114,7 +114,7 @@ describe.skipIf(!hasTestDatabase)("inventory (integration)", () => {
     const { variantId } = await seedProductWithVariant(shop.id, { stock: 30 });
 
     const res = await request(app)
-      .post("/api/inventory/adjust")
+      .post("/api/admin/inventory/adjust")
       .set("Authorization", `Bearer ${token}`)
       .send({ variantId, stockDelta: -4, reason: INV_REASON.DAMAGE });
     expect(res.status).toBe(200);
@@ -127,12 +127,12 @@ describe.skipIf(!hasTestDatabase)("inventory (integration)", () => {
     const { variantId } = await seedProductWithVariant(shop.id, { stock: 40 });
 
     await request(app)
-      .post("/api/inventory/adjust")
+      .post("/api/admin/inventory/adjust")
       .set("Authorization", `Bearer ${token}`)
       .send({ variantId, stockDelta: -2, reason: INV_REASON.ADJUSTMENT, note: "count" });
 
     const res = await request(app)
-      .get(`/api/inventory/movements?variantId=${variantId}`)
+      .get(`/api/admin/inventory/movements?variantId=${variantId}`)
       .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
@@ -149,21 +149,21 @@ describe.skipIf(!hasTestDatabase)("inventory (integration)", () => {
     const lineId = delivered.orderItems[0].id;
 
     const pBefore = await request(app)
-      .get("/api/products")
+      .get("/api/admin/products")
       .set("Authorization", `Bearer ${token}`);
-    const before = findVariant(pBefore.body, variantId);
+    const before = findVariant(pBefore.body.data, variantId);
     expect(before.stock).toBe(48);
 
     const res = await request(app)
-      .post(`/api/orders/${delivered.id}/restock`)
+      .post(`/api/admin/orders/${delivered.id}/restock`)
       .set("Authorization", `Bearer ${token}`)
       .send({ items: [{ orderItemId: lineId, quantity: 1 }] });
     expect(res.status).toBe(200);
 
     const pAfter = await request(app)
-      .get("/api/products")
+      .get("/api/admin/products")
       .set("Authorization", `Bearer ${token}`);
-    const after = findVariant(pAfter.body, variantId);
+    const after = findVariant(pAfter.body.data, variantId);
     expect(after.stock).toBe(49);
   });
 });

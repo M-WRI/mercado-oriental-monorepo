@@ -17,7 +17,7 @@ describe.skipIf(!hasTestDatabase)("shop (integration)", () => {
   });
 
   it("returns 401 for GET /shops without Authorization", async () => {
-    const res = await request(app).get("/api/shops");
+    const res = await request(app).get("/api/admin/shops");
     expect(res.status).toBe(401);
     expect(res.body).toMatchObject({
       case: "auth_token",
@@ -27,7 +27,7 @@ describe.skipIf(!hasTestDatabase)("shop (integration)", () => {
 
   it("returns 401 for GET /shops with invalid Bearer token", async () => {
     const res = await request(app)
-      .get("/api/shops")
+      .get("/api/admin/shops")
       .set("Authorization", "Bearer not-a-real-jwt");
     expect(res.status).toBe(401);
     expect(res.body).toMatchObject({
@@ -40,7 +40,7 @@ describe.skipIf(!hasTestDatabase)("shop (integration)", () => {
     const { token } = await registerRandomUser(app);
 
     const list = await request(app)
-      .get("/api/shops")
+      .get("/api/admin/shops")
       .set("Authorization", `Bearer ${token}`);
     expect(list.status).toBe(200);
     expect(Array.isArray(list.body)).toBe(true);

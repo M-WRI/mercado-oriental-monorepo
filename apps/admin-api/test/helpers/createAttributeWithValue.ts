@@ -4,7 +4,7 @@ import { expect } from "vitest";
 
 export async function createAttributeWithOneValue(app: Express, token: string, shopId: string) {
   const res = await request(app)
-    .post("/api/attributes")
+    .post("/api/admin/attributes")
     .set("Authorization", `Bearer ${token}`)
     .send({
       name: `TestAttr-${Date.now()}`,

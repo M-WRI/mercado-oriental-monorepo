@@ -1,8 +1,6 @@
 import { Response } from "express";
 import {
   prisma,
-  AppError,
-  ERROR_CODES,
   asyncHandler,
   getShopIdsForUser,
   assertShopBelongsToUser,

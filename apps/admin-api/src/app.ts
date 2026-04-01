@@ -13,6 +13,8 @@ import reviewsRoutes from "./_modules/reviews/routes";
 import storeAuthRoutes from "./_modules/store-auth/routes";
 import storeProductRoutes from "./_modules/store-products/routes";
 import storeOrderRoutes from "./_modules/store-orders/routes";
+import storeReviewRoutes from "./_modules/store-reviews/routes";
+import storeMessageRoutes from "./_modules/store-messages/routes";
 import { authMiddleware } from "./middleware/authMiddleware";
 import { errorMiddleware } from "./middleware/errorMiddleware";
 
@@ -43,6 +45,8 @@ export function createApp() {
   storeRouter.use("/auth", storeAuthRoutes);
   storeRouter.use("/products", storeProductRoutes);
   storeRouter.use("/orders", storeOrderRoutes);
+  storeRouter.use(storeReviewRoutes);
+  storeRouter.use(storeMessageRoutes);
 
   app.use("/api/admin", adminRouter);
   app.use("/api/store", storeRouter);

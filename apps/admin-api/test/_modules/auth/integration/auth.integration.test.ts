@@ -17,7 +17,7 @@ describe.skipIf(!hasTestDatabase)("auth (integration)", () => {
   });
 
   it("returns 400 for login with missing credentials", async () => {
-    const res = await request(app).post("/api/auth/login").send({});
+    const res = await request(app).post("/api/admin/auth/login").send({});
     expect(res.status).toBe(400);
     expect(res.body).toMatchObject({
       case: "login_credentials",
@@ -29,7 +29,7 @@ describe.skipIf(!hasTestDatabase)("auth (integration)", () => {
     const email = makeIntegrationTestEmail("auth");
     const password = "secret12";
 
-    const reg = await request(app).post("/api/auth/register").send({
+    const reg = await request(app).post("/api/admin/auth/register").send({
       email,
       password,
       name: "Test User",
@@ -39,7 +39,7 @@ describe.skipIf(!hasTestDatabase)("auth (integration)", () => {
     expect(reg.body.user.email).toBe(email);
 
     const me = await request(app)
-      .get("/api/auth/me")
+      .get("/api/admin/auth/me")
       .set("Authorization", `Bearer ${reg.body.token}`);
     expect(me.status).toBe(200);
     expect(me.body.email).toBe(email);

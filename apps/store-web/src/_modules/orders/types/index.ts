@@ -55,3 +55,11 @@ export interface CreateOrderPayload {
   shippingAddress?: string;
   customerNote?: string;
 }
+
+export interface OrderMessage {
+  id: string;
+  orderId: string;
+  sender: "customer" | "vendor";
+  body: string;
+  createdAt: string;
+}

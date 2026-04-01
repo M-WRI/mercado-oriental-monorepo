@@ -39,7 +39,7 @@ describe.skipIf(!hasTestDatabase)("notifications (integration)", () => {
     });
 
     const res = await request(app)
-      .get("/api/notifications")
+      .get("/api/admin/notifications")
       .set("Authorization", `Bearer ${token}`);
 
     expect(res.status).toBe(200);

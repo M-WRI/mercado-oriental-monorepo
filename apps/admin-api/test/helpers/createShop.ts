@@ -8,7 +8,7 @@ export async function createShopForUser(
   options?: { name?: string; description?: string }
 ) {
   const res = await request(app)
-    .post("/api/shops")
+    .post("/api/admin/shops")
     .set("Authorization", `Bearer ${token}`)
     .send({
       name: options?.name ?? `Test Shop ${Date.now()}`,

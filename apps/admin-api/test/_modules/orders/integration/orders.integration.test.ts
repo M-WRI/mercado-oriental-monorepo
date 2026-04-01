@@ -27,14 +27,14 @@ describe.skipIf(!hasTestDatabase)("orders (integration)", () => {
     await seedOrderViaDb(shop.id, variantId, { status: "shipped" });
 
     const listRes = await request(app)
-      .get("/api/orders")
+      .get("/api/admin/orders")
       .set("Authorization", `Bearer ${token}`);
 
     expect(listRes.status).toBe(200);
-    expect(Array.isArray(listRes.body)).toBe(true);
-    expect(listRes.body.length).toBeGreaterThanOrEqual(2);
-    expect(listRes.body[0]).toHaveProperty("customerEmail");
-    expect(listRes.body[0]).toHaveProperty("itemCount");
+    expect(Array.isArray(listRes.body.data)).toBe(true);
+    expect(listRes.body.data.length).toBeGreaterThanOrEqual(2);
+    expect(listRes.body.data[0]).toHaveProperty("customerEmail");
+    expect(listRes.body.data[0]).toHaveProperty("itemCount");
   });
 
   it("filters orders by status", async () => {
@@ -46,11 +46,11 @@ describe.skipIf(!hasTestDatabase)("orders (integration)", () => {
     await seedOrderViaDb(shop.id, variantId, { status: "shipped" });
 
     const res = await request(app)
-      .get("/api/orders?status=pending")
+      .get("/api/admin/orders?status=pending")
       .set("Authorization", `Bearer ${token}`);
 
     expect(res.status).toBe(200);
-    expect(res.body.every((o: any) => o.status === "pending")).toBe(true);
+    expect(res.body.data.every((o: any) => o.status === "pending")).toBe(true);
   });
 
   it("shows order detail with items", async () => {
@@ -61,7 +61,7 @@ describe.skipIf(!hasTestDatabase)("orders (integration)", () => {
     const order = await seedOrderViaDb(shop.id, variantId);
 
     const showRes = await request(app)
-      .get(`/api/orders/${order.id}`)
+      .get(`/api/admin/orders/${order.id}`)
       .set("Authorization", `Bearer ${token}`);
 
     expect(showRes.status).toBe(200);
@@ -82,12 +82,12 @@ describe.skipIf(!hasTestDatabase)("orders (integration)", () => {
     const { token: tokenB } = await registerRandomUser(app);
 
     const listRes = await request(app)
-      .get("/api/orders")
+      .get("/api/admin/orders")
       .set("Authorization", `Bearer ${tokenB}`);
-    expect(listRes.body.some((o: any) => o.id === order.id)).toBe(false);
+    expect(listRes.body.data.some((o: any) => o.id === order.id)).toBe(false);
 
     const showRes = await request(app)
-      .get(`/api/orders/${order.id}`)
+      .get(`/api/admin/orders/${order.id}`)
       .set("Authorization", `Bearer ${tokenB}`);
     expect(showRes.status).toBe(404);
   });
@@ -101,7 +101,7 @@ describe.skipIf(!hasTestDatabase)("orders (integration)", () => {
 
     // pending → confirmed
     let res = await request(app)
-      .put(`/api/orders/${order.id}/status`)
+      .put(`/api/admin/orders/${order.id}/status`)
       .set("Authorization", `Bearer ${token}`)
       .send({ status: "confirmed" });
     expect(res.status).toBe(200);
@@ -110,7 +110,7 @@ describe.skipIf(!hasTestDatabase)("orders (integration)", () => {
 
     // confirmed → packed
     res = await request(app)
-      .put(`/api/orders/${order.id}/status`)
+      .put(`/api/admin/orders/${order.id}/status`)
       .set("Authorization", `Bearer ${token}`)
       .send({ status: "packed" });
     expect(res.status).toBe(200);
@@ -118,13 +118,13 @@ describe.skipIf(!hasTestDatabase)("orders (integration)", () => {
 
     // packed → shipped (requires tracking)
     res = await request(app)
-      .put(`/api/orders/${order.id}/status`)
+      .put(`/api/admin/orders/${order.id}/status`)
       .set("Authorization", `Bearer ${token}`)
       .send({ status: "shipped" });
     expect(res.status).toBe(400);
 
     res = await request(app)
-      .put(`/api/orders/${order.id}/status`)
+      .put(`/api/admin/orders/${order.id}/status`)
       .set("Authorization", `Bearer ${token}`)
       .send({ status: "shipped", trackingNumber: "DHL123456", carrier: "DHL" });
     expect(res.status).toBe(200);
@@ -133,7 +133,7 @@ describe.skipIf(!hasTestDatabase)("orders (integration)", () => {
 
     // shipped → delivered
     res = await request(app)
-      .put(`/api/orders/${order.id}/status`)
+      .put(`/api/admin/orders/${order.id}/status`)
       .set("Authorization", `Bearer ${token}`)
       .send({ status: "delivered" });
     expect(res.status).toBe(200);
@@ -150,7 +150,7 @@ describe.skipIf(!hasTestDatabase)("orders (integration)", () => {
 
     // pending → shipped (skip confirmed+packed)
     const res = await request(app)
-      .put(`/api/orders/${order.id}/status`)
+      .put(`/api/admin/orders/${order.id}/status`)
       .set("Authorization", `Bearer ${token}`)
       .send({ status: "shipped", trackingNumber: "X" });
     expect(res.status).toBe(400);
@@ -164,7 +164,7 @@ describe.skipIf(!hasTestDatabase)("orders (integration)", () => {
     const order = await seedOrderViaDb(shop.id, variantId, { status: "confirmed" });
 
     const res = await request(app)
-      .put(`/api/orders/${order.id}/status`)
+      .put(`/api/admin/orders/${order.id}/status`)
       .set("Authorization", `Bearer ${token}`)
       .send({ status: "cancelled", cancelReason: "Out of stock" });
 
@@ -182,7 +182,7 @@ describe.skipIf(!hasTestDatabase)("orders (integration)", () => {
     const order = await seedOrderViaDb(shop.id, variantId);
 
     const res = await request(app)
-      .put(`/api/orders/${order.id}`)
+      .put(`/api/admin/orders/${order.id}`)
       .set("Authorization", `Bearer ${token}`)
       .send({ internalNote: "VIP customer", trackingNumber: "UPS999" });
 
