@@ -13,11 +13,17 @@ const filterConfig = {
 export const listProducts = asyncHandler(async (req: Request, res: Response) => {
   const parsed = parseListQuery(req.query, filterConfig);
 
-  const where = {
+  const where: Record<string, unknown> = {
     ...parsed.where,
     isActive: true,
     productVariants: { some: {} },
   };
+
+  // Category filter
+  const categoryId = req.query.categoryId as string | undefined;
+  if (categoryId) {
+    where.productCategories = { some: { categoryId } };
+  }
 
   const [products, total] = await Promise.all([
     prisma.product.findMany({
@@ -46,6 +52,11 @@ export const listProducts = asyncHandler(async (req: Request, res: Response) => 
         reviews: {
           select: { rating: true },
         },
+        productCategories: {
+          include: {
+            category: { select: { id: true, name: true, slug: true } },
+          },
+        },
       },
     }),
     prisma.product.count({ where }),
@@ -69,6 +80,7 @@ export const listProducts = asyncHandler(async (req: Request, res: Response) => 
       inStock: p.productVariants.some((v) => v.stock - v.reservedStock > 0),
       avgRating,
       reviewCount: p.reviews.length,
+      categories: p.productCategories.map((pc) => pc.category),
       createdAt: p.createdAt,
     };
   });

@@ -15,7 +15,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #111827;
-  background: #f8f9fc;
+  background: #fafafa;
 }
 
 /* ─── Animations ─── */
@@ -79,13 +79,13 @@ body {
   box-shadow: 0 12px 32px rgba(0,0,0,0.08);
 }
 
-/* ─── Gradient placeholders ─── */
-.gradient-placeholder-1 { background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%); }
-.gradient-placeholder-2 { background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 50%, #9fa8da 100%); }
-.gradient-placeholder-3 { background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 50%, #80cbc4 100%); }
-.gradient-placeholder-4 { background: linear-gradient(135deg, #fff3e0 0%, #ffcc80 50%, #ffb74d 100%); }
-.gradient-placeholder-5 { background: linear-gradient(135deg, #f3e5f5 0%, #ce93d8 50%, #ba68c8 100%); }
-.gradient-placeholder-6 { background: linear-gradient(135deg, #e1f5fe 0%, #81d4fa 50%, #4fc3f7 100%); }
+/* ─── Gradient placeholders (Minimalist Grays) ─── */
+.gradient-placeholder-1 { background: #f4f4f5; } /* zinc-100 */
+.gradient-placeholder-2 { background: #fafaf9; } /* stone-50 */
+.gradient-placeholder-3 { background: #f3f4f6; } /* gray-100 */
+.gradient-placeholder-4 { background: #f8fafc; } /* slate-50 */
+.gradient-placeholder-5 { background: #f5f5f4; } /* stone-100 */
+.gradient-placeholder-6 { background: #e4e4e7; } /* zinc-200 */
 
 /* ─── Glass effect ─── */
 .glass-header {
@@ -114,9 +114,24 @@ body {
   border-radius: 16px 16px 16px 4px;
 }
 
-/* ─── Hero gradient ─── */
+/* ─── Hero gradient (Dark Minimalist) ─── */
 .hero-gradient {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #18181b; /* zinc-900 */
+}
+
+/* ─── Shop hero gradient (Dark Minimalist) ─── */
+.shop-hero-gradient {
+  background: #27272a; /* zinc-800 */
+}
+
+/* ─── Shop card ─── */
+.shop-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.shop-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  border-color: #e0e7ff;
 }
 
 /* ─── Scrollbar ─── */

@@ -40,5 +40,18 @@ export const createProduct = asyncHandler(async (req: AuthenticatedRequest, res:
     },
   });
 
+  // Link categories if provided
+  const categoryIds: string[] = (req.body as any).categoryIds ?? [];
+  if (categoryIds.length > 0) {
+    await prisma.productCategory.createMany({
+      data: categoryIds.map((catId: string) => ({
+        productId: product.id,
+        categoryId: catId,
+      })),
+      skipDuplicates: true,
+    });
+  }
+
   res.status(201).json(product);
 });
+

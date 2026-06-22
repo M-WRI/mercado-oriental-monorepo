@@ -5,7 +5,118 @@ import { useFetch } from "@/_shared/queryProvider";
 import { Input } from "@mercado/shared-ui/components/inputs/components/Input";
 import { TextArea } from "@mercado/shared-ui/components/inputs/components/TextArea";
 import { getShops } from "@/_modules/shops/api";
-import type { IShop } from "@/_modules/products/types";
+import { getCategories } from "../../../api";
+import type { IShop, ICategory } from "@/_modules/products/types";
+
+function CategoryPicker({
+  categories,
+  selectedIds,
+  onToggle,
+}: {
+  categories: ICategory[];
+  selectedIds: string[];
+  onToggle: (id: string, name: string) => void;
+}) {
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [search, setSearch] = useState("");
+
+  const flatMatch = (cats: ICategory[], term: string): ICategory[] => {
+    const results: ICategory[] = [];
+    for (const c of cats) {
+      if (c.name.toLowerCase().includes(term)) results.push(c);
+      if (c.children?.length) results.push(...flatMatch(c.children, term));
+    }
+    return results;
+  };
+
+  const filtered = search.trim()
+    ? flatMatch(categories, search.toLowerCase())
+    : null;
+
+  const renderTree = (nodes: ICategory[], depth = 0) =>
+    nodes.map((cat) => {
+      const hasChildren = cat.children && cat.children.length > 0;
+      const isExpanded = expanded[cat.id];
+      const isSelected = selectedIds.includes(cat.id);
+
+      return (
+        <div key={cat.id}>
+          <button
+            type="button"
+            onClick={() => {
+              if (hasChildren) {
+                setExpanded((p) => ({ ...p, [cat.id]: !p[cat.id] }));
+              } else {
+                onToggle(cat.id, cat.name);
+              }
+            }}
+            className={`w-full text-left px-3 py-1.5 text-sm rounded transition-colors flex items-center gap-2 ${
+              isSelected
+                ? "bg-indigo-50 text-indigo-700 font-medium"
+                : "text-gray-700 hover:bg-gray-50"
+            }`}
+            style={{ paddingLeft: `${depth * 16 + 12}px` }}
+          >
+            {hasChildren && (
+              <svg
+                className={`w-3.5 h-3.5 text-gray-400 transition-transform ${isExpanded ? "rotate-90" : ""}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            )}
+            {!hasChildren && <span className="w-3.5" />}
+            <span className="truncate">{cat.name}</span>
+            {isSelected && (
+              <svg className="w-4 h-4 ml-auto text-indigo-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            )}
+          </button>
+          {hasChildren && isExpanded && renderTree(cat.children, depth + 1)}
+        </div>
+      );
+    });
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search categories…"
+        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm mb-2 focus:outline-none focus:ring-1 focus:ring-indigo-300"
+      />
+      <div className="max-h-48 overflow-y-auto border border-gray-200 rounded-lg py-1">
+        {filtered
+          ? filtered.length > 0
+            ? filtered.map((cat) => (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => onToggle(cat.id, cat.name)}
+                  className={`w-full text-left px-3 py-1.5 text-sm rounded transition-colors ${
+                    selectedIds.includes(cat.id)
+                      ? "bg-indigo-50 text-indigo-700 font-medium"
+                      : "text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  {cat.name}
+                </button>
+              ))
+            : <p className="px-3 py-2 text-sm text-gray-400">No categories found</p>
+          : renderTree(categories)}
+      </div>
+    </div>
+  );
+}
 
 export const ProductInfoStep = ({ data, submitRef, onComplete }: StepProps) => {
   const { t } = useTranslation();
@@ -14,11 +125,18 @@ export const ProductInfoStep = ({ data, submitRef, onComplete }: StepProps) => {
   const [description, setDescription] = useState(prevData?.description ?? "");
   const [shopId, setShopId] = useState(prevData?.shopId ?? "");
   const [shopName, setShopName] = useState(prevData?.shopName ?? "");
+  const [categoryIds, setCategoryIds] = useState<string[]>(prevData?.categoryIds ?? []);
+  const [categoryNames, setCategoryNames] = useState<Record<string, string>>(prevData?._categoryNames ?? {});
   const [error, setError] = useState<string | null>(null);
 
   const { data: shops } = useFetch<IShop[]>({
     queryKey: getShops.queryKey,
     url: getShops.url,
+  });
+
+  const { data: categoryTree } = useFetch<ICategory[]>({
+    queryKey: getCategories.queryKey,
+    url: getCategories.url,
   });
 
   useEffect(() => {
@@ -32,14 +150,26 @@ export const ProductInfoStep = ({ data, submitRef, onComplete }: StepProps) => {
         setError(t("products.infoStep.shopRequired"));
         return;
       }
-      onComplete({ name: name.trim(), description: description.trim(), shopId, shopName });
+      onComplete({ name: name.trim(), description: description.trim(), shopId, shopName, categoryIds, _categoryNames: categoryNames });
     };
-  }, [name, description, shopId, shopName, submitRef, onComplete, t]);
+  }, [name, description, shopId, shopName, categoryIds, categoryNames, submitRef, onComplete, t]);
 
   const handleShopChange = (id: string) => {
     setShopId(id);
     const shop = shops?.find((s) => s.id === id);
     setShopName(shop?.name ?? "");
+  };
+
+  const handleToggleCategory = (id: string, catName: string) => {
+    setCategoryIds((prev) =>
+      prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
+    );
+    setCategoryNames((prev) => {
+      const next = { ...prev };
+      if (next[id]) delete next[id];
+      else next[id] = catName;
+      return next;
+    });
   };
 
   return (
@@ -96,7 +226,41 @@ export const ProductInfoStep = ({ data, submitRef, onComplete }: StepProps) => {
             <p className="text-sm text-gray-400">{t("products.infoStep.noShops")}</p>
           )}
         </div>
+
+        {/* Category picker */}
+        <div className="grid gap-1.5">
+          <label className="text-sm font-medium text-gray-700">Categories</label>
+          {categoryIds.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mb-1">
+              {categoryIds.map((id) => (
+                <span
+                  key={id}
+                  className="inline-flex items-center gap-1 bg-indigo-50 text-indigo-700 text-xs font-medium px-2 py-1 rounded-full"
+                >
+                  {categoryNames[id] || id}
+                  <button
+                    type="button"
+                    onClick={() => handleToggleCategory(id, categoryNames[id] || "")}
+                    className="hover:text-indigo-900"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
+          {categoryTree ? (
+            <CategoryPicker
+              categories={categoryTree}
+              selectedIds={categoryIds}
+              onToggle={handleToggleCategory}
+            />
+          ) : (
+            <p className="text-sm text-gray-400">Loading categories…</p>
+          )}
+        </div>
       </div>
     </div>
   );
 };
+

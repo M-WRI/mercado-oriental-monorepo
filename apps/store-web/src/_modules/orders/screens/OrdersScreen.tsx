@@ -40,8 +40,8 @@ export function OrdersScreen() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
           </div>
-          <p className="text-gray-500 font-medium mb-2">No orders yet</p>
-          <Link to="/" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">Browse products</Link>
+          <p className="text-gray-500 font-medium mb-2">You haven't placed any orders.</p>
+          <Link to="/" className="text-sm font-medium text-gray-900 hover:underline">Browse products</Link>
         </div>
       )}
 
@@ -65,7 +65,7 @@ export function OrdersScreen() {
                 </div>
                 <div className="flex items-center gap-3 text-xs text-gray-400">
                   <span className="flex items-center gap-1">
-                    <div className="w-4 h-4 rounded-md bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white text-[7px] font-bold">
+                    <div className="w-4 h-4 rounded-md bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center text-white text-[7px] font-bold">
                       {order.shop.name.charAt(0)}
                     </div>
                     {order.shop.name}
@@ -76,7 +76,7 @@ export function OrdersScreen() {
                   <span>{new Date(order.createdAt).toLocaleDateString()}</span>
                 </div>
                 {order.trackingNumber && (
-                  <p className="text-xs text-indigo-600 mt-2 flex items-center gap-1">
+                  <p className="text-xs text-gray-600 mt-2 flex items-center gap-1">
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />

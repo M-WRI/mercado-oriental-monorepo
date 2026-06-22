@@ -82,7 +82,7 @@ export function OrderDetailScreen() {
     return (
       <div className="max-w-3xl mx-auto px-4 py-16 text-center animate-fade-in">
         <p className="text-gray-500 font-medium mb-2">Order not found</p>
-        <Link to="/orders" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">← Back to orders</Link>
+        <Link to="/orders" className="text-sm font-medium text-gray-900 hover:text-gray-700">← Back to orders</Link>
       </div>
     );
   }
@@ -125,7 +125,7 @@ export function OrderDetailScreen() {
           <dl className="space-y-2 text-sm">
             <div className="flex justify-between"><dt className="text-gray-500">Address</dt><dd className="text-right max-w-[60%]">{order.shippingAddress || "—"}</dd></div>
             {order.trackingNumber && (
-              <div className="flex justify-between"><dt className="text-gray-500">Tracking</dt><dd className="font-medium text-indigo-600">{order.trackingNumber}</dd></div>
+              <div className="flex justify-between"><dt className="text-gray-500">Tracking</dt><dd className="font-medium text-gray-900">{order.trackingNumber}</dd></div>
             )}
             {order.carrier && (
               <div className="flex justify-between"><dt className="text-gray-500">Carrier</dt><dd>{order.carrier}</dd></div>
@@ -142,14 +142,14 @@ export function OrderDetailScreen() {
             {timeline.map((step, i) => (
               <div key={step.label} className="flex items-center gap-2">
                 <div className="text-center">
-                  <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold mb-1">
+                  <div className="w-8 h-8 rounded-full bg-gray-100 text-gray-900 flex items-center justify-center text-xs font-bold mb-1">
                     {i + 1}
                   </div>
                   <p className="text-xs font-medium">{step.label}</p>
                   <p className="text-[10px] text-gray-400">{formatDate(step.date)}</p>
                 </div>
                 {i < timeline.length - 1 && (
-                  <div className="w-8 h-0.5 bg-indigo-200 rounded mb-6" />
+                  <div className="w-8 h-0.5 bg-gray-200 rounded mb-6" />
                 )}
               </div>
             ))}
@@ -164,8 +164,8 @@ export function OrderDetailScreen() {
       )}
 
       {order.customerNote && (
-        <div className="bg-indigo-50 border border-indigo-200 rounded-2xl p-4 mb-6">
-          <p className="text-sm text-indigo-600"><strong>Your note:</strong> {order.customerNote}</p>
+        <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 mb-6">
+          <p className="text-sm text-gray-600"><strong>Your note:</strong> {order.customerNote}</p>
         </div>
       )}
 
@@ -226,7 +226,7 @@ export function OrderDetailScreen() {
               onChange={(e) => setMessageBody(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
               placeholder="Type a message..."
-              className="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100 transition-all"
+              className="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-gray-900 focus:ring-4 focus:ring-gray-100 transition-all"
             />
             <button
               onClick={handleSendMessage}
@@ -241,7 +241,7 @@ export function OrderDetailScreen() {
 
       {/* Review prompt for delivered orders */}
       {order.status === "delivered" && (
-        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 rounded-2xl p-5 text-center">
+        <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5 text-center">
           <p className="text-sm font-medium text-gray-700 mb-2">How was your order?</p>
           <p className="text-xs text-gray-500 mb-4">Leave a review on the products you purchased.</p>
           <div className="flex flex-wrap justify-center gap-2">
@@ -249,7 +249,7 @@ export function OrderDetailScreen() {
               <Link
                 key={item.id}
                 to={`/products/${item.id}`}
-                className="text-xs px-3 py-1.5 bg-white border border-indigo-200 text-indigo-600 font-medium rounded-lg hover:bg-indigo-50 transition-colors"
+                className="text-xs px-3 py-1.5 bg-white border border-gray-200 text-gray-900 font-medium rounded-lg hover:bg-gray-100 transition-colors"
               >
                 Review {item.productName}
               </Link>

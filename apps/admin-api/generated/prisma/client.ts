@@ -129,3 +129,13 @@ export type ReviewReply = Prisma.ReviewReplyModel
  * 
  */
 export type Notification = Prisma.NotificationModel
+/**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
+/**
+ * Model ProductCategory
+ * 
+ */
+export type ProductCategory = Prisma.ProductCategoryModel

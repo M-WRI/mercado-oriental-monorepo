@@ -197,6 +197,20 @@ export const updateProduct = asyncHandler(async (req: AuthenticatedRequest, res:
 
       assertNoAttributeValueDuplicates(allVariants);
     }
+
+    // Update categories if provided
+    if (Array.isArray(data.categoryIds)) {
+      await tx.productCategory.deleteMany({ where: { productId: id } });
+      if (data.categoryIds.length > 0) {
+        await tx.productCategory.createMany({
+          data: data.categoryIds.map((catId: string) => ({
+            productId: id,
+            categoryId: catId,
+          })),
+          skipDuplicates: true,
+        });
+      }
+    }
   });
 
   const product = await prisma.product.findUnique({

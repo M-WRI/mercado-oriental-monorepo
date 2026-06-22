@@ -3,6 +3,9 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/client";
 import bcrypt from "bcryptjs";
 import { faker } from "@faker-js/faker";
+import { readFileSync } from "fs";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
 import { applyInitialOrderInventory, syncLowStockNotificationsForVariants } from "../src/lib/inventory";
 import { recordMovement, INV_REASON } from "../src/lib/inventory";
 import {
@@ -30,6 +33,7 @@ async function main() {
   console.log("Seeding database...");
 
   // Clean up existing data
+  await prisma.productCategory.deleteMany();
   await prisma.reviewReply.deleteMany();
   await prisma.productReview.deleteMany();
   await prisma.disputeMessage.deleteMany();
@@ -48,6 +52,36 @@ async function main() {
   await prisma.product.deleteMany();
   await prisma.shop.deleteMany();
   await prisma.user.deleteMany();
+  await prisma.category.deleteMany();
+
+  // Seed categories from JSON
+  interface CategoryNode { name: string; slug: string; children: CategoryNode[] }
+  const categoriesJson: CategoryNode[] = JSON.parse(
+    readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), "categories.json"), "utf-8")
+  );
+
+  const leafCategoryIds: string[] = [];
+
+  async function seedCategories(nodes: CategoryNode[], parentId: string | null = null) {
+    for (const node of nodes) {
+      const cat = await prisma.category.create({
+        data: {
+          name: node.name,
+          slug: node.slug,
+          parentId,
+        },
+      });
+      if (node.children.length === 0) {
+        leafCategoryIds.push(cat.id);
+      } else {
+        await seedCategories(node.children, cat.id);
+      }
+    }
+  }
+
+  console.log("Seeding categories...");
+  await seedCategories(categoriesJson);
+  console.log(`Seeded ${leafCategoryIds.length} leaf categories.`);
 
   const hashedPassword = await bcrypt.hash("password123", 10);
   const customerPassword = await bcrypt.hash("customer123", 10);
@@ -112,9 +146,9 @@ async function main() {
     }));
   }
 
-  // 5. Create 200 Products (4 per shop)
-  const products = [];
-  const allVariants = [];
+  // 5. Create 200 Products (4 per shop) and assign categories
+  const products: { id: string; shopId: string; name: string }[] = [];
+  const allVariants: { id: string; productId: string; name: string; price: number }[] = [];
   for (const shop of shops) {
     // Create some attributes for the shop
     const sizeAttr = await prisma.productAttribute.create({
@@ -149,6 +183,18 @@ async function main() {
         }
       });
       products.push(product);
+
+      // Assign 1-3 random leaf categories
+      const catCount = faker.number.int({ min: 1, max: 3 });
+      const selectedCats = faker.helpers.arrayElements(leafCategoryIds, catCount);
+      for (const catId of selectedCats) {
+        await prisma.productCategory.create({
+          data: {
+            productId: product.id,
+            categoryId: catId,
+          },
+        });
+      }
 
       // Create variants
       for (let v = 0; v < 3; v++) {

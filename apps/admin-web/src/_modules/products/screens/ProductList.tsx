@@ -39,6 +39,7 @@ interface IProductListItem {
   totalSold: number;
   status: "in_stock" | "low_stock" | "out_of_stock";
   variants: IVariant[];
+  categories: { id: string; name: string; slug: string }[];
   createdAt: string;
 }
 
@@ -275,6 +276,28 @@ export const ProductList = () => {
           }
           return <span className="text-gray-600 pl-4">{row.original.variant.name}</span>;
         },
+      },
+      {
+        id: "categories",
+        header: () => "Categories",
+        cell: ({ row }) => {
+          if (row.original._type !== "product") return null;
+          const cats = row.original.product.categories;
+          if (!cats || cats.length === 0) return <span className="text-xs text-gray-300">—</span>;
+          return (
+            <div className="flex flex-wrap gap-1">
+              {cats.slice(0, 2).map((c) => (
+                <span key={c.id} className="inline-block bg-gray-100 text-gray-600 text-[10px] px-1.5 py-0.5 rounded">
+                  {c.name}
+                </span>
+              ))}
+              {cats.length > 2 && (
+                <span className="text-[10px] text-gray-400">+{cats.length - 2}</span>
+              )}
+            </div>
+          );
+        },
+        meta: { className: "w-36 min-w-[144px]" },
       },
       {
         id: "stockStatus",

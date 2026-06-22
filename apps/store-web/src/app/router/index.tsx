@@ -3,6 +3,8 @@ import { ProtectedRoute } from "@mercado/shared-ui";
 import { StoreLayout } from "@/app/layout/StoreLayout";
 import { ProductsScreen } from "@/_modules/products/screens/ProductsScreen";
 import { ProductDetailScreen } from "@/_modules/products/screens/ProductDetailScreen";
+import { ShopsScreen } from "@/_modules/shops/screens/ShopsScreen";
+import { ShopDetailScreen } from "@/_modules/shops/screens/ShopDetailScreen";
 import { CartScreen } from "@/_modules/cart/screens/CartScreen";
 import { CheckoutScreen } from "@/_modules/cart/screens/CheckoutScreen";
 import { OrdersScreen } from "@/_modules/orders/screens/OrdersScreen";
@@ -30,6 +32,14 @@ export const router = createBrowserRouter([
       {
         path: "/products/:id",
         Component: ProductDetailScreen,
+      },
+      {
+        path: "/shops",
+        Component: ShopsScreen,
+      },
+      {
+        path: "/shops/:id",
+        Component: ShopDetailScreen,
       },
       {
         path: "/cart",

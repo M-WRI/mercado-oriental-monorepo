@@ -15,6 +15,8 @@ import storeProductRoutes from "./_modules/store-products/routes";
 import storeOrderRoutes from "./_modules/store-orders/routes";
 import storeReviewRoutes from "./_modules/store-reviews/routes";
 import storeMessageRoutes from "./_modules/store-messages/routes";
+import storeShopRoutes from "./_modules/store-shops/routes";
+import storeCategoryRoutes from "./_modules/store-categories/routes";
 import { authMiddleware } from "./middleware/authMiddleware";
 import { errorMiddleware } from "./middleware/errorMiddleware";
 
@@ -38,12 +40,15 @@ export function createApp() {
   protectedAdminRouter.use("/notifications", notificationsRoutes);
   protectedAdminRouter.use("/touchpoints", touchpointsRoutes);
   protectedAdminRouter.use("/reviews", reviewsRoutes);
+  protectedAdminRouter.use("/categories", storeCategoryRoutes);
 
   adminRouter.use(protectedAdminRouter);
 
   const storeRouter = express.Router();
   storeRouter.use("/auth", storeAuthRoutes);
   storeRouter.use("/products", storeProductRoutes);
+  storeRouter.use("/shops", storeShopRoutes);
+  storeRouter.use("/categories", storeCategoryRoutes);
   storeRouter.use("/orders", storeOrderRoutes);
   storeRouter.use(storeReviewRoutes);
   storeRouter.use(storeMessageRoutes);

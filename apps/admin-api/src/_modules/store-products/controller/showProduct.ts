@@ -25,6 +25,11 @@ export const showProduct = asyncHandler(async (req: Request, res: Response) => {
         },
         orderBy: { createdAt: "desc" },
       },
+      productCategories: {
+        include: {
+          category: { select: { id: true, name: true, slug: true } },
+        },
+      },
     },
   });
 
@@ -78,6 +83,7 @@ export const showProduct = asyncHandler(async (req: Request, res: Response) => {
     reviews,
     avgRating,
     reviewCount: reviews.length,
+    categories: product.productCategories.map((pc) => pc.category),
     createdAt: product.createdAt,
   });
 });

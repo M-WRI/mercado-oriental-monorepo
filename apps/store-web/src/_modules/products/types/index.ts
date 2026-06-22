@@ -9,6 +9,7 @@ export interface ProductListItem {
   inStock: boolean;
   avgRating: number | null;
   reviewCount: number;
+  categories: { id: string; name: string; slug: string }[];
   createdAt: string;
 }
 
@@ -57,5 +58,6 @@ export interface ProductDetail {
   reviews: ProductReview[];
   avgRating: number | null;
   reviewCount: number;
+  categories: { id: string; name: string; slug: string }[];
   createdAt: string;
 }

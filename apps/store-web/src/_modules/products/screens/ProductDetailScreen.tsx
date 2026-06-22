@@ -104,7 +104,7 @@ export function ProductDetailScreen() {
           </svg>
         </div>
         <p className="text-gray-500 font-medium mb-2">Product not found</p>
-        <Link to="/" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">← Back to products</Link>
+        <Link to="/" className="text-sm font-medium text-gray-900 hover:text-gray-700">← Back to products</Link>
       </div>
     );
   }
@@ -168,8 +168,17 @@ export function ProductDetailScreen() {
           {/* Info */}
           <div className="space-y-5 animate-fade-in-up stagger-1">
             <div>
-              <p className="text-xs font-medium text-indigo-500 mb-1 uppercase tracking-wider">{product.shop.name}</p>
+              <Link to={`/shops/${product.shop.id}`} className="text-xs font-medium text-gray-500 mb-1 uppercase tracking-wider hover:text-gray-900 transition-colors">{product.shop.name}</Link>
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{product.name}</h1>
+              {product.categories?.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {product.categories.map((c) => (
+                    <span key={c.id} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
+                      {c.name}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
 
             {product.avgRating !== null && (
@@ -194,9 +203,9 @@ export function ProductDetailScreen() {
                       onClick={() => { setSelectedVariant(v); setQuantity(1); }}
                       className={`text-sm px-4 py-2 border-2 rounded-xl transition-all ${
                         variant?.id === v.id
-                          ? "border-indigo-500 bg-indigo-50 text-indigo-700 font-medium shadow-sm"
+                          ? "border-gray-900 bg-gray-900 text-white font-medium shadow-sm"
                           : v.inStock
-                            ? "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                            ? "border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50"
                             : "border-gray-100 text-gray-300 cursor-not-allowed line-through"
                       }`}
                       disabled={!v.inStock}
@@ -271,7 +280,7 @@ export function ProductDetailScreen() {
             {isAuthenticated && !showReviewForm && (
               <button
                 onClick={() => setShowReviewForm(true)}
-                className="text-sm px-4 py-2 bg-indigo-50 text-indigo-600 font-medium rounded-xl hover:bg-indigo-100 transition-colors"
+                className="text-sm px-4 py-2 bg-white border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors shadow-sm"
               >
                 Write a review
               </button>
@@ -294,7 +303,7 @@ export function ProductDetailScreen() {
                     value={reviewTitle}
                     onChange={(e) => setReviewTitle(e.target.value)}
                     placeholder="Sum it up..."
-                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100 transition-all"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-gray-900 focus:ring-4 focus:ring-gray-100 transition-all font-medium"
                   />
                 </div>
                 <div>
@@ -304,7 +313,7 @@ export function ProductDetailScreen() {
                     onChange={(e) => setReviewBody(e.target.value)}
                     placeholder="Share your experience..."
                     rows={3}
-                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100 resize-none transition-all"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-gray-900 focus:ring-4 focus:ring-gray-100 resize-none transition-all font-medium"
                   />
                 </div>
                 <div className="flex gap-2">
@@ -351,8 +360,8 @@ export function ProductDetailScreen() {
                   {r.title && <p className="text-sm font-semibold text-gray-800 mb-1">{r.title}</p>}
                   <p className="text-sm text-gray-600 leading-relaxed">{r.body}</p>
                   {r.reply && (
-                    <div className="mt-3 pl-4 border-l-2 border-indigo-200 bg-indigo-50/50 rounded-r-xl p-3">
-                      <p className="text-xs font-medium text-indigo-600 mb-1">Shop Reply · {timeAgo(r.reply.createdAt)}</p>
+                    <div className="mt-3 pl-4 border-l-2 border-gray-300 bg-gray-50 rounded-r-xl p-3">
+                      <p className="text-xs font-semibold text-gray-900 mb-1">Shop Reply <span className="text-gray-400 font-normal">· {timeAgo(r.reply.createdAt)}</span></p>
                       <p className="text-sm text-gray-600">{r.reply.body}</p>
                     </div>
                   )}

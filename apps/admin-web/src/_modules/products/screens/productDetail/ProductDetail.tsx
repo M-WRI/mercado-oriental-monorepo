@@ -84,6 +84,15 @@ export const ProductDetail = () => {
             {product.description && (
               <p className="text-sm text-gray-500 mt-0.5">{product.description}</p>
             )}
+            {product.categories && product.categories.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-1.5">
+                {product.categories.map((c) => (
+                  <span key={c.id} className="inline-block bg-indigo-50 text-indigo-600 text-xs px-2 py-0.5 rounded-full">
+                    {c.name}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
           <div className="flex items-center gap-3 flex-wrap justify-end">
             <button

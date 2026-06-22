@@ -10,14 +10,13 @@ function available(stock: number, reserved: number) {
 }
 
 async function assertLineFitsReservation(tx: DbClient, variantId: string, qty: number) {
-  // Pessimistic lock the row to avoid concurrent check-and-reserve race conditions
   const rows = await tx.$queryRaw<{ stock: number; reservedStock: number }[]>`
     SELECT stock, "reservedStock" 
     FROM "ProductVariant" 
     WHERE id = ${variantId} 
     FOR UPDATE
   `;
-  
+
   if (!rows || rows.length === 0) {
     throw new AppError({
       case: "variant",
@@ -25,7 +24,7 @@ async function assertLineFitsReservation(tx: DbClient, variantId: string, qty: n
       statusCode: 404,
     });
   }
-  
+
   const v = rows[0];
   if (available(v.stock, v.reservedStock) < qty) {
     throw new AppError({

@@ -22,6 +22,7 @@ interface RawProduct {
   updatedAt: Date;
   shop: { defaultLowStockThreshold: number };
   productVariants: Variant[];
+  productCategories?: { category: { id: string; name: string; slug: string } }[];
 }
 
 function available(stock: number, reserved: number) {
@@ -92,6 +93,7 @@ export function serializeProductListItem(product: RawProduct) {
     totalSold,
     status,
     variants: serializedVariants,
+    categories: (product.productCategories ?? []).map((pc) => pc.category),
   };
 }
 

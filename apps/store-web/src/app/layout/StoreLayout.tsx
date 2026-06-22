@@ -8,12 +8,12 @@ export function StoreLayout() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f8f9fc]">
+    <div className="min-h-screen flex flex-col bg-transparent">
       {/* Glassmorphism Header */}
       <header className="glass-header border-b border-gray-200/60 sticky top-0 z-50 animate-slide-down">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg hero-gradient flex items-center justify-center text-white text-sm font-bold shadow-md group-hover:shadow-lg transition-shadow">
+            <div className="w-8 h-8 rounded-lg bg-gray-900 flex items-center justify-center text-white text-sm font-bold shadow-md group-hover:shadow-lg transition-shadow">
               M
             </div>
             <span className="text-lg font-semibold text-gray-900 tracking-tight hidden sm:inline">
@@ -28,6 +28,15 @@ export function StoreLayout() {
             >
               Products
             </Link>
+            <Link
+              to="/shops"
+              className="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100/60 rounded-lg transition-all flex items-center gap-1"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+              <span className="hidden sm:inline">Shops</span>
+            </Link>
 
             <Link
               to="/cart"
@@ -38,7 +47,7 @@ export function StoreLayout() {
               </svg>
               <span className="hidden sm:inline">Cart</span>
               {totalItems > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 shadow-sm animate-pulse-once">
+                <span className="absolute -top-0.5 -right-0.5 bg-gray-900 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 shadow-sm animate-pulse-once">
                   {totalItems > 9 ? "9+" : totalItems}
                 </span>
               )}
@@ -59,7 +68,7 @@ export function StoreLayout() {
                   to="/account"
                   className="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100/60 rounded-lg transition-all flex items-center gap-1"
                 >
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white text-[10px] font-bold">
+                  <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-gray-800 text-[10px] font-bold">
                     {(user?.name || user?.email || "U").charAt(0).toUpperCase()}
                   </div>
                   <span className="hidden sm:inline text-xs">{user?.name || "Account"}</span>
@@ -74,7 +83,7 @@ export function StoreLayout() {
             ) : (
               <Link
                 to="/login"
-                className="ml-1 px-4 py-2 text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 rounded-lg transition-colors shadow-sm"
+                className="ml-1 px-5 py-2 text-sm font-medium text-white bg-gray-900 hover:bg-black rounded-full transition-colors shadow-sm"
               >
                 Sign in
               </Link>
@@ -91,13 +100,14 @@ export function StoreLayout() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-md hero-gradient flex items-center justify-center text-white text-[10px] font-bold">
+              <div className="w-6 h-6 rounded-md bg-gray-900 flex items-center justify-center text-white text-[10px] font-bold">
                 M
               </div>
               <span className="text-sm font-medium text-gray-500">Mercado Oriental</span>
             </div>
             <div className="flex items-center gap-6 text-xs text-gray-400">
               <Link to="/" className="hover:text-gray-600 transition-colors">Products</Link>
+              <Link to="/shops" className="hover:text-gray-600 transition-colors">Shops</Link>
               <Link to="/cart" className="hover:text-gray-600 transition-colors">Cart</Link>
               <Link to="/orders" className="hover:text-gray-600 transition-colors">Orders</Link>
               <Link to="/account" className="hover:text-gray-600 transition-colors">Account</Link>

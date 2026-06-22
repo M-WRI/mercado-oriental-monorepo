@@ -103,6 +103,7 @@ export const CreateProduct = () => {
           name: productInfo.name,
           description: productInfo.description,
           shopId: productInfo.shopId,
+          categoryIds: productInfo.categoryIds ?? [],
           productVariants: {
             create: variantPayloads,
           },

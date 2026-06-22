@@ -4,6 +4,14 @@ export interface IShop {
   description: string | null;
 }
 
+export interface ICategory {
+  id: string;
+  name: string;
+  slug: string;
+  parentId: string | null;
+  children: ICategory[];
+}
+
 export interface IProductAttribute {
   id: string;
   name: string;
@@ -30,6 +38,7 @@ export interface IProductInfoData {
   description: string;
   shopId: string;
   shopName: string;
+  categoryIds: string[];
 }
 
 export interface IAttributesData {
@@ -150,6 +159,7 @@ export interface IProductDetailResponse {
   isActive: boolean;
   shop: { id: string; name: string; defaultLowStockThreshold?: number };
   createdAt: string;
+  categories: { id: string; name: string; slug: string }[];
   analytics: IProductAnalytics;
   variants: IVariantStat[];
 }

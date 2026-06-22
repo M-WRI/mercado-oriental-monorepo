@@ -35,6 +35,21 @@ export const ProductReviewStep = ({ data, submitRef, onComplete }: StepProps) =>
             <span className="text-xs text-gray-400">{t("products.reviewStep.shop")}</span>
             <p className="text-sm text-gray-700">{productInfo.shopName}</p>
           </div>
+          {productInfo.categoryIds?.length > 0 && (
+            <div className="mt-3 pt-3 border-t border-gray-100">
+              <span className="text-xs text-gray-400">Categories</span>
+              <div className="flex flex-wrap gap-1 mt-1">
+                {productInfo.categoryIds.map((id: string) => (
+                  <span
+                    key={id}
+                    className="inline-block bg-indigo-50 text-indigo-700 text-xs px-2 py-0.5 rounded-full"
+                  >
+                    {(productInfo as any)._categoryNames?.[id] || id}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

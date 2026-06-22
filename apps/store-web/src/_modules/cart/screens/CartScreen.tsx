@@ -52,7 +52,7 @@ export function CartScreen() {
                   <div className="flex-1 min-w-0">
                     <Link
                       to={`/products/${item.productId}`}
-                      className="text-sm font-medium text-gray-900 hover:text-indigo-600 block truncate transition-colors"
+                      className="text-sm font-medium text-gray-900 hover:text-gray-500 block truncate transition-colors"
                     >
                       {item.productName}
                     </Link>
@@ -118,9 +118,9 @@ export function CartScreen() {
             <Link to="/login">
               <Button fullWidth>Sign in to checkout</Button>
             </Link>
-            <p className="text-xs text-gray-400 text-center">
+            <p className="text-sm text-center text-gray-500 mt-4">
               Don't have an account?{" "}
-              <Link to="/register" className="text-indigo-500 hover:underline">Create one</Link>
+              <Link to="/register" className="text-gray-900 hover:underline">Create one</Link>
             </p>
           </div>
         )}

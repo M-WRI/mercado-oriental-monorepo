@@ -51,6 +51,11 @@ export const showProduct = asyncHandler(async (req: AuthenticatedRequest, res: R
           },
         },
       },
+      productCategories: {
+        include: {
+          category: { select: { id: true, name: true, slug: true } },
+        },
+      },
     },
   });
 
@@ -83,6 +88,7 @@ export const showProduct = asyncHandler(async (req: AuthenticatedRequest, res: R
     isActive: product.isActive,
     shop: product.shop,
     createdAt: product.createdAt,
+    categories: product.productCategories.map((pc) => pc.category),
     analytics: {
       totalStock: accumulator.totalAvailable,
       totalStockOnHand: accumulator.totalStock,

@@ -36,6 +36,11 @@ export const listProduct = asyncHandler(async (req: AuthenticatedRequest, res: R
             orderItems: true,
           },
         },
+        productCategories: {
+          include: {
+            category: { select: { id: true, name: true, slug: true } },
+          },
+        },
       },
     }),
     prisma.product.count({ where }),

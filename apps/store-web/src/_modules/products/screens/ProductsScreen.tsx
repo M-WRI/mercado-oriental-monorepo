@@ -50,16 +50,14 @@ export function ProductsScreen() {
   return (
     <div className="animate-fade-in">
       {/* Hero */}
-      <div className="hero-gradient text-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2 animate-fade-in-up">
-            Discover Fresh Products
+      <div className="bg-white border-b border-gray-100 pb-6 pt-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 animate-fade-in-up">
+            Discover Furniture.
           </h1>
-          <p className="text-white/70 text-sm sm:text-base mb-6 max-w-md animate-fade-in-up stagger-1">
-            Explore unique goods from local vendors at Mercado Oriental.
-          </p>
-          <div className="relative max-w-md animate-fade-in-up stagger-2">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          
+          <div className="relative max-w-xl mb-8 animate-fade-in-up stagger-1">
+            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
@@ -67,8 +65,20 @@ export function ProductsScreen() {
               placeholder="Search products..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              className="w-full pl-10 pr-4 py-3 bg-white/15 backdrop-blur-sm border border-white/20 rounded-xl text-sm text-white placeholder-white/50 focus:outline-none focus:bg-white/25 focus:border-white/40 transition-all"
+              className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-transparent rounded-2xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:border-gray-200 focus:ring-4 focus:ring-gray-50 transition-all font-medium"
             />
+          </div>
+
+          {/* Minimalist Category Pills (Visual Mockup based on screenshot) */}
+          <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none animate-fade-in-up stagger-2">
+            <button className="px-5 py-2 text-sm font-medium rounded-full bg-gray-900 text-white shadow-sm shrink-0">
+              All
+            </button>
+            {["Chair", "Sofa", "Lamp", "Cupboard", "Table", "Bed"].map((cat) => (
+              <button key={cat} className="px-5 py-2 text-sm font-medium rounded-full bg-white border border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50 transition-colors shrink-0">
+                {cat}
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -122,11 +132,30 @@ export function ProductsScreen() {
                     )}
                   </div>
 
-                  <div className="p-3 sm:p-4 space-y-1.5">
-                    <h3 className="text-sm font-medium text-gray-900 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+                  <div className="p-4 space-y-1.5 bg-white">
+                    <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 group-hover:text-gray-600 transition-colors">
                       {product.name}
                     </h3>
-                    <p className="text-xs text-gray-400">{product.shop.name}</p>
+                    <Link
+                      to={`/shops/${product.shop.id}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-xs font-medium text-gray-400 hover:text-gray-900 transition-colors"
+                    >
+                      {product.shop.name}
+                    </Link>
+
+                    {product.categories?.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {product.categories.slice(0, 2).map((c) => (
+                          <span key={c.id} className="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-medium">
+                            {c.name}
+                          </span>
+                        ))}
+                        {product.categories.length > 2 && (
+                          <span className="text-[10px] text-gray-400 font-medium">+{product.categories.length - 2}</span>
+                        )}
+                      </div>
+                    )}
 
                     <div className="flex items-center gap-2 pt-1">
                       <span className="text-sm font-bold text-gray-900">
