@@ -6,7 +6,9 @@ import { FlowWizard } from "@mercado/shared-ui/components/flowWizard";
 import type { WizardStep } from "@mercado/shared-ui/components/flowWizard";
 import { usePost } from "@/_shared/queryProvider";
 import { useToast } from "@mercado/shared-ui";
-import { createProduct, createAttribute } from "../../api";
+import { createProduct, createAttribute, getProducts } from "../../api";
+import { getAttributes } from "@/_modules/attributes/api";
+import { useShop } from "@/_modules/shops/context/ShopProvider";
 import { ProductInfoStep } from "./steps/ProductInfoStep";
 import { ProductAttributesStep } from "./steps/ProductAttributesStep";
 import { ProductVariantsStep } from "./steps/ProductVariantsStep";
@@ -18,6 +20,7 @@ export const CreateProduct = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
   const { success: toastSuccess } = useToast();
+  const { shopId, paths } = useShop();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const steps: WizardStep[] = [
@@ -102,6 +105,7 @@ export const CreateProduct = () => {
         data: {
           name: productInfo.name,
           description: productInfo.description,
+          imageUrl: productInfo.imageUrl || undefined,
           shopId: productInfo.shopId,
           categoryIds: productInfo.categoryIds ?? [],
           productVariants: {
@@ -111,10 +115,10 @@ export const CreateProduct = () => {
       });
 
       // 4. Invalidate caches and navigate back
-      queryClient.invalidateQueries({ queryKey: [["products"]] });
-      queryClient.invalidateQueries({ queryKey: [["attributes"]] });
+      queryClient.invalidateQueries({ queryKey: getProducts.queryKey(shopId) });
+      queryClient.invalidateQueries({ queryKey: getAttributes.queryKey(shopId) });
       toastSuccess(t("success.product_created"));
-      navigate("/products");
+      navigate(paths.products);
     } catch {
       // Error toast is handled automatically by the axios interceptor
     } finally {
@@ -126,7 +130,7 @@ export const CreateProduct = () => {
     <FlowWizard
       steps={steps}
       onFinish={handleFinish}
-      onCancel={() => navigate("/products")}
+      onCancel={() => navigate(paths.products)}
       isSubmitting={isSubmitting}
       finishText={t("products.wizard.createProduct")}
     />

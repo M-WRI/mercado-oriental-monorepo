@@ -27,6 +27,13 @@ export const ProductReviewStep = ({ data, submitRef, onComplete }: StepProps) =>
       <div className="mb-6">
         <h5 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">{t("products.reviewStep.product")}</h5>
         <div className="border border-gray-200 rounded-lg p-4">
+          {productInfo.imageUrl && (
+            <img
+              src={productInfo.imageUrl}
+              alt={productInfo.name}
+              className="w-20 h-20 rounded-lg object-cover mb-3 border border-gray-100"
+            />
+          )}
           <p className="font-medium text-gray-900">{productInfo.name}</p>
           {productInfo.description && (
             <p className="text-sm text-gray-500 mt-1">{productInfo.description}</p>

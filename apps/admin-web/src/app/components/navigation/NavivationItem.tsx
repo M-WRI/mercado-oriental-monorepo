@@ -5,14 +5,18 @@ export const NavivationItem = ({
   icon,
   label,
   isActive,
+  isIndex = false,
 }: {
   path: string;
   label: string;
   icon?: React.ReactNode;
   isActive: boolean;
+  isIndex?: boolean;
 }) => {
   const location = useLocation();
-  const isCurrentRoute = path === "/" ? location.pathname === "/" : location.pathname.startsWith(`/${path}`);
+  const isCurrentRoute = isIndex
+    ? location.pathname === path || location.pathname === `${path}/`
+    : location.pathname === path || location.pathname.startsWith(`${path}/`);
 
   return (
     <Link

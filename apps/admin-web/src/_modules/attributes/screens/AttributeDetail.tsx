@@ -7,12 +7,14 @@ import { Button, useToast } from "@mercado/shared-ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MdAdd, MdOutlineDeleteForever } from "react-icons/md";
 import { DefaultListLayout } from "@/_shared/layout";
+import { useShop } from "@/_modules/shops/context/ShopProvider";
 import type { IAttributeDetailResponse, IAttributeValueDetail } from "../types";
 
 export const AttributeDetail = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
+  const { paths } = useShop();
   const queryClient = useQueryClient();
   const { success: toastSuccess } = useToast();
 
@@ -88,7 +90,7 @@ export const AttributeDetail = () => {
           </div>
           {id && (
             <Button
-              onClick={() => navigate(`/attributes/${id}/edit`)}
+              onClick={() => navigate(paths.attributeEdit(id))}
               style="primaryOutline"
               className="shrink-0"
             >

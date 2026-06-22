@@ -1,8 +1,4 @@
-export interface IShop {
-  id: string;
-  name: string;
-  description: string | null;
-}
+export type { IShop } from "@/_modules/shops/types";
 
 export interface ICategory {
   id: string;
@@ -36,6 +32,7 @@ export interface INewAttribute {
 export interface IProductInfoData {
   name: string;
   description: string;
+  imageUrl: string;
   shopId: string;
   shopName: string;
   categoryIds: string[];
@@ -156,6 +153,7 @@ export interface IProductDetailResponse {
   id: string;
   name: string;
   description: string | null;
+  imageUrl: string | null;
   isActive: boolean;
   shop: { id: string; name: string; defaultLowStockThreshold?: number };
   createdAt: string;

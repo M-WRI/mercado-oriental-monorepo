@@ -7,10 +7,12 @@ import { Button, useToast } from "@mercado/shared-ui";
 import { Input } from "@mercado/shared-ui/components/inputs/components/Input";
 import { TextArea } from "@mercado/shared-ui/components/inputs/components/TextArea";
 import { getAttribute, getAttributes, updateAttribute } from "../api";
+import { useShop } from "@/_modules/shops/context/ShopProvider";
 import type { IAttributeDetailResponse } from "../types";
 
 const EditAttributeForm = ({ id }: { id: string }) => {
   const navigate = useNavigate();
+  const { shopId, paths } = useShop();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { success: toastSuccess } = useToast();
@@ -51,9 +53,9 @@ const EditAttributeForm = ({ id }: { id: string }) => {
       {
         onSuccess: () => {
           toastSuccess(t("success.attribute_updated"));
-          queryClient.invalidateQueries({ queryKey: getAttributes.queryKey });
+          queryClient.invalidateQueries({ queryKey: getAttributes.queryKey(shopId) });
           queryClient.invalidateQueries({ queryKey: getAttribute.queryKey(id) });
-          navigate(`/attributes/${id}`);
+          navigate(paths.attribute(id));
         },
       }
     );
@@ -79,7 +81,7 @@ const EditAttributeForm = ({ id }: { id: string }) => {
     <div className="flex flex-col h-full min-h-0 overflow-y-auto pb-8 max-w-lg">
       <div className="shrink-0 mb-6">
         <div className="flex items-center gap-2 mb-1">
-          <Button onClick={() => navigate(`/attributes/${id}`)} style="link" className="!text-xs !p-0">
+          <Button onClick={() => navigate(paths.attribute(id))} style="link" className="!text-xs !p-0">
             {attribute.name}
           </Button>
           <span className="text-xs text-gray-300">/</span>
@@ -112,7 +114,7 @@ const EditAttributeForm = ({ id }: { id: string }) => {
           <Button type="submit" disabled={isPending}>
             {isPending ? t("common.submitting") : t("common.save")}
           </Button>
-          <Button type="button" style="ghost" onClick={() => navigate(`/attributes/${id}`)} disabled={isPending}>
+          <Button type="button" style="ghost" onClick={() => navigate(paths.attribute(id))} disabled={isPending}>
             {t("common.cancel")}
           </Button>
         </div>

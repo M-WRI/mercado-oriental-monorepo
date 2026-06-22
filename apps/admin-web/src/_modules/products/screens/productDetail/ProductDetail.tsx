@@ -1,9 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { useParams, useNavigate } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { useFetch, usePatch } from "@/_shared/queryProvider";
+import { useFetch, usePut } from "@/_shared/queryProvider";
 import { Button, Tag, useToast, QueryError } from "@mercado/shared-ui";
 import { getProduct, getProducts, updateProduct } from "../../api";
+import { useShop } from "@/_modules/shops/context/ShopProvider";
 import type { IProductDetailResponse } from "../../types";
 import { OverviewCards, SalesChart, InventoryHealth, PerformanceInsights } from "../../components/cards";
 import { VariantsTable } from "./VariantsTable";
@@ -13,6 +14,7 @@ import { ProductReviews } from "./ProductReviews";
 export const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { shopId, paths } = useShop();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { success: toastSuccess } = useToast();
@@ -22,11 +24,11 @@ export const ProductDetail = () => {
     url: getProduct.url(id),
   });
 
-  const { mutate: patchProduct, isPending: isToggling } = usePatch();
+  const { mutate: putProduct, isPending: isToggling } = usePut();
 
   const handleToggleActive = () => {
     if (!product || !id) return;
-    patchProduct(
+    putProduct(
       {
         url: updateProduct.url(id),
         data: { isActive: !product.isActive },
@@ -39,7 +41,7 @@ export const ProductDetail = () => {
               : t("products.activatedSuccess")
           );
           queryClient.invalidateQueries({ queryKey: getProduct.queryKey(id) });
-          queryClient.invalidateQueries({ queryKey: getProducts.queryKey });
+          queryClient.invalidateQueries({ queryKey: getProducts.queryKey(shopId) });
         },
       }
     );
@@ -72,14 +74,26 @@ export const ProductDetail = () => {
       {/* Header */}
       <div className="shrink-0 mb-6">
         <div className="flex items-center gap-2 mb-1">
-          <Button onClick={() => navigate("/products")} style="link" className="!text-xs !p-0">
+          <Button onClick={() => navigate(paths.products)} style="link" className="!text-xs !p-0">
             {t("products.title")}
           </Button>
           <span className="text-xs text-gray-300">/</span>
           <span className="text-xs text-gray-400">{product.shop.name}</span>
         </div>
-        <div className="flex items-center justify-between">
-          <div>
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start gap-4 min-w-0">
+            {product.imageUrl ? (
+              <img
+                src={product.imageUrl}
+                alt={product.name}
+                className="w-16 h-16 rounded-lg object-cover border border-gray-100 shrink-0"
+              />
+            ) : (
+              <div className="w-16 h-16 rounded-lg bg-gray-100 border border-gray-100 shrink-0 flex items-center justify-center text-lg font-medium text-gray-400">
+                {product.name.charAt(0).toUpperCase()}
+              </div>
+            )}
+            <div className="min-w-0">
             <h4 className="text-lg font-semibold text-gray-900">{product.name}</h4>
             {product.description && (
               <p className="text-sm text-gray-500 mt-0.5">{product.description}</p>
@@ -93,6 +107,7 @@ export const ProductDetail = () => {
                 ))}
               </div>
             )}
+            </div>
           </div>
           <div className="flex items-center gap-3 flex-wrap justify-end">
             <button
@@ -108,7 +123,7 @@ export const ProductDetail = () => {
               <span className={`w-1.5 h-1.5 rounded-full ${product.isActive ? "bg-green-500" : "bg-gray-400"}`} />
               {product.isActive ? t("products.active") : t("products.inactive")}
             </button>
-            <Button onClick={() => navigate(`/products/${product.id}/edit`)} style="primaryOutline">
+            <Button onClick={() => navigate(paths.productEdit(product.id))} style="primaryOutline">
               {t("common.edit")}
             </Button>
             <span className="text-xs text-gray-400">

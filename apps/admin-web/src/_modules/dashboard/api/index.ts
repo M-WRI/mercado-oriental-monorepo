@@ -1,6 +1,6 @@
 import type { TQueryKey } from "@mercado/shared-ui";
 
 export const getDashboard = {
-  queryKey: [["dashboard"]] as TQueryKey,
-  url: "/dashboard",
+  queryKey: (shopId: string) => [["dashboard", shopId]] as TQueryKey,
+  url: (shopId: string) => `/dashboard?shopId=${shopId}`,
 };

@@ -3,6 +3,7 @@ import { useFetch } from "@/_shared/queryProvider";
 import { QueryError } from "@mercado/shared-ui";
 import { getDashboard } from "../api";
 import type { IDashboardResponse } from "../types";
+import { useShop } from "@/_modules/shops/context/ShopProvider";
 import {
   SalesSnapshot,
   RevenueChart,
@@ -14,9 +15,10 @@ import {
 
 export const DashboardScreen = () => {
   const { t } = useTranslation();
+  const { shopId } = useShop();
   const { data: dashboard, isLoading, isError, refetch } = useFetch<IDashboardResponse>({
-    queryKey: getDashboard.queryKey,
-    url: getDashboard.url,
+    queryKey: getDashboard.queryKey(shopId),
+    url: getDashboard.url(shopId),
   });
 
   if (isLoading || (!isError && !dashboard)) {

@@ -2,15 +2,14 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { useFetch, usePatch } from "@/_shared/queryProvider";
+import { useFetch, usePut } from "@/_shared/queryProvider";
 import { Button, useToast } from "@mercado/shared-ui";
 import { Input } from "@mercado/shared-ui/components/inputs/components/Input";
 import { TextArea } from "@mercado/shared-ui/components/inputs/components/TextArea";
-import { getShops } from "@/_modules/shops/api";
 import { getProduct, getProducts, getProductVariants, updateProduct, getAttributesByShop } from "../../api";
+import { useShop } from "@/_modules/shops/context/ShopProvider";
 import type {
   IProductDetailResponse,
-  IShop,
   IRawVariant,
   IEditableVariant,
   IVariantAttributeSelection,
@@ -19,6 +18,7 @@ import type {
 import { MdAdd, MdClose } from "react-icons/md";
 import { useModal } from "@mercado/shared-ui";
 import { AddAttributeModal } from "@/_modules/attributes/components";
+import { ProductImageField, isProductImageUrlValid } from "../../components/ProductImageField";
 
 // ── Helpers ────────────────────────────────────────────────────────
 
@@ -66,6 +66,7 @@ function findDuplicateVariants(variants: IEditableVariant[]): Set<string> {
 
 const EditProductForm = ({ id }: { id: string }) => {
   const navigate = useNavigate();
+  const { shopId, paths } = useShop();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { success: toastSuccess } = useToast();
@@ -82,16 +83,10 @@ const EditProductForm = ({ id }: { id: string }) => {
     url: getProductVariants.url(id),
   });
 
-  // Fetch shops
-  const { data: shops } = useFetch<IShop[]>({
-    queryKey: getShops.queryKey,
-    url: getShops.url,
-  });
-
   // Product fields
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [shopId, setShopId] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -110,10 +105,8 @@ const EditProductForm = ({ id }: { id: string }) => {
     Record<string, { valueId: string; valueName: string }>
   >({});
 
-  // Shop for attributes: use form state once seeded, or product.shop while product is loading first paint
-  const attributesShopId = shopId || product?.shop.id || "";
+  const attributesShopId = shopId;
 
-  // Fetch shop attributes only when we have a real shop id (never use a placeholder — backend returns 403)
   const { data: shopAttributes } = useFetch<IProductAttribute[]>({
     queryKey: getAttributesByShop.queryKey(attributesShopId),
     url: getAttributesByShop.url(attributesShopId),
@@ -125,7 +118,7 @@ const EditProductForm = ({ id }: { id: string }) => {
     if (!product || !rawVariants || initialized) return;
     setName(product.name);
     setDescription(product.description ?? "");
-    setShopId(product.shop.id);
+    setImageUrl(product.imageUrl ?? "");
     setIsActive(product.isActive);
     const editables = rawVariants.map(rawVariantToEditable);
     setVariants(editables);
@@ -133,7 +126,7 @@ const EditProductForm = ({ id }: { id: string }) => {
     setInitialized(true);
   }, [product, rawVariants, initialized]);
 
-  const { mutate: patchProduct, isPending } = usePatch();
+  const { mutate: putProduct, isPending } = usePut();
   const { openModal, ModalRenderer, closeModal } = useModal({});
 
   // ── Inline variant editing ────────────────────────────────────────
@@ -256,8 +249,8 @@ const EditProductForm = ({ id }: { id: string }) => {
       setError(t("products.infoStep.nameRequired"));
       return;
     }
-    if (!shopId) {
-      setError(t("products.infoStep.shopRequired"));
+    if (imageUrl.trim() && !isProductImageUrlValid(imageUrl)) {
+      setError(t("products.infoStep.imageUrlInvalid"));
       return;
     }
     if (variants.length === 0) {
@@ -299,12 +292,13 @@ const EditProductForm = ({ id }: { id: string }) => {
         attributeValueIds: v.attributeValueIds,
       }));
 
-    patchProduct(
+    putProduct(
       {
         url: updateProduct.url(id),
         data: {
           name: name.trim(),
           description: description.trim() || null,
+          imageUrl: imageUrl.trim() || null,
           shopId,
           isActive,
           variants: {
@@ -317,10 +311,10 @@ const EditProductForm = ({ id }: { id: string }) => {
       {
         onSuccess: () => {
           toastSuccess(t("success.product_updated"));
-          queryClient.invalidateQueries({ queryKey: getProducts.queryKey });
+          queryClient.invalidateQueries({ queryKey: getProducts.queryKey(shopId) });
           queryClient.invalidateQueries({ queryKey: getProduct.queryKey(id) });
           queryClient.invalidateQueries({ queryKey: getProductVariants.queryKey(id) });
-          navigate(`/products/${id}`);
+          navigate(paths.product(id));
         },
       }
     );
@@ -354,7 +348,7 @@ const EditProductForm = ({ id }: { id: string }) => {
       <div className="flex flex-col h-full min-h-0 overflow-y-auto pb-8">
       <div className="shrink-0 mb-6">
         <div className="flex items-center gap-2 mb-1">
-          <Button onClick={() => navigate(`/products/${id}`)} style="link" className="!text-xs !p-0">
+          <Button onClick={() => navigate(paths.product(id))} style="link" className="!text-xs !p-0">
             {product.name}
           </Button>
           <span className="text-xs text-gray-300">/</span>
@@ -389,6 +383,8 @@ const EditProductForm = ({ id }: { id: string }) => {
             rows={3}
           />
 
+          <ProductImageField value={imageUrl} onChange={setImageUrl} />
+
           <div className="grid gap-1.5">
             <label className="text-sm font-medium text-gray-700">
               {t("products.activeStatus")}
@@ -412,31 +408,9 @@ const EditProductForm = ({ id }: { id: string }) => {
             <label className="text-sm font-medium text-gray-700">
               {t("products.infoStep.shopLabel")}
             </label>
-            {shops && shops.length > 0 ? (
-              <div className="grid gap-2">
-                {shops.map((shop) => (
-                  <button
-                    key={shop.id}
-                    type="button"
-                    onClick={() => setShopId(shop.id)}
-                    className={`text-left px-4 py-3 rounded-lg border text-sm transition-colors duration-150 ${
-                      shopId === shop.id
-                        ? "border-gray-900 bg-gray-50 text-gray-900"
-                        : "border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
-                    }`}
-                  >
-                    <span className="font-medium">{shop.name}</span>
-                    {shop.description && (
-                      <span className="block text-xs text-gray-400 mt-0.5">
-                        {shop.description}
-                      </span>
-                    )}
-                  </button>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-gray-400">{t("products.infoStep.noShops")}</p>
-            )}
+            <p className="text-sm text-gray-600 px-4 py-3 rounded-lg border border-gray-200 bg-gray-50">
+              {product.shop.name}
+            </p>
           </div>
         </div>
 
@@ -685,7 +659,7 @@ const EditProductForm = ({ id }: { id: string }) => {
           <Button
             type="button"
             style="ghost"
-            onClick={() => navigate(`/products/${id}`)}
+            onClick={() => navigate(paths.product(id))}
             disabled={isPending}
           >
             {t("common.cancel")}

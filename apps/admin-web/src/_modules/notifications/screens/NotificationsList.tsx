@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useFetch, usePatch } from "@/_shared/queryProvider";
 import { Button, Card, Tag } from "@mercado/shared-ui";
 import { getNotifications, markNotificationRead, markAllNotificationsRead } from "../api";
+import { useShop } from "@/_modules/shops/context/ShopProvider";
 import type { INotification } from "../types";
 
 function typeBadge(
@@ -33,9 +34,11 @@ export const NotificationsList = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
+  const { shopId } = useShop();
+
   const { data: items } = useFetch<INotification[]>({
-    queryKey: getNotifications.queryKey,
-    url: getNotifications.url,
+    queryKey: getNotifications.queryKey(shopId),
+    url: getNotifications.url(shopId),
   });
 
   const { mutate: patchRead } = usePatch();
@@ -55,7 +58,7 @@ export const NotificationsList = () => {
               { url: markAllNotificationsRead.url, data: {} },
               {
                 onSuccess: () => {
-                  queryClient.invalidateQueries({ queryKey: getNotifications.queryKey });
+                  queryClient.invalidateQueries({ queryKey: getNotifications.queryKey(shopId) });
                 },
               }
             )
@@ -95,7 +98,7 @@ export const NotificationsList = () => {
                       { url: markNotificationRead.url(n.id), data: {} },
                       {
                         onSuccess: () => {
-                          queryClient.invalidateQueries({ queryKey: getNotifications.queryKey });
+                          queryClient.invalidateQueries({ queryKey: getNotifications.queryKey(shopId) });
                         },
                       }
                     )

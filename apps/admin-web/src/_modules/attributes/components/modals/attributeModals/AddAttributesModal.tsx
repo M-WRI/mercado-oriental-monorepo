@@ -59,8 +59,8 @@ export const AddAttributeModal = ({
       {
         onSuccess: (_res, variables) => {
           toastSuccess(t("success.attribute_created"));
-          queryClient.invalidateQueries({ queryKey: getAttributes.queryKey });
           const sid = variables?.data?.shopId as string | undefined;
+          queryClient.invalidateQueries({ queryKey: getAttributes.queryKey(sid ?? fixedShopId ?? "") });
           if (sid) {
             queryClient.invalidateQueries({ queryKey: getAttributesByShop.queryKey(sid) });
           }

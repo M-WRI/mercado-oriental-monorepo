@@ -10,6 +10,7 @@ import {
   createDisputeMessage,
 } from "@/_modules/touchpoints/api";
 import { getNotifications } from "@/_modules/notifications/api";
+import { useShop } from "@/_modules/shops/context/ShopProvider";
 import type { IDispute, DisputeStatus } from "@/_modules/touchpoints/types";
 
 const STATUS_VARIANT: Record<DisputeStatus, "default" | "warning" | "info" | "success" | "danger"> = {
@@ -50,9 +51,11 @@ export const OrderDisputes = ({ orderId }: Props) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [replyBody, setReplyBody] = useState("");
 
+  const { shopId } = useShop();
+
   const invalidate = () => {
     queryClient.invalidateQueries({ queryKey: getOrderDisputes.queryKey(orderId) });
-    queryClient.invalidateQueries({ queryKey: getNotifications.queryKey });
+    queryClient.invalidateQueries({ queryKey: getNotifications.queryKey(shopId) });
   };
 
   const handleCreate = () => {

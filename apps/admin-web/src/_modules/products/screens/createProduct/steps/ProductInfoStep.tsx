@@ -4,9 +4,10 @@ import type { StepProps } from "@mercado/shared-ui/components/flowWizard";
 import { useFetch } from "@/_shared/queryProvider";
 import { Input } from "@mercado/shared-ui/components/inputs/components/Input";
 import { TextArea } from "@mercado/shared-ui/components/inputs/components/TextArea";
-import { getShops } from "@/_modules/shops/api";
+import { useShop } from "@/_modules/shops/context/ShopProvider";
+import { ProductImageField, isProductImageUrlValid } from "../../../components/ProductImageField";
 import { getCategories } from "../../../api";
-import type { IShop, ICategory } from "@/_modules/products/types";
+import type { ICategory } from "@/_modules/products/types";
 
 function CategoryPicker({
   categories,
@@ -120,19 +121,14 @@ function CategoryPicker({
 
 export const ProductInfoStep = ({ data, submitRef, onComplete }: StepProps) => {
   const { t } = useTranslation();
+  const { shopId, shop } = useShop();
   const prevData = data.productInfo;
   const [name, setName] = useState(prevData?.name ?? "");
   const [description, setDescription] = useState(prevData?.description ?? "");
-  const [shopId, setShopId] = useState(prevData?.shopId ?? "");
-  const [shopName, setShopName] = useState(prevData?.shopName ?? "");
+  const [imageUrl, setImageUrl] = useState(prevData?.imageUrl ?? "");
   const [categoryIds, setCategoryIds] = useState<string[]>(prevData?.categoryIds ?? []);
   const [categoryNames, setCategoryNames] = useState<Record<string, string>>(prevData?._categoryNames ?? {});
   const [error, setError] = useState<string | null>(null);
-
-  const { data: shops } = useFetch<IShop[]>({
-    queryKey: getShops.queryKey,
-    url: getShops.url,
-  });
 
   const { data: categoryTree } = useFetch<ICategory[]>({
     queryKey: getCategories.queryKey,
@@ -146,19 +142,21 @@ export const ProductInfoStep = ({ data, submitRef, onComplete }: StepProps) => {
         setError(t("products.infoStep.nameRequired"));
         return;
       }
-      if (!shopId) {
-        setError(t("products.infoStep.shopRequired"));
+      if (imageUrl.trim() && !isProductImageUrlValid(imageUrl)) {
+        setError(t("products.infoStep.imageUrlInvalid"));
         return;
       }
-      onComplete({ name: name.trim(), description: description.trim(), shopId, shopName, categoryIds, _categoryNames: categoryNames });
+      onComplete({
+        name: name.trim(),
+        description: description.trim(),
+        imageUrl: imageUrl.trim(),
+        shopId,
+        shopName: shop.name,
+        categoryIds,
+        _categoryNames: categoryNames,
+      });
     };
-  }, [name, description, shopId, shopName, categoryIds, categoryNames, submitRef, onComplete, t]);
-
-  const handleShopChange = (id: string) => {
-    setShopId(id);
-    const shop = shops?.find((s) => s.id === id);
-    setShopName(shop?.name ?? "");
-  };
+  }, [name, description, imageUrl, shopId, shop.name, categoryIds, categoryNames, submitRef, onComplete, t]);
 
   const handleToggleCategory = (id: string, catName: string) => {
     setCategoryIds((prev) =>
@@ -198,36 +196,15 @@ export const ProductInfoStep = ({ data, submitRef, onComplete }: StepProps) => {
           rows={3}
         />
 
+        <ProductImageField value={imageUrl} onChange={setImageUrl} />
+
         <div className="grid gap-1.5">
           <label className="text-sm font-medium text-gray-700">{t("products.infoStep.shopLabel")}</label>
-          {shops && shops.length > 0 ? (
-            <div className="grid gap-2">
-              {shops.map((shop) => (
-                <button
-                  key={shop.id}
-                  type="button"
-                  onClick={() => handleShopChange(shop.id)}
-                  className={`text-left px-4 py-3 rounded-lg border text-sm transition-colors duration-150 ${
-                    shopId === shop.id
-                      ? "border-gray-900 bg-gray-50 text-gray-900"
-                      : "border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
-                  }`}
-                >
-                  <span className="font-medium">{shop.name}</span>
-                  {shop.description && (
-                    <span className="block text-xs text-gray-400 mt-0.5">
-                      {shop.description}
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-gray-400">{t("products.infoStep.noShops")}</p>
-          )}
+          <p className="text-sm text-gray-600 px-4 py-3 rounded-lg border border-gray-200 bg-gray-50">
+            {shop.name}
+          </p>
         </div>
 
-        {/* Category picker */}
         <div className="grid gap-1.5">
           <label className="text-sm font-medium text-gray-700">Categories</label>
           {categoryIds.length > 0 && (
@@ -263,4 +240,3 @@ export const ProductInfoStep = ({ data, submitRef, onComplete }: StepProps) => {
     </div>
   );
 };
-

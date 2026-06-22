@@ -8,6 +8,7 @@ import { getDashboard } from "@/_modules/dashboard/api";
 import { getNotifications } from "@/_modules/notifications/api";
 import { getProducts } from "@/_modules/products/api";
 import { getOrder, getOrders, updateOrderStatus, updateOrder, restockOrder } from "../../api";
+import { useShop } from "@/_modules/shops/context/ShopProvider";
 import { formatCurrency } from "@mercado/shared-ui";
 import type { IOrderDetailResponse, OrderStatus } from "../../types";
 import { StatusTimeline } from "./StatusTimeline";
@@ -27,6 +28,7 @@ const CANCELABLE: OrderStatus[] = ["pending", "confirmed", "packed"];
 export const OrderDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { shopId, paths } = useShop();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { success: toastSuccess } = useToast();
@@ -54,14 +56,14 @@ export const OrderDetail = () => {
 
   const invalidate = () => {
     queryClient.invalidateQueries({ queryKey: getOrder.queryKey(id) });
-    queryClient.invalidateQueries({ queryKey: getOrders.queryKey });
+    queryClient.invalidateQueries({ queryKey: getOrders.queryKey(shopId) });
   };
 
   const invalidateAfterRestock = () => {
     invalidate();
-    queryClient.invalidateQueries({ queryKey: getProducts.queryKey });
-    queryClient.invalidateQueries({ queryKey: getDashboard.queryKey });
-    queryClient.invalidateQueries({ queryKey: getNotifications.queryKey });
+    queryClient.invalidateQueries({ queryKey: getProducts.queryKey(shopId) });
+    queryClient.invalidateQueries({ queryKey: getDashboard.queryKey(shopId) });
+    queryClient.invalidateQueries({ queryKey: getNotifications.queryKey(shopId) });
   };
 
   const advanceStatus = (status: OrderStatus, extra?: Record<string, string>) => {
@@ -160,7 +162,7 @@ export const OrderDetail = () => {
       {/* Breadcrumb */}
       <div className="shrink-0 mb-6">
         <div className="flex items-center gap-2 mb-1">
-          <Button onClick={() => navigate("/orders")} style="link" className="!text-xs !p-0">
+          <Button onClick={() => navigate(paths.orders)} style="link" className="!text-xs !p-0">
             {t("orders.title")}
           </Button>
           <span className="text-xs text-gray-300">/</span>

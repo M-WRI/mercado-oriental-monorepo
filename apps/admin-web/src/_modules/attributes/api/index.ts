@@ -2,8 +2,8 @@ import type { TQueryKey } from "@mercado/shared-ui";
 export * from "./serializers"
 
 export const getAttributes = {
-  queryKey: [["attributes"]] as TQueryKey,
-  url: "/attributes",
+  queryKey: (shopId: string) => [["attributes", shopId]] as TQueryKey,
+  url: (shopId: string) => `/attributes?shopId=${shopId}`,
 };
 
 export const createAttribute = {

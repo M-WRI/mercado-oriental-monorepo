@@ -21,7 +21,7 @@ export const LoginScreen = () => {
           onSuccess: (response) => {
             login(response.token, response.user);
             toastSuccess(t("success.login"));
-            navigate("/");
+            navigate("/shops");
           },
         }
       );

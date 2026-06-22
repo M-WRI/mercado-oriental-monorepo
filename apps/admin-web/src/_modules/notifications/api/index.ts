@@ -1,8 +1,8 @@
 import type { TQueryKey } from "@mercado/shared-ui";
 
 export const getNotifications = {
-  queryKey: [["notifications"]] as TQueryKey,
-  url: "/notifications",
+  queryKey: (shopId: string) => [["notifications", shopId]] as TQueryKey,
+  url: (shopId: string) => `/notifications?shopId=${shopId}`,
 };
 
 export const markNotificationRead = {

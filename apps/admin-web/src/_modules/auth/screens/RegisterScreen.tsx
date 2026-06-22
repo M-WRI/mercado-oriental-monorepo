@@ -26,7 +26,7 @@ export const RegisterScreen = () => {
           onSuccess: (response) => {
             login(response.token, response.user);
             toastSuccess(t("success.register"));
-            navigate("/");
+            navigate("/shops");
           },
         }
       );

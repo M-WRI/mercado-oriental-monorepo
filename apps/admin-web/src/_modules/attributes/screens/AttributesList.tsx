@@ -11,6 +11,7 @@ import { useModal } from "@mercado/shared-ui";
 import type { IAttributeListResponse } from "../types";
 import { AddAttributeModal } from "../components";
 import { DefaultListLayout } from "@/_shared/layout";
+import { useShop } from "@/_modules/shops/context/ShopProvider";
 
 export const AttributesList = () => {
   const { t } = useTranslation();
@@ -18,9 +19,11 @@ export const AttributesList = () => {
   const queryClient = useQueryClient();
   const { success: toastSuccess } = useToast();
 
+  const { shopId, paths } = useShop();
+
   const { data: attributes, isLoading } = useFetch<IAttributeListResponse[]>({
-    queryKey: getAttributes.queryKey,
-    url: getAttributes.url,
+    queryKey: getAttributes.queryKey(shopId),
+    url: getAttributes.url(shopId),
   });
 
   const { openModal, ModalRenderer, closeModal } = useModal({ isLoading });
@@ -41,7 +44,7 @@ export const AttributesList = () => {
   );
 
   const handleAddAttribute = () => {
-    openModal(AddAttributeModal, { onClose: closeModal });
+    openModal(AddAttributeModal, { onClose: closeModal, fixedShopId: shopId });
   };
 
   const handleDeleteSingle = (attribute: IAttributeListResponse) => {
@@ -67,7 +70,7 @@ export const AttributesList = () => {
         {
           onSuccess: () => {
             toastSuccess(t("success.attribute_deleted"));
-            queryClient.invalidateQueries({ queryKey: getAttributes.queryKey });
+            queryClient.invalidateQueries({ queryKey: getAttributes.queryKey(shopId) });
             setConfirmState(null);
           },
           onError: onDeleteError,
@@ -82,7 +85,7 @@ export const AttributesList = () => {
         {
           onSuccess: () => {
             toastSuccess(t("attributes.bulkDeleteSuccess", { count: selected.length }));
-            queryClient.invalidateQueries({ queryKey: getAttributes.queryKey });
+            queryClient.invalidateQueries({ queryKey: getAttributes.queryKey(shopId) });
             setSelected([]);
             setConfirmState(null);
           },
@@ -123,14 +126,14 @@ export const AttributesList = () => {
       cell: ({ row }) => (
         <div className="flex items-center justify-end gap-1">
           <Button
-            onClick={() => navigate(`/attributes/${row.original.id}`)}
+            onClick={() => navigate(paths.attribute(row.original.id))}
             style="primaryOutline"
             className="!text-xs !px-2 !py-1"
           >
             {t("common.show")}
           </Button>
           <Button
-            onClick={() => navigate(`/attributes/${row.original.id}/edit`)}
+            onClick={() => navigate(paths.attributeEdit(row.original.id))}
             style="primary"
             className="!text-xs !px-2 !py-1"
           >

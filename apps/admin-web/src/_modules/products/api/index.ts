@@ -1,7 +1,7 @@
 import type { TQueryKey } from "@mercado/shared-ui";
 
 export const getProducts = {
-  queryKey: [["products"]] as TQueryKey,
+  queryKey: (shopId: string) => [["products", shopId]] as TQueryKey,
   url: "/products",
 };
 

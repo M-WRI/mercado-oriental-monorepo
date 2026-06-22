@@ -12,6 +12,7 @@ import { getProducts } from "../api";
 import { bulkAdjustInventory } from "@/_modules/inventory/api";
 import { getNotifications } from "@/_modules/notifications/api";
 import { getDashboard } from "@/_modules/dashboard/api";
+import { useShop } from "@/_modules/shops/context/ShopProvider";
 import { MdAdd, MdDeleteOutline, MdChevronRight } from "react-icons/md";
 import type { FilterConfig } from "@mercado/shared-ui";
 
@@ -31,6 +32,7 @@ interface IProductListItem {
   id: string;
   name: string;
   description: string | null;
+  imageUrl: string | null;
   isActive: boolean;
   variantCount: number;
   priceMin: number;
@@ -68,6 +70,7 @@ export const ProductList = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { success: toastSuccess } = useToast();
+  const { shopId, paths } = useShop();
 
   // ── Filters config ──────────────────────────────────────────────
   const filterConfigs: FilterConfig[] = useMemo(
@@ -110,8 +113,9 @@ export const ProductList = () => {
     setPage,
     setPageSize,
   } = useListQuery<IProductListItem>({
-    queryKey: getProducts.queryKey,
+    queryKey: getProducts.queryKey(shopId),
     url: getProducts.url,
+    staticFilters: { shopId },
   });
 
   // ── Local UI state ──────────────────────────────────────────────
@@ -162,9 +166,9 @@ export const ProductList = () => {
   ).length;
 
   const invalidateQueries = useCallback(() => {
-    queryClient.invalidateQueries({ queryKey: getProducts.queryKey });
-    queryClient.invalidateQueries({ queryKey: getDashboard.queryKey });
-    queryClient.invalidateQueries({ queryKey: getNotifications.queryKey });
+    queryClient.invalidateQueries({ queryKey: getProducts.queryKey(shopId) });
+    queryClient.invalidateQueries({ queryKey: getDashboard.queryKey(shopId) });
+    queryClient.invalidateQueries({ queryKey: getNotifications.queryKey(shopId) });
   }, [queryClient]);
 
   const handleApply = () => {
@@ -265,7 +269,18 @@ export const ProductList = () => {
           if (row.original._type === "product") {
             const p = row.original.product;
             return (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
+                {p.imageUrl ? (
+                  <img
+                    src={p.imageUrl}
+                    alt=""
+                    className="w-9 h-9 rounded-md object-cover border border-gray-100 shrink-0"
+                  />
+                ) : (
+                  <div className="w-9 h-9 rounded-md bg-gray-100 border border-gray-100 shrink-0 flex items-center justify-center text-xs font-medium text-gray-400">
+                    {p.name.charAt(0).toUpperCase()}
+                  </div>
+                )}
                 <span className="font-medium text-gray-900">{p.name}</span>
                 <span className="text-xs text-gray-400">
                   {p.variants.length}{" "}
@@ -436,14 +451,14 @@ export const ProductList = () => {
                 <Button
                   style="primaryOutline"
                   className="!text-xs !px-2 !py-1"
-                  onClick={() => navigate(`/products/${p.id}`)}
+                  onClick={() => navigate(paths.product(p.id))}
                 >
                   {t("common.show")}
                 </Button>
                 <Button
                   style="primary"
                   className="!text-xs !px-2 !py-1"
-                  onClick={() => navigate(`/products/${p.id}/edit`)}
+                  onClick={() => navigate(paths.productEdit(p.id))}
                 >
                   {t("common.edit")}
                 </Button>
@@ -551,7 +566,7 @@ export const ProductList = () => {
                 </Button>
               </>
             )}
-            <Button onClick={() => navigate("/products/create")} icon={<MdAdd size={16} />}>
+            <Button onClick={() => navigate(paths.productCreate)} icon={<MdAdd size={16} />}>
               {t("products.createProduct")}
             </Button>
           </div>

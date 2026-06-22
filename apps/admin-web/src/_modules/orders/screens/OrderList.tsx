@@ -9,6 +9,7 @@ import { formatCurrency } from "@mercado/shared-ui";
 import { getOrders } from "../api";
 import type { IOrderListItem, OrderStatus } from "../types";
 import type { FilterConfig } from "@mercado/shared-ui";
+import { useShop } from "@/_modules/shops/context/ShopProvider";
 
 const STATUS_CONFIG: Record<
   OrderStatus,
@@ -25,6 +26,7 @@ const STATUS_CONFIG: Record<
 export const OrderList = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { shopId, paths } = useShop();
 
   const filterConfigs: FilterConfig[] = useMemo(
     () => [
@@ -69,8 +71,9 @@ export const OrderList = () => {
     setPage,
     setPageSize,
   } = useListQuery<IOrderListItem>({
-    queryKey: getOrders.queryKey,
+    queryKey: getOrders.queryKey(shopId),
     url: getOrders.url,
+    staticFilters: { shopId },
   });
 
   const columns: ColumnDef<IOrderListItem>[] = useMemo(
@@ -144,7 +147,7 @@ export const OrderList = () => {
         cell: ({ row }) => (
           <div className="flex items-center justify-end">
             <Button
-              onClick={() => navigate(`/orders/${row.original.id}`)}
+              onClick={() => navigate(paths.order(row.original.id))}
               style="primaryOutline"
               className="!text-xs !px-2 !py-1"
             >
