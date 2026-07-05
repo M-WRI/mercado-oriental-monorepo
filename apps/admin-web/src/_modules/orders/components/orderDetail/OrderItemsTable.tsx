@@ -2,7 +2,11 @@ import { useTranslation } from "react-i18next";
 import { formatCurrency } from "@mercado/shared-ui";
 import type { IOrderItem } from "../../types";
 
-export const OrderItemsTable = ({ items }: { items: IOrderItem[] }) => {
+type OrderItemsTableProps = {
+  items: IOrderItem[];
+};
+
+export function OrderItemsTable({ items }: OrderItemsTableProps) {
   const { t } = useTranslation();
 
   return (
@@ -36,11 +40,13 @@ export const OrderItemsTable = ({ items }: { items: IOrderItem[] }) => {
               </td>
               <td className="text-right py-2.5 text-gray-700">{item.quantity}</td>
               <td className="text-right py-2.5 text-gray-700">{formatCurrency(item.unitPrice)}</td>
-              <td className="text-right py-2.5 font-medium text-gray-900">{formatCurrency(item.lineTotal)}</td>
+              <td className="text-right py-2.5 font-medium text-gray-900">
+                {formatCurrency(item.lineTotal)}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
   );
-};
+}

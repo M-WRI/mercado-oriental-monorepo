@@ -355,6 +355,31 @@
     "bulkDeleteSuccess": "{{count}} attributes deleted."
   },
 
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account and shop preferences.",
+    "unnamedUser": "Account",
+    "accountTitle": "Account",
+    "accountSubtitle": "Your personal vendor profile.",
+    "emailLabel": "Email",
+    "nameLabel": "Display name",
+    "nameRequired": "Display name is required.",
+    "changePassword": "Change password",
+    "currentPasswordLabel": "Current password",
+    "newPasswordLabel": "New password",
+    "confirmPasswordLabel": "Confirm new password",
+    "currentPasswordRequired": "Enter your current password to set a new one.",
+    "newPasswordTooShort": "New password must be at least 8 characters.",
+    "passwordMismatch": "New passwords do not match.",
+    "saveAccount": "Save account",
+    "shopTitle": "Shop",
+    "shopSubtitle": "Defaults for {{shop}}.",
+    "lowStockLabel": "Low stock threshold",
+    "lowStockHint": "Variants at or below this available quantity trigger low-stock alerts.",
+    "lowStockInvalid": "Enter a valid number (0 or greater).",
+    "saveShop": "Save shop settings"
+  },
+
   "categories": {
     "title": "Categories",
     "subtitle": "Organize products in a multi-level taxonomy. Categories can nest several levels deep.",
@@ -737,6 +762,8 @@
     "shop_created": "Shop created successfully.",
     "shop_updated": "Shop updated successfully.",
     "shop_deleted": "Shop deleted successfully.",
+    "shop_settings_updated": "Shop settings saved.",
+    "profile_updated": "Account updated successfully.",
     "attribute_created": "Attribute created successfully.",
     "attribute_updated": "Attribute updated successfully.",
     "attribute_deleted": "Attribute deleted successfully.",

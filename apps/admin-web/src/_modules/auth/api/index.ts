@@ -12,3 +12,7 @@ export const me = {
   queryKey: [["auth", "me"]] as TQueryKey,
   url: "/auth/me",
 };
+
+export const updateProfile = {
+  url: "/auth/me",
+};

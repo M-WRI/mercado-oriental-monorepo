@@ -355,6 +355,31 @@
     "bulkDeleteSuccess": "已删除 {{count}} 个属性。"
   },
 
+  "settings": {
+    "title": "设置",
+    "subtitle": "管理您的账户和店铺偏好。",
+    "unnamedUser": "账户",
+    "accountTitle": "账户",
+    "accountSubtitle": "您的供应商个人资料。",
+    "emailLabel": "邮箱",
+    "nameLabel": "显示名称",
+    "nameRequired": "显示名称为必填项。",
+    "changePassword": "修改密码",
+    "currentPasswordLabel": "当前密码",
+    "newPasswordLabel": "新密码",
+    "confirmPasswordLabel": "确认新密码",
+    "currentPasswordRequired": "修改密码请输入当前密码。",
+    "newPasswordTooShort": "新密码至少需要 8 个字符。",
+    "passwordMismatch": "两次输入的新密码不一致。",
+    "saveAccount": "保存账户",
+    "shopTitle": "店铺",
+    "shopSubtitle": "{{shop}} 的默认设置。",
+    "lowStockLabel": "低库存阈值",
+    "lowStockHint": "可用库存低于或等于此数量时将触发低库存提醒。",
+    "lowStockInvalid": "请输入有效数字（0 或更大）。",
+    "saveShop": "保存店铺设置"
+  },
+
   "categories": {
     "title": "分类",
     "subtitle": "用多层分类体系组织产品，分类可嵌套多个层级。",
@@ -737,6 +762,8 @@
     "shop_created": "店铺创建成功。",
     "shop_updated": "店铺更新成功。",
     "shop_deleted": "店铺删除成功。",
+    "shop_settings_updated": "店铺设置已保存。",
+    "profile_updated": "账户更新成功。",
     "attribute_created": "属性创建成功。",
     "attribute_updated": "属性更新成功。",
     "attribute_deleted": "属性删除成功。",

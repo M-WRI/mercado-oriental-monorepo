@@ -355,6 +355,31 @@
     "bulkDeleteSuccess": "{{count}} atributos eliminados."
   },
 
+  "settings": {
+    "title": "Configuración",
+    "subtitle": "Gestiona tu cuenta y las preferencias de la tienda.",
+    "unnamedUser": "Cuenta",
+    "accountTitle": "Cuenta",
+    "accountSubtitle": "Tu perfil de vendedor.",
+    "emailLabel": "Correo electrónico",
+    "nameLabel": "Nombre visible",
+    "nameRequired": "El nombre visible es obligatorio.",
+    "changePassword": "Cambiar contraseña",
+    "currentPasswordLabel": "Contraseña actual",
+    "newPasswordLabel": "Nueva contraseña",
+    "confirmPasswordLabel": "Confirmar nueva contraseña",
+    "currentPasswordRequired": "Introduce tu contraseña actual para cambiarla.",
+    "newPasswordTooShort": "La nueva contraseña debe tener al menos 8 caracteres.",
+    "passwordMismatch": "Las contraseñas nuevas no coinciden.",
+    "saveAccount": "Guardar cuenta",
+    "shopTitle": "Tienda",
+    "shopSubtitle": "Valores predeterminados para {{shop}}.",
+    "lowStockLabel": "Umbral de stock bajo",
+    "lowStockHint": "Las variantes en o por debajo de esta cantidad disponible activan alertas.",
+    "lowStockInvalid": "Introduce un número válido (0 o mayor).",
+    "saveShop": "Guardar configuración de tienda"
+  },
+
   "categories": {
     "title": "Categorías",
     "subtitle": "Organiza productos en una taxonomía multinivel. Las categorías pueden anidarse varios niveles.",
@@ -737,6 +762,8 @@
     "shop_created": "Tienda creada exitosamente.",
     "shop_updated": "Tienda actualizada exitosamente.",
     "shop_deleted": "Tienda eliminada exitosamente.",
+    "shop_settings_updated": "Configuración de tienda guardada.",
+    "profile_updated": "Cuenta actualizada exitosamente.",
     "attribute_created": "Atributo creado exitosamente.",
     "attribute_updated": "Atributo actualizado exitosamente.",
     "attribute_deleted": "Atributo eliminado exitosamente.",

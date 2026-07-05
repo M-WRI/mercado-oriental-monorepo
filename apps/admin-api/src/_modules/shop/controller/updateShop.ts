@@ -15,6 +15,18 @@ export const updateShop = asyncHandler(async (req: AuthenticatedRequest, res: Re
     });
   }
 
+  if (
+    data.defaultLowStockThreshold !== undefined &&
+    (!Number.isInteger(data.defaultLowStockThreshold) ||
+      data.defaultLowStockThreshold < 0)
+  ) {
+    throw new AppError({
+      case: "shop_low_stock_threshold",
+      code: ERROR_CODES.INVALID,
+      statusCode: 400,
+    });
+  }
+
   const existing = await prisma.shop.findFirst({
     where: { id, userId },
   });
@@ -31,7 +43,11 @@ export const updateShop = asyncHandler(async (req: AuthenticatedRequest, res: Re
     where: { id },
     data: {
       name: data.name?.trim(),
-      description: data.description?.trim(),
+      description: data.description !== undefined ? data.description?.trim() || null : undefined,
+      defaultLowStockThreshold:
+        data.defaultLowStockThreshold !== undefined
+          ? data.defaultLowStockThreshold
+          : undefined,
     },
   });
 

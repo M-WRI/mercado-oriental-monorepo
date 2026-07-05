@@ -1,0 +1,1 @@
+export { useNotificationsList } from "./useNotificationsList";

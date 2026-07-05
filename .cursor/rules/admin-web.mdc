@@ -1,0 +1,49 @@
+---
+description: Admin web module layout, routing, and data fetching
+globs: apps/admin-web/**
+alwaysApply: false
+---
+
+# Admin web conventions
+
+## Module structure
+
+Each feature lives under `src/_modules/<feature>/`:
+
+```
+_modules/<feature>/
+  api/index.ts           # endpoint URLs, query keys, serializers
+  types/index.ts         # request/response + form value types
+  hooks/                 # form hooks, feature-specific logic
+  utils/                 # pure helpers (badge mappers, formatters)
+  components/
+    forms/               # presentational forms (receive FormFromUseFormHook)
+    <feature>/           # grouped UI for complex screens (e.g. orderDetail/)
+  screens/               # thin route-level composers
+```
+
+## Shop-scoped routing
+
+Admin features run inside `/s/:shopId/*`. Use `useShop()` from `ShopProvider` for `shopId` and `paths` — never hardcode `/s/...` paths in screens.
+
+Add new routes to `ShopPaths` in `ShopProvider.tsx` and register them in the router.
+
+## Data fetching
+
+- Queries/mutations: `useFetch`, `usePost`, `usePut`, `usePatch`, `useDelete` from `@/_shared/queryProvider` or `@mercado/shared-ui`
+- Define endpoints in the module's `api/index.ts` with `url` + `queryKey`
+- Invalidate related query keys after mutations via `useQueryClient`
+- Success/error feedback via `useToast()`
+
+## Screen patterns
+
+Screens compose hooks + components — keep them short.
+
+- **Forms:** hook owns `useFormHook` + mutation; form component owns fields (see `AddAttributeForm`, `AccountSettingsForm`)
+- **List screens:** `Container`, `Table`, `TableFilters`, pagination from shared-ui
+- **Modals:** `ModalWrapper` wrapping a form component; hook can live in modal or screen
+- **Loading/error:** `QueryError`, skeleton states consistent with sibling screens
+
+## Categories vs shop data
+
+Categories are **global taxonomy** (not shop-scoped). Products, attributes, orders, inventory are shop-scoped.

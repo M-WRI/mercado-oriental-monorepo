@@ -1,0 +1,68 @@
+---
+description: Core Mercado Oriental standards — always follow
+alwaysApply: true
+---
+
+# Core standards (mandatory)
+
+## Search before you create
+
+Before adding any UI component, hook, or utility:
+
+1. Search `packages/shared-ui/src/components` and `packages/shared-ui/src/hooks`
+2. Search the target app's `_modules/*/components` for domain-specific pieces
+3. Reuse or extend existing code — do not duplicate Button, Modal, Table, Dropdown, inputs, etc.
+
+If a component is reusable across admin-web and store-web (or is a generic atom/molecule), it belongs in **shared-ui**, not in an app.
+
+## Forms
+
+**Always** use `useFormHook` from `@mercado/shared-ui` with the registered field components (`TextField`, `NumberField`, `TextAreaField`, `CommaSeparatedField`, `SubmitButton`).
+
+```tsx
+// ✅ GOOD
+const { form } = useFormHook({
+  defaultValues: { name: "" },
+  onSubmit: ({ value }) => mutate({ url, data: value }),
+});
+
+// ❌ BAD — raw useState per field, uncontrolled inputs, or ad-hoc form libraries
+```
+
+New field types: add the component under `shared-ui/src/components/inputs`, register it in `useFormHook.tsx`.
+
+## Layered UI architecture
+
+Screens are **thin composers** — they wire hooks and layout, not business logic or field markup.
+
+| Layer | Location | Responsibility |
+|-------|----------|----------------|
+| Screen | `_modules/<feature>/screens/` | Page layout, compose sections/components |
+| Form UI | `_modules/<feature>/components/forms/` | Fields + submit UI; receives `form: FormFromUseFormHook` |
+| Module hooks | `_modules/<feature>/hooks/` | `useFormHook`, mutations, validation, cache invalidation |
+| Module components | `_modules/<feature>/components/` | Reusable sections, modals, pickers for this feature |
+| Shared UI | `packages/shared-ui/` | Atoms/molecules used across apps |
+
+```tsx
+// ✅ Screen — compose only
+const account = useAccountSettingsForm();
+return <AccountSettingsForm form={account.form} ... />;
+
+// ❌ Screen — 200 lines of form fields and mutation logic inline
+```
+
+Extract a form component when a screen grows beyond layout, or when the same form appears in a modal and a page.
+
+## Scope and diffs
+
+- Match existing patterns in the file/module you touch
+- Minimal, focused diffs — no drive-by refactors
+- Do not commit unless explicitly asked
+
+## API ↔ frontend alignment
+
+Before wiring a mutation, read the backend route definition and use the **exact** HTTP method (`usePost`, `usePut`, `usePatch`, `useDelete`). Mismatching PUT vs PATCH causes silent failures.
+
+## i18n
+
+All user-facing strings in web apps use `useTranslation()` and keys in `en`, `es`, and `zh` locale files.

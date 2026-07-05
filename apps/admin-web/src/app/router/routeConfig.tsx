@@ -3,6 +3,7 @@ import { AttributeDetail, AttributesList, EditAttribute } from "@/_modules/attri
 import { CategoriesList } from "@/_modules/categories/screens";
 import { DashboardScreen } from "@/_modules/dashboard/screens";
 import { NotificationsList } from "@/_modules/notifications/screens";
+import { SettingsScreen } from "@/_modules/settings/screens";
 import { OrderDetail, OrderList } from "@/_modules/orders/screens";
 import { ProductList } from "@/_modules/products/screens/ProductList";
 import { CreateProduct } from "@/_modules/products/screens/createProduct";
@@ -70,5 +71,10 @@ export const routeConfig: TRouteConfig[] | undefined = [
     labelKey: "nav.notifications",
     label: "Notifications",
     icon: <MdOutlineReceipt size={20} />,
+  },
+  {
+    path: "settings",
+    children: [{ index: true, Component: SettingsScreen }],
+    showInSidebar: false,
   },
 ];

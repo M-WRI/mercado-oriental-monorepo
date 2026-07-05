@@ -9,6 +9,7 @@ export * from './card';
 export * from './tag';
 export * from './toast';
 export * from './confirmDialog';
+export * from './dropdown';
 export * from './tableFilters';
 export * from './modalWrapper';
 export * from './inputs';

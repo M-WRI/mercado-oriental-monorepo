@@ -1,0 +1,34 @@
+---
+description: Shared UI component and hook placement
+globs: packages/shared-ui/**
+alwaysApply: false
+---
+
+# Shared UI conventions
+
+## What belongs here
+
+| Layer | Location | Examples |
+|-------|----------|----------|
+| Atoms | `components/<name>/` | Button, Input, Tag, Dropdown |
+| Molecules | `components/<name>/` | TableFilters, ModalWrapper, FlowWizard |
+| Hooks | `hooks/` | useFormHook, useModal, useToggle, useUpload |
+| API client | `api/` | useFetch, usePost, apiGet, errorSerializer |
+| Utils | `utils/` | format, stock helpers |
+
+Domain-specific UI (product forms, category tree admin) stays in the app module unless both apps need it.
+
+## Component checklist
+
+1. Export from `components/<name>/index.ts` and re-export in `components/index.ts`
+2. Use Tailwind classes consistent with existing components (gray palette, rounded-xl, border-gray-200)
+3. Accept `className` where layout flexibility is needed
+4. No app-specific imports (`admin-web`, `store-web`, `admin-api`)
+
+## Extending forms
+
+To add a new field type:
+
+1. Create `components/inputs/components/MyField.tsx` using `useFieldContext`
+2. Export from `components/inputs/components/index.ts`
+3. Register in `hooks/useFormHook.tsx` `fieldComponents`

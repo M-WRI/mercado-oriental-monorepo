@@ -1,4 +1,5 @@
 export * from './useToggle';
+export * from './useClickOutside';
 export * from './useComponentWidth';
 export * from './useModal';
 export * from './useTab';

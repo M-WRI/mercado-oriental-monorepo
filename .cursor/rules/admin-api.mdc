@@ -1,0 +1,46 @@
+---
+description: Admin API patterns for controllers and modules
+globs: apps/admin-api/**
+alwaysApply: false
+---
+
+# Admin API conventions
+
+## Module layout
+
+```
+_modules/<feature>/
+  controller/   # one handler per file, exported from index.ts
+  routes/       # Express router mounting controllers
+  serializers/  # response shaping (when needed)
+```
+
+Register new routers in `src/app.ts`.
+
+## Controller patterns
+
+- Wrap handlers with `asyncHandler`
+- Throw `AppError` for expected failures (404, 403, validation)
+- Use `AuthenticatedRequest` + `getShopIdsForUser` / `resolveScopedShopIds` for shop-scoped resources
+- List endpoints: `parseListQuery` + `paginatedResponse`
+
+## HTTP methods
+
+Use consistently so frontend hooks match:
+
+| Action | Method |
+|--------|--------|
+| Create | POST |
+| Full replace | PUT |
+| Partial update | PATCH (only when route is PATCH) |
+| Delete | DELETE |
+
+When adding or changing a route, grep admin-web for the matching `usePut`/`usePatch` call.
+
+## Schema changes
+
+Edit `prisma/schema.prisma`, run generate/push, update seed if needed. Shared types go in `packages/shared-types` when both apps consume them.
+
+## Tests
+
+Add integration tests under `apps/admin-api/src/_modules/<feature>/` for new endpoints or bug fixes.

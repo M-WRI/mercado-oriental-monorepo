@@ -44,4 +44,24 @@ describe.skipIf(!hasTestDatabase)("auth (integration)", () => {
     expect(me.status).toBe(200);
     expect(me.body.email).toBe(email);
   });
+
+  it("updates profile name via PATCH /me", async () => {
+    const email = makeIntegrationTestEmail("auth-patch");
+    const password = "secret12";
+
+    const reg = await request(app).post("/api/admin/auth/register").send({
+      email,
+      password,
+      name: "Before",
+    });
+    expect(reg.status).toBe(201);
+
+    const patch = await request(app)
+      .patch("/api/admin/auth/me")
+      .set("Authorization", `Bearer ${reg.body.token}`)
+      .send({ name: "After Update" });
+
+    expect(patch.status).toBe(200);
+    expect(patch.body.name).toBe("After Update");
+  });
 });

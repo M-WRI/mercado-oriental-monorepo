@@ -18,6 +18,7 @@ export type ShopPaths = {
   attribute: (id: string) => string;
   attributeEdit: (id: string) => string;
   categories: string;
+  settings: string;
   notifications: string;
 };
 
@@ -45,6 +46,7 @@ function buildPaths(shopId: string): ShopPaths {
     attribute: (id) => `${base}/attributes/${id}`,
     attributeEdit: (id) => `${base}/attributes/${id}/edit`,
     categories: `${base}/categories`,
+    settings: `${base}/settings`,
     notifications: `${base}/notifications`,
   };
 }
