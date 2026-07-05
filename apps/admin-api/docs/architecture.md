@@ -101,7 +101,12 @@ Exact fields and relations are defined in `prisma/schema.prisma`.
 | `DATABASE_URL` | PostgreSQL connection string (required) |
 | `JWT_SECRET` | Secret for signing and verifying JWTs (defaults exist in code for dev; set in production) |
 | `PORT` | HTTP port (default `8000`) |
-| `PUBLIC_BASE_URL` | Optional absolute base URL for product image links (e.g. `https://api.example.com`). If unset, derived from each request. Set in production when the API sits behind a proxy or serves uploads from a stable public origin. Uploaded files are stored under `uploads/` on disk and exposed at `/uploads/...`. |
+| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name (required for product image uploads) |
+| `CLOUDINARY_API_KEY` | Cloudinary API key |
+| `CLOUDINARY_API_SECRET` | Cloudinary API secret |
+| `CLOUDINARY_FOLDER` | Optional folder prefix in Cloudinary (default `mercado-oriental/products`) |
+
+Product images are uploaded to Cloudinary through `POST /api/admin/uploads/product-image`. The database stores the returned `secure_url` only; the API does not persist image files locally.
 
 ## Module generator
 

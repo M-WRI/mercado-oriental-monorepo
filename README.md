@@ -95,16 +95,28 @@ Pick a shop from the shop picker to enter the dashboard.
 
 ## Product image uploads
 
-Uploaded images are stored on disk under `apps/admin-api/uploads/` and served at `/uploads/...`.
+Product images are uploaded to **Cloudinary** via the admin API (`POST /api/admin/uploads/product-image`). The API stores only the returned HTTPS URL on the product — no files are kept on the server.
 
-When creating or updating a product with an image, the API returns an absolute `imageUrl`. Set **`PUBLIC_BASE_URL`** in the API environment so URLs stay correct behind a reverse proxy or on another host:
+Add these to `apps/admin-api/.env` (free tier at [cloudinary.com](https://cloudinary.com)):
 
 ```bash
-# apps/admin-api/.env
-PUBLIC_BASE_URL=https://api.example.com
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+# optional:
+# CLOUDINARY_FOLDER=mercado-oriental/products
 ```
 
-If unset, the API derives the base URL from each request (`Host` / `X-Forwarded-Proto`). For production deployments, set `PUBLIC_BASE_URL` explicitly and ensure the `uploads/` directory is persisted (volume mount) or migrate to object storage later.
+## Production deploy (summary)
+
+| Component | Notes |
+|-----------|--------|
+| **Database** | Managed Postgres; set `DATABASE_URL` |
+| **API** | Set `JWT_SECRET`, Cloudinary vars; run `prisma migrate deploy` (see `apps/admin-api/docker-entrypoint.sh`) |
+| **Admin web** | Build with `VITE_API_URL=https://your-api.example.com/api/admin` |
+| **Migrations** | Committed under `apps/admin-api/prisma/migrations/` |
+
+Docker Compose defaults to `PRISMA_DB_PUSH=false` so the API container runs **`migrate deploy`**. For schema-only local Docker without caring about migration history, set `PRISMA_DB_PUSH=true`.
 
 See also: [apps/admin-api/docs/architecture.md](./apps/admin-api/docs/architecture.md#configuration).
 

@@ -14,6 +14,16 @@ export const getOrderDisputes = {
   url: (orderId?: string) => `/touchpoints/disputes?orderId=${orderId}`,
 };
 
+export const getShopDisputes = {
+  queryKey: (shopId: string, status?: string) =>
+    [["disputes", "shop", shopId, status ?? "all"]] as TQueryKey,
+  url: (shopId: string, status?: string) => {
+    const params = new URLSearchParams({ shopId });
+    if (status) params.set("status", status);
+    return `/touchpoints/disputes?${params.toString()}`;
+  },
+};
+
 export const getDispute = {
   queryKey: (id?: string) => [["dispute", id]] as TQueryKey,
   url: (id?: string) => `/touchpoints/disputes/${id}`,

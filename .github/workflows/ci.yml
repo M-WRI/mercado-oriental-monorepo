@@ -1,5 +1,4 @@
 # Run build + tests on every push and pull request.
-# Postgres service enables integration tests (same as local when DATABASE_URL is set).
 
 name: CI
 
@@ -14,9 +13,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
+  ci:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     services:
       postgres:
@@ -36,28 +35,43 @@ jobs:
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/mercado_ci
       JWT_SECRET: ci-test-secret
+      CLOUDINARY_CLOUD_NAME: ci-placeholder
+      CLOUDINARY_API_KEY: ci-placeholder
+      CLOUDINARY_API_SECRET: ci-placeholder
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version-file: ".nvmrc"
-          cache: yarn
+          node-version-file: apps/admin-api/.nvmrc
+          cache: pnpm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Generate Prisma client
-        run: yarn prisma generate
+        run: pnpm --filter @mercado/admin-api prisma:generate
 
       - name: Apply database schema
-        run: yarn prisma db push
+        working-directory: apps/admin-api
+        run: pnpm exec prisma migrate deploy
 
-      - name: Build
-        run: yarn build
+      - name: Build admin API
+        run: pnpm build:api
 
-      - name: Test
-        run: yarn test
+      - name: Build admin web
+        run: pnpm build:admin
+
+      - name: Test admin API
+        run: pnpm --filter @mercado/admin-api test
+
+      - name: Test admin web
+        run: pnpm --filter @mercado/admin-web test

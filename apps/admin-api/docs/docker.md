@@ -42,7 +42,10 @@ For **production**, prefer **`prisma migrate deploy`**:
 | `DATABASE_URL` | Postgres connection string (set automatically in `docker-compose.yml` for `api`) |
 | `JWT_SECRET` | JWT signing secret (compose defaults to a dev value; override via `.env` next to compose or shell) |
 | `PORT` | HTTP port inside the container (default **8000**) |
-| `PUBLIC_BASE_URL` | Optional public origin for product `imageUrl` values (e.g. `https://api.example.com`). Mount or persist `uploads/` if you use file uploads in Docker. |
+| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name (required for product image uploads) |
+| `CLOUDINARY_API_KEY` | Cloudinary API key |
+| `CLOUDINARY_API_SECRET` | Cloudinary API secret |
+| `CLOUDINARY_FOLDER` | Optional folder prefix in Cloudinary (default `mercado-oriental/products`) |
 | `PRISMA_DB_PUSH` | If **`true`**, run `db push`; if **`false`**, run `migrate deploy` |
 
 Optional: create `.env.docker` with `JWT_SECRET=...` and run:

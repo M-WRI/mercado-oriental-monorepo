@@ -40,6 +40,7 @@
     "attributes": "Atributos",
     "categories": "Categorías",
     "orders": "Pedidos",
+    "disputes": "Disputas",
     "inventory": "Inventario",
     "notifications": "Notificaciones",
     "settings": "Configuración"
@@ -522,6 +523,14 @@
       "DISPUTE_STATUS_CHANGE": "Actualización de disputa",
       "NEW_REVIEW": "Reseña"
     }
+  },
+
+  "disputes": {
+    "title": "Disputas",
+    "subtitle": "Todas las disputas de clientes de esta tienda.",
+    "empty": "Aún no hay disputas.",
+    "viewOrder": "Ver pedido",
+    "openCount": "{{count}} abiertas"
   },
 
   "touchpoints": {

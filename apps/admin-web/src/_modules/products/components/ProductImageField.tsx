@@ -15,6 +15,7 @@ function isValidImageUrl(value: string): boolean {
   const trimmed = value.trim();
   if (!trimmed) return true;
   if (trimmed.startsWith("/uploads/")) return true;
+  if (trimmed.includes("res.cloudinary.com")) return true;
   try {
     new URL(trimmed);
     return true;

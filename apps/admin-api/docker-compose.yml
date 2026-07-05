@@ -25,8 +25,11 @@ services:
       DATABASE_URL: postgresql://mercado:mercado@db:5432/mercado
       JWT_SECRET: ${JWT_SECRET:-dev-docker-secret}
       PORT: "8000"
-      # Local Docker: sync schema without migration files. For production images, set PRISMA_DB_PUSH=false and ship prisma/migrations.
-      PRISMA_DB_PUSH: "true"
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+      # false = prisma migrate deploy (production). true = prisma db push (quick local schema sync).
+      PRISMA_DB_PUSH: "${PRISMA_DB_PUSH:-false}"
     depends_on:
       db:
         condition: service_healthy

@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import uploadRoutes from "./_modules/uploads/routes";
-import { ensureUploadDirs, UPLOADS_ROOT } from "./lib/uploads";
 import authRoutes from "./_modules/auth/routes";
 import shopRoutes from "./_modules/shop/routes";
 import attributeRoutes from "./_modules/attributes/routes";
@@ -26,10 +25,8 @@ import { errorMiddleware } from "./middleware/errorMiddleware";
 export function createApp() {
   const app = express();
 
-  ensureUploadDirs();
   app.use(express.json());
   app.use(cors());
-  app.use("/uploads", express.static(UPLOADS_ROOT));
 
   const adminRouter = express.Router();
   adminRouter.use("/auth", authRoutes);

@@ -12,8 +12,10 @@ export type ShopPaths = {
   productCreate: string;
   product: (id: string) => string;
   productEdit: (id: string) => string;
+  inventory: string;
   orders: string;
   order: (id: string) => string;
+  disputes: string;
   attributes: string;
   attribute: (id: string) => string;
   attributeEdit: (id: string) => string;
@@ -40,8 +42,10 @@ function buildPaths(shopId: string): ShopPaths {
     productCreate: `${base}/products/create`,
     product: (id) => `${base}/products/${id}`,
     productEdit: (id) => `${base}/products/${id}/edit`,
+    inventory: `${base}/inventory`,
     orders: `${base}/orders`,
     order: (id) => `${base}/orders/${id}`,
+    disputes: `${base}/disputes`,
     attributes: `${base}/attributes`,
     attribute: (id) => `${base}/attributes/${id}`,
     attributeEdit: (id) => `${base}/attributes/${id}/edit`,

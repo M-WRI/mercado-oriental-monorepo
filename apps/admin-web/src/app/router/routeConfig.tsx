@@ -1,7 +1,9 @@
-import { MdOutlineCategory, MdOutlineReceipt, MdOutlineShoppingCart, MdOutlineSpaceDashboard, MdAccountTree } from "react-icons/md";
+import { MdOutlineCategory, MdOutlineReceipt, MdOutlineShoppingCart, MdOutlineSpaceDashboard, MdAccountTree, MdOutlineInventory2, MdOutlineReportProblem } from "react-icons/md";
 import { AttributeDetail, AttributesList, EditAttribute } from "@/_modules/attributes/screens";
 import { CategoriesList } from "@/_modules/categories/screens";
 import { DashboardScreen } from "@/_modules/dashboard/screens";
+import { DisputesList } from "@/_modules/disputes/screens";
+import { InventoryList } from "@/_modules/inventory/screens";
 import { NotificationsList } from "@/_modules/notifications/screens";
 import { SettingsScreen } from "@/_modules/settings/screens";
 import { OrderDetail, OrderList } from "@/_modules/orders/screens";
@@ -54,6 +56,14 @@ export const routeConfig: TRouteConfig[] | undefined = [
     icon: <MdOutlineShoppingCart size={20} />,
   },
   {
+    path: "inventory",
+    children: [{ index: true, Component: InventoryList }],
+    showInSidebar: true,
+    labelKey: "nav.inventory",
+    label: "Inventory",
+    icon: <MdOutlineInventory2 size={20} />,
+  },
+  {
     path: "orders",
     children: [
       { index: true, Component: OrderList },
@@ -63,6 +73,14 @@ export const routeConfig: TRouteConfig[] | undefined = [
     labelKey: "nav.orders",
     label: "Orders",
     icon: <MdOutlineReceipt size={20} />,
+  },
+  {
+    path: "disputes",
+    children: [{ index: true, Component: DisputesList }],
+    showInSidebar: true,
+    labelKey: "nav.disputes",
+    label: "Disputes",
+    icon: <MdOutlineReportProblem size={20} />,
   },
   {
     path: "notifications",

@@ -40,6 +40,7 @@
     "attributes": "属性",
     "categories": "分类",
     "orders": "订单",
+    "disputes": "争议",
     "inventory": "库存",
     "notifications": "通知",
     "settings": "设置"
@@ -522,6 +523,14 @@
       "DISPUTE_STATUS_CHANGE": "争议更新",
       "NEW_REVIEW": "评价"
     }
+  },
+
+  "disputes": {
+    "title": "争议",
+    "subtitle": "此店铺的所有客户争议。",
+    "empty": "暂无争议。",
+    "viewOrder": "查看订单",
+    "openCount": "{{count}} 个待处理"
   },
 
   "touchpoints": {

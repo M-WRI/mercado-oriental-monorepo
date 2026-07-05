@@ -40,6 +40,7 @@
     "attributes": "Attributes",
     "categories": "Categories",
     "orders": "Orders",
+    "disputes": "Disputes",
     "inventory": "Inventory",
     "notifications": "Notifications",
     "settings": "Settings"
@@ -171,6 +172,7 @@
     "bulkDeleteConfirmMessage": "Are you sure you want to delete {{count}} products? This action cannot be undone. Order history will be preserved.",
     "bulkDelete": "Delete ({{count}})",
     "bulkDeleteSuccess": "{{count}} products deleted.",
+    "showAlertsOnly": "Show alerts only",
     "listInventorySubtitle": "Catalog, stock, and variants in one place. Expand a product to adjust quantities or remove variants.",
     "noVariantsInList": "No variants yet. Edit the product to add SKUs.",
     "selectProduct": "Select product",
@@ -406,6 +408,25 @@
   },
 
   "inventory": {
+    "title": "Inventory",
+    "subtitle": "View and adjust stock across all products and variants.",
+    "onHand": "On hand",
+    "reserved": "Reserved",
+    "available": "Available",
+    "threshold": "Alert threshold",
+    "status": "Status",
+    "variant": "Variant",
+    "addRemove": "Add / Remove",
+    "clearChanges": "Clear changes",
+    "applyBulk": "Apply adjustments",
+    "applyCount": "Apply ({{count}})",
+    "bulkSuccess": "{{count}} line(s) updated.",
+    "totalProducts": "{{count}} products",
+    "totalVariants": "{{count}} SKUs",
+    "totalAvailable": "Available units",
+    "alertCount_one": "{{count}} alert",
+    "alertCount_other": "{{count}} alerts",
+    "alertCount": "alerts",
     "viewHistory": "History",
     "historyTitle": "Stock movement history",
     "noMovements": "No stock movements recorded yet.",
@@ -421,6 +442,14 @@
       "DAMAGE": "Damaged stock",
       "BULK_ADJUST": "Bulk adjustment"
     }
+  },
+
+  "disputes": {
+    "title": "Disputes",
+    "subtitle": "All customer disputes across this shop.",
+    "empty": "No disputes yet.",
+    "viewOrder": "View order",
+    "openCount": "{{count}} open"
   },
 
   "orders": {
@@ -484,28 +513,6 @@
     "restockHint": "Add units back to stock for each line (e.g. customer return). Only delivered orders can be restocked.",
     "restockSubmit": "Apply restock",
     "restockSuccess": "Inventory updated for returned units."
-  },
-
-  "inventory": {
-    "title": "Inventory",
-    "subtitle": "View and adjust stock across all products and variants.",
-    "onHand": "On hand",
-    "reserved": "Reserved",
-    "available": "Available",
-    "threshold": "Alert threshold",
-    "status": "Status",
-    "variant": "Variant",
-    "addRemove": "Add / Remove",
-    "clearChanges": "Clear changes",
-    "applyBulk": "Apply adjustments",
-    "applyCount": "Apply ({{count}})",
-    "bulkSuccess": "{{count}} line(s) updated.",
-    "totalProducts": "{{count}} products",
-    "totalVariants": "{{count}} SKUs",
-    "totalAvailable": "Available units",
-    "alertCount_one": "{{count}} alert",
-    "alertCount_other": "{{count}} alerts",
-    "alertCount": "alerts"
   },
 
   "notifications": {

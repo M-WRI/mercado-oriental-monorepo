@@ -1,10 +1,15 @@
 import { Response } from "express";
-import { prisma, asyncHandler, getShopIdsForUser } from "../../../lib";
+import { prisma, asyncHandler, getShopIdsForUser, resolveScopedShopIds } from "../../../lib";
 import { AuthenticatedRequest } from "../../../middleware/authMiddleware";
 
 export const listDisputes = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
-  const shopIds = await getShopIdsForUser(req.user!.userId);
+  const allShopIds = await getShopIdsForUser(req.user!.userId);
+  const shopIds = resolveScopedShopIds(allShopIds, req.query.shopId);
   const { status, orderId } = req.query as { status?: string; orderId?: string };
+
+  if (shopIds.length === 0) {
+    return res.json([]);
+  }
 
   const where: Record<string, unknown> = {
     order: { shopId: { in: shopIds } },
