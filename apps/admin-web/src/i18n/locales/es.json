@@ -41,7 +41,8 @@
     "categories": "Categorías",
     "orders": "Pedidos",
     "inventory": "Inventario",
-    "notifications": "Notificaciones"
+    "notifications": "Notificaciones",
+    "settings": "Configuración"
   },
 
   "shops": {
@@ -177,6 +178,7 @@
     "deleteVariantMessage": "¿Eliminar \"{{name}}\"? Esta acción no se puede deshacer.",
     "deleteVariantAria": "Eliminar variante",
     "variants": "Variantes",
+    "categories": "Categorías",
     "customers": "Clientes",
 
     "wizard": {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
-import { useFetch, usePatch, usePost } from "@/_shared/queryProvider";
+import { useFetch, usePut, usePost } from "@/_shared/queryProvider";
 import { useToast } from "@mercado/shared-ui";
 import { getNotifications } from "@/_modules/notifications/api";
 import {
@@ -25,7 +25,7 @@ export function useOrderDisputes(orderId: string) {
   });
 
   const { mutate: postDispute, isPending: isCreating } = usePost<{ reason: string }, IDispute>();
-  const { mutate: patchStatus, isPending: isUpdatingStatus } = usePatch();
+  const { mutate: patchStatus, isPending: isUpdatingStatus } = usePut();
   const { mutate: postReply, isPending: isReplying } = usePost<
     { sender: string; body: string },
     unknown

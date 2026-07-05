@@ -41,7 +41,7 @@ const AvailableIndicator = ({
   );
 };
 
-export const VariantsTable = ({ variants, onViewHistory }: VariantsTableProps) => {
+export function VariantsTable({ variants, onViewHistory }: VariantsTableProps) {
   const { t } = useTranslation();
 
   const columns: ColumnDef<IVariantStat>[] = [
@@ -77,12 +77,9 @@ export const VariantsTable = ({ variants, onViewHistory }: VariantsTableProps) =
       cell: ({ row }) => {
         const v = row.original;
         const reserved = v.reservedStock ?? 0;
-        const available =
-          v.availableStock ?? availableUnits(v.stock, reserved);
+        const available = v.availableStock ?? availableUnits(v.stock, reserved);
         const threshold = v.lowStockThreshold ?? 0;
-        return (
-          <AvailableIndicator available={available} threshold={threshold} />
-        );
+        return <AvailableIndicator available={available} threshold={threshold} />;
       },
       meta: { className: "text-right" },
     },
@@ -98,9 +95,7 @@ export const VariantsTable = ({ variants, onViewHistory }: VariantsTableProps) =
       id: "reserved",
       header: t("products.variantsTable.reserved"),
       cell: ({ row }) => (
-        <span className="text-sm text-gray-700">
-          {row.original.reservedStock ?? 0}
-        </span>
+        <span className="text-sm text-gray-700">{row.original.reservedStock ?? 0}</span>
       ),
       meta: { className: "text-right" },
     },
@@ -160,4 +155,4 @@ export const VariantsTable = ({ variants, onViewHistory }: VariantsTableProps) =
 
   const sorted = [...variants].sort((a, b) => b.revenue - a.revenue);
   return <Table data={sorted} columns={columns} />;
-};
+}

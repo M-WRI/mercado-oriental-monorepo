@@ -41,7 +41,8 @@
     "categories": "分类",
     "orders": "订单",
     "inventory": "库存",
-    "notifications": "通知"
+    "notifications": "通知",
+    "settings": "设置"
   },
 
   "shops": {
@@ -177,6 +178,7 @@
     "deleteVariantMessage": "确定删除「{{name}}」吗？此操作不可撤销。",
     "deleteVariantAria": "删除变体",
     "variants": "变体",
+    "categories": "分类",
     "customers": "客户",
 
     "wizard": {

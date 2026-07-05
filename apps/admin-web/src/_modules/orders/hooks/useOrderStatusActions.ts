@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
-import { usePatch } from "@/_shared/queryProvider";
+import { usePut } from "@/_shared/queryProvider";
 import { useToast } from "@mercado/shared-ui";
 import { getOrders, updateOrderStatus } from "../api";
 import {
@@ -19,7 +19,7 @@ export function useOrderStatusActions(
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { success: toastSuccess } = useToast();
-  const { mutate: patchStatus, isPending: isAdvancing } = usePatch();
+  const { mutate: patchStatus, isPending: isAdvancing } = usePut();
 
   const [showCancel, setShowCancel] = useState(false);
   const [cancelReason, setCancelReason] = useState("");

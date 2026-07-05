@@ -10,6 +10,7 @@ interface VariantWithProduct {
 
 export interface AlertVariant {
   id: string;
+  productId: string;
   name: string;
   stock: number;
   available: number;
@@ -39,6 +40,7 @@ export function serializeInventoryAlerts(allVariants: VariantWithProduct[]): Inv
     .slice(0, 10)
     .map((v) => ({
       id: v.id,
+      productId: v.product.id,
       name: v.name,
       stock: v.stock,
       available: available(v.stock, v.reservedStock),

@@ -76,5 +76,7 @@ export const routeConfig: TRouteConfig[] | undefined = [
     path: "settings",
     children: [{ index: true, Component: SettingsScreen }],
     showInSidebar: false,
+    labelKey: "nav.settings",
+    label: "Settings",
   },
 ];

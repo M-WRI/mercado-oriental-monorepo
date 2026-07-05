@@ -7,9 +7,7 @@ import { getProduct, getProducts, updateProduct } from "../../api";
 import { useShop } from "@/_modules/shops/context/ShopProvider";
 import type { IProductDetailResponse, IVariantStat } from "../../types";
 import { OverviewCards, SalesChart, InventoryHealth, PerformanceInsights } from "../../components/cards";
-import { VariantsTable } from "./VariantsTable";
-import { CustomersTable } from "./CustomersTable";
-import { ProductReviews } from "./ProductReviews";
+import { VariantsTable, CustomersTable, ProductReviews } from "../../components/productDetail";
 import { InventoryHistoryModal } from "@/_modules/inventory/components/InventoryHistoryModal";
 
 export const ProductDetail = () => {

@@ -1,8 +1,10 @@
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Table } from "@mercado/shared-ui/components/table";
 import { Card, CardHeader } from "@mercado/shared-ui/components/card";
 import { Tag } from "@mercado/shared-ui/components/tag";
+import { useShop } from "@/_modules/shops/context/ShopProvider";
 import type { IRecentOrder } from "../../types";
 
 const statusVariant = (status: string) => {
@@ -24,6 +26,8 @@ interface RecentOrdersProps {
 
 export const RecentOrders = ({ orders }: RecentOrdersProps) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { paths } = useShop();
 
   const timeAgo = (dateStr: string) => {
     const diff = Date.now() - new Date(dateStr).getTime();
@@ -108,7 +112,11 @@ export const RecentOrders = ({ orders }: RecentOrdersProps) => {
     <Card padding="lg" className="h-full flex flex-col">
       <CardHeader title={t("dashboard.recentOrders")} />
       <div className="flex-1 min-h-0 overflow-auto -mx-5 px-5">
-        <Table data={orders} columns={columns} />
+        <Table
+          data={orders}
+          columns={columns}
+          onRowClick={(row) => navigate(paths.order(row.original.id))}
+        />
       </div>
     </Card>
   );

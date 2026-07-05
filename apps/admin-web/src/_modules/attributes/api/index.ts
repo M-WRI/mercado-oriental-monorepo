@@ -17,7 +17,15 @@ export const getAttribute = {
 
 export const updateAttribute = {
   url: (id: string) => `/attributes/${id}`,
-}
+};
+
+export const deleteAttribute = {
+  url: (id: string) => `/attributes/${id}`,
+};
+
+export const bulkDeleteAttributes = {
+  url: "/attributes/bulk",
+};
 
 export const deleteAttributeValueRequest = {
   queryKey: (id?: string) => [["attributes", id, "values"]] as TQueryKey,

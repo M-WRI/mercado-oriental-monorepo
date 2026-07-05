@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 import {
   ResponsiveContainer,
   BarChart,
@@ -8,6 +9,7 @@ import {
   Tooltip,
 } from "recharts";
 import { Card, CardHeader } from "@mercado/shared-ui/components/card";
+import { useShop } from "@/_modules/shops/context/ShopProvider";
 import type { ITopProduct } from "../../types";
 
 interface TopProductsProps {
@@ -16,6 +18,8 @@ interface TopProductsProps {
 
 export const TopProducts = ({ products }: TopProductsProps) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { paths } = useShop();
 
   if (products.length === 0) {
     return (
@@ -26,6 +30,7 @@ export const TopProducts = ({ products }: TopProductsProps) => {
   }
 
   const chartData = products.map((p) => ({
+    id: p.id,
     name: p.name.length > 18 ? p.name.slice(0, 18) + "..." : p.name,
     revenue: p.revenue,
     unitsSold: p.unitsSold,
@@ -67,7 +72,19 @@ export const TopProducts = ({ products }: TopProductsProps) => {
                 boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
               }}
             />
-            <Bar dataKey="revenue" fill="#111827" radius={[0, 4, 4, 0]} maxBarSize={16} />
+            <Bar
+              dataKey="revenue"
+              fill="#111827"
+              radius={[0, 4, 4, 0]}
+              maxBarSize={16}
+              className="cursor-pointer"
+              onClick={(entry) => {
+                const productId = entry?.payload?.id;
+                if (typeof productId === "string") {
+                  navigate(paths.product(productId));
+                }
+              }}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>

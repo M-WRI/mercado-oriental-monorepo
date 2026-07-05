@@ -14,8 +14,15 @@ import { useClickOutside } from "../../hooks/useClickOutside";
 type Align = "start" | "end";
 type Side = "top" | "bottom" | "right";
 
+type DropdownTriggerProps = {
+  onClick?: (event: React.MouseEvent) => void;
+  "aria-expanded"?: boolean;
+  "aria-haspopup"?: boolean | "menu";
+  "aria-controls"?: string;
+};
+
 export interface DropdownProps {
-  trigger: ReactElement<{ onClick?: (event: React.MouseEvent) => void }>;
+  trigger: ReactElement<DropdownTriggerProps>;
   children: ReactNode;
   align?: Align;
   side?: Side;

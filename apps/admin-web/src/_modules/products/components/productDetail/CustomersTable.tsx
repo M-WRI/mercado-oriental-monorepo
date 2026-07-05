@@ -13,7 +13,7 @@ const formatDate = (dateStr: string) => {
   return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 };
 
-export const CustomersTable = ({ customers }: CustomersTableProps) => {
+export function CustomersTable({ customers }: CustomersTableProps) {
   const { t } = useTranslation();
 
   const columns: ColumnDef<ICustomerStat>[] = [
@@ -30,9 +30,7 @@ export const CustomersTable = ({ customers }: CustomersTableProps) => {
               </span>
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">
-                {c.name || "—"}
-              </p>
+              <p className="text-sm font-medium text-gray-900 truncate">{c.name || "—"}</p>
               <p className="text-xs text-gray-400 truncate">{c.email}</p>
             </div>
           </div>
@@ -65,9 +63,7 @@ export const CustomersTable = ({ customers }: CustomersTableProps) => {
       id: "spent",
       header: t("products.customersTable.spent"),
       cell: ({ row }) => (
-        <span className="font-medium text-gray-900">
-          €{row.original.totalSpent.toFixed(2)}
-        </span>
+        <span className="font-medium text-gray-900">€{row.original.totalSpent.toFixed(2)}</span>
       ),
       meta: { className: "text-right" },
     },
@@ -75,9 +71,7 @@ export const CustomersTable = ({ customers }: CustomersTableProps) => {
       id: "firstOrder",
       header: t("products.customersTable.firstOrder"),
       cell: ({ row }) => (
-        <span className="text-xs text-gray-400">
-          {formatDate(row.original.firstOrder)}
-        </span>
+        <span className="text-xs text-gray-400">{formatDate(row.original.firstOrder)}</span>
       ),
       meta: { className: "text-right" },
     },
@@ -85,13 +79,11 @@ export const CustomersTable = ({ customers }: CustomersTableProps) => {
       id: "lastOrder",
       header: t("products.customersTable.lastOrder"),
       cell: ({ row }) => (
-        <span className="text-xs text-gray-400">
-          {formatDate(row.original.lastOrder)}
-        </span>
+        <span className="text-xs text-gray-400">{formatDate(row.original.lastOrder)}</span>
       ),
       meta: { className: "text-right" },
     },
   ];
 
   return <Table data={customers} columns={columns} />;
-};
+}

@@ -101,6 +101,7 @@ Exact fields and relations are defined in `prisma/schema.prisma`.
 | `DATABASE_URL` | PostgreSQL connection string (required) |
 | `JWT_SECRET` | Secret for signing and verifying JWTs (defaults exist in code for dev; set in production) |
 | `PORT` | HTTP port (default `8000`) |
+| `PUBLIC_BASE_URL` | Optional absolute base URL for product image links (e.g. `https://api.example.com`). If unset, derived from each request. Set in production when the API sits behind a proxy or serves uploads from a stable public origin. Uploaded files are stored under `uploads/` on disk and exposed at `/uploads/...`. |
 
 ## Module generator
 

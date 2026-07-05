@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { usePatch } from "@/_shared/queryProvider";
+import { usePut } from "@/_shared/queryProvider";
 import { useToast } from "@mercado/shared-ui";
 import { updateOrder } from "../api";
 
@@ -11,7 +11,7 @@ export function useOrderNoteEditor(
 ) {
   const { t } = useTranslation();
   const { success: toastSuccess } = useToast();
-  const { mutate: patchOrder, isPending: isUpdating } = usePatch();
+  const { mutate: patchOrder, isPending: isUpdating } = usePut();
 
   const [editingNote, setEditingNote] = useState(false);
   const [internalNote, setInternalNote] = useState("");

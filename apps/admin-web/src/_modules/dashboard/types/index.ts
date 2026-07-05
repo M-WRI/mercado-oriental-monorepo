@@ -31,6 +31,7 @@ export interface IRecentOrder {
 
 export interface IAlertVariant {
   id: string;
+  productId: string;
   name: string;
   /** On-hand quantity (legacy / fallback). */
   stock: number;

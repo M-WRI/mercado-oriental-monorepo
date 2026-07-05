@@ -41,7 +41,8 @@
     "categories": "Categories",
     "orders": "Orders",
     "inventory": "Inventory",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "settings": "Settings"
   },
 
   "shops": {
@@ -177,6 +178,7 @@
     "deleteVariantMessage": "Remove \"{{name}}\"? This cannot be undone.",
     "deleteVariantAria": "Delete variant",
     "variants": "Variants",
+    "categories": "Categories",
     "customers": "Customers",
 
     "wizard": {

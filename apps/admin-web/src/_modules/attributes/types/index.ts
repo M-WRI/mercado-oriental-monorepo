@@ -1,3 +1,12 @@
+export type AttributeFormValues = {
+  name: string;
+  description: string;
+};
+
+export type AttributeValueFormValues = {
+  value: string;
+};
+
 export interface IAttributeListResponse {
   id: string;
   name: string;
@@ -11,8 +20,6 @@ export interface IProductAttributeValue {
   value: string;
   productAttributeId: string;
 }
-
-// ── Attribute detail (enriched) ──────────────────────────────────────
 
 export interface IAttributeValueProduct {
   id: string;

@@ -1,116 +1,33 @@
-import { useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { type ColumnDef } from "@tanstack/react-table";
-import { useQueryClient } from "@tanstack/react-query";
-import { useFetch, useDelete } from "@/_shared/queryProvider";
-import { Button, Tag, ConfirmDialog, useToast } from "@mercado/shared-ui";
-import { getAttributes } from "../api";
 import { useNavigate } from "react-router";
+import { Button, Tag, ConfirmDialog } from "@mercado/shared-ui";
 import { MdAdd, MdDeleteOutline } from "react-icons/md";
 import { useModal } from "@mercado/shared-ui";
 import type { IAttributeListResponse } from "../types";
 import { AddAttributeModal } from "../components";
 import { DefaultListLayout } from "@/_shared/layout";
 import { useShop } from "@/_modules/shops/context/ShopProvider";
+import { useAttributesList } from "../hooks";
 
 export const AttributesList = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const { success: toastSuccess } = useToast();
-
   const { shopId, paths } = useShop();
-
-  const { data: attributes, isLoading } = useFetch<IAttributeListResponse[]>({
-    queryKey: getAttributes.queryKey(shopId),
-    url: getAttributes.url(shopId),
-  });
-
-  const { openModal, ModalRenderer, closeModal } = useModal({ isLoading });
-  const { mutate: deleteOne, isPending: isDeletingOne } = useDelete();
-  const { mutate: deleteBulk, isPending: isDeletingBulk } = useDelete();
-  const isDeleting = isDeletingOne || isDeletingBulk;
-
-  const [selected, setSelected] = useState<IAttributeListResponse[]>([]);
-  const [confirmState, setConfirmState] = useState<
-    | { type: "single"; attribute: IAttributeListResponse }
-    | { type: "bulk" }
-    | null
-  >(null);
-
-  const handleSelectionChange = useCallback(
-    (rows: IAttributeListResponse[]) => setSelected(rows),
-    []
-  );
-
-  const handleAddAttribute = () => {
-    openModal(AddAttributeModal, { onClose: closeModal, fixedShopId: shopId });
-  };
-
-  const handleDeleteSingle = (attribute: IAttributeListResponse) => {
-    setConfirmState({ type: "single", attribute });
-  };
-
-  const handleDeleteBulk = () => {
-    if (selected.length === 0) return;
-    setConfirmState({ type: "bulk" });
-  };
-
-  /** Close dialog on failure. API errors are already toasted by the axios response interceptor. */
-  const onDeleteError = () => {
-    setConfirmState(null);
-  };
-
-  const executeDelete = () => {
-    if (!confirmState) return;
-
-    if (confirmState.type === "single") {
-      deleteOne(
-        { url: `/attributes/${confirmState.attribute.id}` },
-        {
-          onSuccess: () => {
-            toastSuccess(t("success.attribute_deleted"));
-            queryClient.invalidateQueries({ queryKey: getAttributes.queryKey(shopId) });
-            setConfirmState(null);
-          },
-          onError: onDeleteError,
-        }
-      );
-    } else {
-      deleteBulk(
-        {
-          url: "/attributes/bulk",
-          data: { ids: selected.map((a) => a.id) },
-        },
-        {
-          onSuccess: () => {
-            toastSuccess(t("attributes.bulkDeleteSuccess", { count: selected.length }));
-            queryClient.invalidateQueries({ queryKey: getAttributes.queryKey(shopId) });
-            setSelected([]);
-            setConfirmState(null);
-          },
-          onError: onDeleteError,
-        }
-      );
-    }
-  };
+  const list = useAttributesList();
+  const { openModal, ModalRenderer, closeModal } = useModal({ isLoading: list.isLoading });
 
   const columns: ColumnDef<IAttributeListResponse>[] = [
-    {
-      accessorKey: "name",
-      header: t("attributes.name"),
-    },
-    {
-      accessorKey: "description",
-      header: t("attributes.description"),
-    },
+    { accessorKey: "name", header: t("attributes.name") },
+    { accessorKey: "description", header: t("attributes.description") },
     {
       id: "values",
       header: t("attributes.values"),
       cell: ({ row }) => {
         const values = row.original.productAttributeValues;
-        if (!values || values.length === 0)
+        if (!values?.length) {
           return <span className="text-xs text-gray-400">{t("attributes.noValues")}</span>;
+        }
         return (
           <div className="flex flex-wrap gap-1">
             {values.map((v) => (
@@ -141,7 +58,7 @@ export const AttributesList = () => {
           </Button>
           <button
             type="button"
-            onClick={() => handleDeleteSingle(row.original)}
+            onClick={() => list.setConfirmState({ type: "single", attribute: row.original })}
             className="p-1 rounded text-gray-300 hover:text-red-500 hover:bg-red-50 transition-colors"
           >
             <MdDeleteOutline size={16} />
@@ -151,50 +68,43 @@ export const AttributesList = () => {
     },
   ];
 
-  const confirmTitle =
-    confirmState?.type === "single"
-      ? t("attributes.deleteConfirmTitle")
-      : t("attributes.bulkDeleteConfirmTitle", { count: selected.length });
-
-  const confirmMessage =
-    confirmState?.type === "single"
-      ? t("attributes.deleteConfirmMessage", { name: confirmState.attribute.name })
-      : t("attributes.bulkDeleteConfirmMessage", { count: selected.length });
-
   return (
     <>
       {ModalRenderer}
       <DefaultListLayout<IAttributeListResponse>
         title={t("attributes.title")}
         actions={
-          <Button onClick={handleAddAttribute} icon={<MdAdd />}>
+          <Button
+            onClick={() => openModal(AddAttributeModal, { onClose: closeModal, fixedShopId: shopId })}
+            icon={<MdAdd />}
+          >
             {t("attributes.addAttribute")}
           </Button>
         }
-        tableData={attributes || []}
+        tableData={list.attributes}
         tableColumns={columns}
         isMultiSelect
-        onSelectionChange={handleSelectionChange}
-        selectedCount={selected.length}
+        onSelectionChange={list.handleSelectionChange}
+        selectedCount={list.selected.length}
         bulkActions={
           <Button
-            onClick={handleDeleteBulk}
+            onClick={() => list.setConfirmState({ type: "bulk" })}
             style="danger"
             icon={<MdDeleteOutline size={16} />}
           >
-            {t("attributes.bulkDelete", { count: selected.length })}
+            {t("attributes.bulkDelete", { count: list.selected.length })}
           </Button>
         }
       />
 
-      {confirmState && (
+      {list.confirmState && (
         <ConfirmDialog
-          title={confirmTitle}
-          message={confirmMessage}
+          title={list.confirmTitle}
+          message={list.confirmMessage}
           confirmLabel={t("common.delete")}
-          onConfirm={executeDelete}
-          onCancel={() => setConfirmState(null)}
-          isLoading={isDeleting}
+          onConfirm={list.executeDelete}
+          onCancel={() => list.setConfirmState(null)}
+          isLoading={list.isDeleting}
         />
       )}
     </>
