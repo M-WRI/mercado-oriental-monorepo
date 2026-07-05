@@ -73,6 +73,7 @@ export const listProducts = asyncHandler(async (req: Request, res: Response) => 
       id: p.id,
       name: p.name,
       description: p.description,
+      imageUrl: p.imageUrl,
       shop: p.shop,
       priceMin: prices.length ? Math.min(...prices) : 0,
       priceMax: prices.length ? Math.max(...prices) : 0,

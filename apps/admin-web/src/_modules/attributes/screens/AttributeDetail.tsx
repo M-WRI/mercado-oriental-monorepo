@@ -3,12 +3,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
 import { deleteAttributeValueRequest, getAttribute } from "../api";
 import { useDelete, useFetch } from "@/_shared/queryProvider";
-import { Button, useToast } from "@mercado/shared-ui";
+import { Button, useModal, useToast } from "@mercado/shared-ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MdAdd, MdOutlineDeleteForever } from "react-icons/md";
 import { DefaultListLayout } from "@/_shared/layout";
 import { useShop } from "@/_modules/shops/context/ShopProvider";
 import type { IAttributeDetailResponse, IAttributeValueDetail } from "../types";
+import { AddAttributeValueModal } from "../components/modals/AddAttributeValueModal";
 
 export const AttributeDetail = () => {
   const { t } = useTranslation();
@@ -24,6 +25,7 @@ export const AttributeDetail = () => {
   });
 
   const { mutate: deleteAttributeValue } = useDelete<any, any>();
+  const { openModal, ModalRenderer, closeModal } = useModal({});
 
   const handleDeleteAttributeValue = (valueId: string) => {
     deleteAttributeValue(
@@ -79,7 +81,9 @@ export const AttributeDetail = () => {
   ];
 
   return (
-    <div className="flex flex-col h-full min-h-0">
+    <>
+      {ModalRenderer}
+      <div className="flex flex-col h-full min-h-0">
       <div className="shrink-0 pb-4 mb-6 border-b border-gray-200">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
@@ -115,7 +119,16 @@ export const AttributeDetail = () => {
         <DefaultListLayout<IAttributeValueDetail>
           title={t("attributes.values")}
           actions={
-            <Button onClick={() => console.log("<------ here we go")} icon={<MdAdd size={16} />}>
+            <Button
+              onClick={() =>
+                id &&
+                openModal(AddAttributeValueModal, {
+                  onClose: closeModal,
+                  attributeId: id,
+                })
+              }
+              icon={<MdAdd size={16} />}
+            >
               {t("attributes.addValue")}
             </Button>
           }
@@ -124,5 +137,6 @@ export const AttributeDetail = () => {
         />
       </div>
     </div>
+    </>
   );
 };

@@ -19,6 +19,9 @@ import { MdAdd, MdClose } from "react-icons/md";
 import { useModal } from "@mercado/shared-ui";
 import { AddAttributeModal } from "@/_modules/attributes/components";
 import { ProductImageField, isProductImageUrlValid } from "../../components/ProductImageField";
+import { CategoryPicker } from "@/_modules/categories/components";
+import { getCategories } from "@/_modules/categories/api";
+import type { ICategory } from "@/_modules/categories/types";
 
 // ── Helpers ────────────────────────────────────────────────────────
 
@@ -88,6 +91,8 @@ const EditProductForm = ({ id }: { id: string }) => {
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isActive, setIsActive] = useState(true);
+  const [categoryIds, setCategoryIds] = useState<string[]>([]);
+  const [categoryNames, setCategoryNames] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
 
   // Variant state
@@ -113,6 +118,11 @@ const EditProductForm = ({ id }: { id: string }) => {
     enabled: Boolean(attributesShopId),
   });
 
+  const { data: categoryTree } = useFetch<ICategory[]>({
+    queryKey: getCategories.queryKey,
+    url: getCategories.url,
+  });
+
   // Seed form when data arrives
   useEffect(() => {
     if (!product || !rawVariants || initialized) return;
@@ -120,6 +130,10 @@ const EditProductForm = ({ id }: { id: string }) => {
     setDescription(product.description ?? "");
     setImageUrl(product.imageUrl ?? "");
     setIsActive(product.isActive);
+    setCategoryIds(product.categories.map((c) => c.id));
+    setCategoryNames(
+      Object.fromEntries(product.categories.map((c) => [c.id, c.name]))
+    );
     const editables = rawVariants.map(rawVariantToEditable);
     setVariants(editables);
     setOriginalVariantIds(new Set(rawVariants.map((v) => v.id)));
@@ -128,6 +142,18 @@ const EditProductForm = ({ id }: { id: string }) => {
 
   const { mutate: putProduct, isPending } = usePut();
   const { openModal, ModalRenderer, closeModal } = useModal({});
+
+  const handleToggleCategory = (catId: string, catName: string, path: string) => {
+    setCategoryIds((prev) =>
+      prev.includes(catId) ? prev.filter((c) => c !== catId) : [...prev, catId]
+    );
+    setCategoryNames((prev) => {
+      const next = { ...prev };
+      if (next[catId]) delete next[catId];
+      else next[catId] = path || catName;
+      return next;
+    });
+  };
 
   // ── Inline variant editing ────────────────────────────────────────
 
@@ -301,6 +327,7 @@ const EditProductForm = ({ id }: { id: string }) => {
           imageUrl: imageUrl.trim() || null,
           shopId,
           isActive,
+          categoryIds,
           variants: {
             create: toCreate.length > 0 ? toCreate : undefined,
             update: toUpdate.length > 0 ? toUpdate : undefined,
@@ -384,6 +411,42 @@ const EditProductForm = ({ id }: { id: string }) => {
           />
 
           <ProductImageField value={imageUrl} onChange={setImageUrl} />
+
+          <div className="grid gap-1.5">
+            <label className="text-sm font-medium text-gray-700">
+              {t("products.infoStep.categoriesLabel")}
+            </label>
+            {categoryIds.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mb-1">
+                {categoryIds.map((catId) => (
+                  <span
+                    key={catId}
+                    className="inline-flex items-center gap-1 bg-indigo-50 text-indigo-700 text-xs font-medium px-2 py-1 rounded-full"
+                  >
+                    {categoryNames[catId] || catId}
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleToggleCategory(catId, categoryNames[catId] || "", categoryNames[catId] || "")
+                      }
+                      className="hover:text-indigo-900"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+            {categoryTree ? (
+              <CategoryPicker
+                categories={categoryTree}
+                selectedIds={categoryIds}
+                onToggle={handleToggleCategory}
+              />
+            ) : (
+              <p className="text-sm text-gray-400">{t("common.loading")}</p>
+            )}
+          </div>
 
           <div className="grid gap-1.5">
             <label className="text-sm font-medium text-gray-700">

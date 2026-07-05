@@ -85,6 +85,7 @@ export const showProduct = asyncHandler(async (req: AuthenticatedRequest, res: R
     id: product.id,
     name: product.name,
     description: product.description,
+    imageUrl: product.imageUrl,
     isActive: product.isActive,
     shop: product.shop,
     createdAt: product.createdAt,

@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { AuthenticatedRequest } from "../../../middleware/authMiddleware";
-import { prisma, asyncHandler } from "../../../lib";
+import { prisma, asyncHandler, resolveScopedShopIds } from "../../../lib";
 import {
   serializeSalesSnapshot,
   serializeRevenueTimeline,
@@ -18,7 +18,8 @@ export const getDashboard = asyncHandler(async (req: AuthenticatedRequest, res: 
     where: { userId },
     select: { id: true },
   });
-  const shopIds = shops.map((s) => s.id);
+  const allShopIds = shops.map((s) => s.id);
+  const shopIds = resolveScopedShopIds(allShopIds, req.query.shopId);
 
   if (shopIds.length === 0) {
     return res.json(emptyDashboard());

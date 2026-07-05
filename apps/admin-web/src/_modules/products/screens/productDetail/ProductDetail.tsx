@@ -2,14 +2,15 @@ import { useTranslation } from "react-i18next";
 import { useParams, useNavigate } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useFetch, usePut } from "@/_shared/queryProvider";
-import { Button, Tag, useToast, QueryError } from "@mercado/shared-ui";
+import { Button, Tag, useToast, QueryError, useModal } from "@mercado/shared-ui";
 import { getProduct, getProducts, updateProduct } from "../../api";
 import { useShop } from "@/_modules/shops/context/ShopProvider";
-import type { IProductDetailResponse } from "../../types";
+import type { IProductDetailResponse, IVariantStat } from "../../types";
 import { OverviewCards, SalesChart, InventoryHealth, PerformanceInsights } from "../../components/cards";
 import { VariantsTable } from "./VariantsTable";
 import { CustomersTable } from "./CustomersTable";
 import { ProductReviews } from "./ProductReviews";
+import { InventoryHistoryModal } from "@/_modules/inventory/components/InventoryHistoryModal";
 
 export const ProductDetail = () => {
   const { id } = useParams();
@@ -25,6 +26,7 @@ export const ProductDetail = () => {
   });
 
   const { mutate: putProduct, isPending: isToggling } = usePut();
+  const { openModal, ModalRenderer, closeModal } = useModal({});
 
   const handleToggleActive = () => {
     if (!product || !id) return;
@@ -70,7 +72,9 @@ export const ProductDetail = () => {
   const a = product.analytics;
 
   return (
-    <div className="flex flex-col h-full min-h-0 overflow-y-auto pb-8">
+    <>
+      {ModalRenderer}
+      <div className="flex flex-col h-full min-h-0 overflow-y-auto pb-8">
       {/* Header */}
       <div className="shrink-0 mb-6">
         <div className="flex items-center gap-2 mb-1">
@@ -188,7 +192,16 @@ export const ProductDetail = () => {
             {t("products.variants")} ({product.variants.length})
           </h5>
         </div>
-        <VariantsTable variants={product.variants} />
+        <VariantsTable
+          variants={product.variants}
+          onViewHistory={(variant: IVariantStat) =>
+            openModal(InventoryHistoryModal, {
+              onClose: closeModal,
+              variantId: variant.id,
+              variantName: variant.name,
+            })
+          }
+        />
       </div>
 
       {/* Customers */}
@@ -211,5 +224,6 @@ export const ProductDetail = () => {
         <ProductReviews productId={product.id} />
       </div>
     </div>
+    </>
   );
 };

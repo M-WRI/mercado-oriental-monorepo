@@ -78,6 +78,7 @@ export const showProduct = asyncHandler(async (req: Request, res: Response) => {
     id: product.id,
     name: product.name,
     description: product.description,
+    imageUrl: product.imageUrl,
     shop: product.shop,
     variants,
     reviews,

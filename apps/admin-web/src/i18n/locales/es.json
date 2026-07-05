@@ -38,6 +38,7 @@
     "dashboard": "Panel",
     "products": "Productos",
     "attributes": "Atributos",
+    "categories": "Categorías",
     "orders": "Pedidos",
     "inventory": "Inventario",
     "notifications": "Notificaciones"
@@ -209,7 +210,8 @@
       "imageUploadTooLarge": "La imagen debe ser de 5 MB o menos",
       "imageUploadFailed": "Error al subir. Inténtalo de nuevo.",
       "nameRequired": "El nombre del producto es obligatorio",
-      "shopRequired": "Selecciona una tienda"
+      "shopRequired": "Selecciona una tienda",
+      "categoriesLabel": "Categorías"
     },
 
     "attributesStep": {
@@ -338,6 +340,8 @@
     "noValues": "Sin valores",
     "addValue": "Añadir valor",
     "value": "Valor",
+    "valuePlaceholder": "ej. Grande",
+    "valueRequired": "El valor es obligatorio.",
     "usedBy": "Usado por",
     "notUsed": "No utilizado",
     "usedInProducts": "Usado en productos",
@@ -349,6 +353,47 @@
     "bulkDeleteConfirmMessage": "¿Seguro que deseas eliminar {{count}} atributos? Esta acción no se puede deshacer.",
     "bulkDelete": "Eliminar ({{count}})",
     "bulkDeleteSuccess": "{{count}} atributos eliminados."
+  },
+
+  "categories": {
+    "title": "Categorías",
+    "subtitle": "Organiza productos en una taxonomía multinivel. Las categorías pueden anidarse varios niveles.",
+    "totalCount": "{{count}} categorías en total",
+    "empty": "Aún no hay categorías. Añade una raíz o ejecuta el seed.",
+    "addRoot": "Añadir categoría raíz",
+    "addChild": "Añadir subcategoría",
+    "createCategory": "Crear categoría",
+    "editCategory": "Editar categoría",
+    "rootCategory": "Categoría de nivel superior (sin padre)",
+    "underParent": "Subcategoría de \"{{name}}\"",
+    "name": "Nombre",
+    "namePlaceholder": "ej. Especias y condimentos",
+    "nameRequired": "El nombre de la categoría es obligatorio",
+    "slug": "Slug URL",
+    "slugPlaceholder": "se genera automáticamente si está vacío",
+    "slugHint": "Déjalo en blanco para generarlo desde el nombre.",
+    "searchPlaceholder": "Buscar categorías…",
+    "noResults": "No se encontraron categorías",
+    "deleteConfirmTitle": "Eliminar categoría",
+    "deleteConfirmMessage": "¿Eliminar \"{{name}}\" y sus {{children}} subcategorías directas? Los productos se desvincularán."
+  },
+
+  "inventory": {
+    "viewHistory": "Historial",
+    "historyTitle": "Historial de movimientos de stock",
+    "noMovements": "Aún no hay movimientos registrados.",
+    "stockDelta": "Stock",
+    "reservedDelta": "Reservado",
+    "reasons": {
+      "RESERVATION_HOLD": "Reserva de pedido",
+      "RESERVATION_RELEASE": "Reserva liberada",
+      "SALE_COMMIT": "Venta confirmada",
+      "ORDER_CANCEL_RESTOCK": "Pedido cancelado — reabastecido",
+      "RETURN": "Devolución",
+      "ADJUSTMENT": "Ajuste manual",
+      "DAMAGE": "Stock dañado",
+      "BULK_ADJUST": "Ajuste masivo"
+    }
   },
 
   "orders": {
@@ -696,6 +741,10 @@
     "attribute_updated": "Atributo actualizado exitosamente.",
     "attribute_deleted": "Atributo eliminado exitosamente.",
     "attribute_value_deleted": "Valor de atributo eliminado exitosamente.",
+    "attribute_value_created": "Valor de atributo añadido exitosamente.",
+    "category_created": "Categoría creada exitosamente.",
+    "category_updated": "Categoría actualizada exitosamente.",
+    "category_deleted": "Categoría eliminada exitosamente.",
     "variant_created": "Variante creada exitosamente.",
     "variant_updated": "Variante actualizada exitosamente.",
     "variant_deleted": "Variante eliminada exitosamente."

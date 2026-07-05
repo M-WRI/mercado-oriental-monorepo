@@ -1,5 +1,7 @@
 import express from "express";
 import cors from "cors";
+import uploadRoutes from "./_modules/uploads/routes";
+import { ensureUploadDirs, UPLOADS_ROOT } from "./lib/uploads";
 import authRoutes from "./_modules/auth/routes";
 import shopRoutes from "./_modules/shop/routes";
 import attributeRoutes from "./_modules/attributes/routes";
@@ -16,15 +18,18 @@ import storeOrderRoutes from "./_modules/store-orders/routes";
 import storeReviewRoutes from "./_modules/store-reviews/routes";
 import storeMessageRoutes from "./_modules/store-messages/routes";
 import storeShopRoutes from "./_modules/store-shops/routes";
-import storeCategoryRoutes from "./_modules/store-categories/routes";
+import storeCategoryRoutes from "./_modules/store-categories/routes/store";
+import adminCategoryRoutes from "./_modules/store-categories/routes/admin";
 import { authMiddleware } from "./middleware/authMiddleware";
 import { errorMiddleware } from "./middleware/errorMiddleware";
 
 export function createApp() {
   const app = express();
 
+  ensureUploadDirs();
   app.use(express.json());
   app.use(cors());
+  app.use("/uploads", express.static(UPLOADS_ROOT));
 
   const adminRouter = express.Router();
   adminRouter.use("/auth", authRoutes);
@@ -40,7 +45,8 @@ export function createApp() {
   protectedAdminRouter.use("/notifications", notificationsRoutes);
   protectedAdminRouter.use("/touchpoints", touchpointsRoutes);
   protectedAdminRouter.use("/reviews", reviewsRoutes);
-  protectedAdminRouter.use("/categories", storeCategoryRoutes);
+  protectedAdminRouter.use("/categories", adminCategoryRoutes);
+  protectedAdminRouter.use("/uploads", uploadRoutes);
 
   adminRouter.use(protectedAdminRouter);
 

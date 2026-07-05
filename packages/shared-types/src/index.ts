@@ -12,6 +12,14 @@ export const ERROR_CODES = {
 export const BaseProductSchema = z.object({
   name: z.string().trim().min(1, "Product name is required"),
   description: z.string().nullable().optional(),
+  imageUrl: z
+    .union([
+      z.string().url(),
+      z.string().regex(/^\/uploads\//),
+      z.literal(""),
+      z.null(),
+    ])
+    .optional(),
   isActive: z.boolean().default(true),
 });
 
@@ -41,7 +49,28 @@ export const CreateProductRequestBody = BaseProductSchema.extend({
   }).optional()
 });
 
-export const UpdateProductRequestBody = BaseProductSchema;
+export const UpdateProductVariantInput = z.object({
+  name: z.string().trim().min(1, "Variant name is required"),
+  price: z.number().min(0, "Price must be positive"),
+  stock: z.number().int().min(0, "Stock must be positive"),
+  attributeValueIds: z.array(z.string()).min(1),
+});
+
+export const UpdateProductVariantPatchInput = UpdateProductVariantInput.extend({
+  id: z.string(),
+}).partial({ name: true, price: true, stock: true, attributeValueIds: true }).required({ id: true });
+
+export const UpdateProductRequestBody = BaseProductSchema.partial().extend({
+  shopId: z.string().optional(),
+  categoryIds: z.array(z.string()).optional(),
+  variants: z
+    .object({
+      create: z.array(UpdateProductVariantInput).optional(),
+      update: z.array(UpdateProductVariantPatchInput).optional(),
+      delete: z.array(z.string()).optional(),
+    })
+    .optional(),
+});
 
 export const UpdateProductVariantRequestBody = z.object({
   name: z.string().trim().min(1, "Variant name is required"),

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, type UseMutationResult, type UseQueryResult } from "@tanstack/react-query";
 import type { ErrorResponse, TQueryKey, TQueryOptions } from "../types";
-import { apiDelete, apiGet, apiPatch, apiPost } from "./client";
+import { apiDelete, apiGet, apiPatch, apiPost, apiPut, apiUpload } from "./client";
 
 export const useFetch = <TResponse>({
   queryKey,
@@ -68,6 +68,23 @@ export const usePatch = <TVariables, TResponse>({
     },
   });
 
+export const usePut = <TVariables, TResponse>({
+  headers,
+  serializer,
+}: {
+  headers?: Record<string, string>;
+  serializer?: {
+    request?: (data: TVariables) => TVariables;
+    response?: (data: TResponse) => TResponse;
+  };
+} = {}): UseMutationResult<TResponse, ErrorResponse, { url: string; data: TVariables }> =>
+  useMutation<TResponse, ErrorResponse, { url: string; data: TVariables }>({
+    mutationFn: async ({ url, data }) => {
+      const response = await apiPut<TVariables, TResponse>(url, serializer?.request ? serializer.request(data) : data, headers);
+      return serializer?.response ? serializer.response(response) : response;
+    },
+  });
+
 export const useDelete = <TVariables, TResponse>({
   headers,
 }: {
@@ -75,4 +92,13 @@ export const useDelete = <TVariables, TResponse>({
 } = {}): UseMutationResult<TResponse, ErrorResponse, { url: string; data?: TVariables }> =>
   useMutation<TResponse, ErrorResponse, { url: string; data?: TVariables }>({
     mutationFn: async ({ url, data }) => apiDelete<TResponse>(url, headers, data),
+  });
+
+export const useUpload = <TResponse>({
+  headers,
+}: {
+  headers?: Record<string, string>;
+} = {}): UseMutationResult<TResponse, ErrorResponse, { url: string; formData: FormData }> =>
+  useMutation<TResponse, ErrorResponse, { url: string; formData: FormData }>({
+    mutationFn: async ({ url, formData }) => apiUpload<TResponse>(url, formData, headers),
   });

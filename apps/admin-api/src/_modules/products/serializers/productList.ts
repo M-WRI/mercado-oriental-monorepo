@@ -16,6 +16,7 @@ interface RawProduct {
   id: string;
   name: string;
   description: string | null;
+  imageUrl: string | null;
   isActive: boolean;
   shopId: string;
   createdAt: Date;
@@ -82,6 +83,7 @@ export function serializeProductListItem(product: RawProduct) {
     id: product.id,
     name: product.name,
     description: product.description,
+    imageUrl: product.imageUrl,
     isActive: product.isActive,
     shopId: product.shopId,
     createdAt: product.createdAt,

@@ -118,11 +118,19 @@ export function ProductsScreen() {
                   to={`/products/${product.id}`}
                   className={`product-card bg-white border border-gray-100 rounded-2xl overflow-hidden group animate-fade-in-up stagger-${Math.min(idx + 1, 8)}`}
                 >
-                  {/* Image placeholder */}
-                  <div className={`aspect-square ${GRADIENTS[idx % GRADIENTS.length]} flex items-center justify-center relative overflow-hidden`}>
-                    <span className="text-white/60 text-5xl font-light select-none group-hover:scale-110 transition-transform duration-500">
-                      {product.name.charAt(0).toUpperCase()}
-                    </span>
+                  {/* Product image */}
+                  <div className={`aspect-square relative overflow-hidden ${product.imageUrl ? "bg-gray-50" : GRADIENTS[idx % GRADIENTS.length]}`}>
+                    {product.imageUrl ? (
+                      <img
+                        src={product.imageUrl}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <span className="absolute inset-0 flex items-center justify-center text-white/60 text-5xl font-light select-none group-hover:scale-110 transition-transform duration-500">
+                        {product.name.charAt(0).toUpperCase()}
+                      </span>
+                    )}
                     {!product.inStock && (
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                         <span className="text-white text-xs font-semibold bg-black/50 px-3 py-1 rounded-full">

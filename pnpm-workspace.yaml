@@ -2,6 +2,11 @@ packages:
   - "apps/*"
   - "packages/*"
 
+allowBuilds:
+  '@prisma/engines': set this to true or false
+  esbuild: set this to true or false
+  prisma: set this to true or false
+
 catalog:
   # Runtime – shared across all frontend apps
   react: "^19.2.0"

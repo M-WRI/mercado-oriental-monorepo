@@ -29,11 +29,17 @@ export const createProduct = asyncHandler(async (req: AuthenticatedRequest, res:
     assertNoAttributeValueDuplicates(syntheticVariants);
   }
 
+  const imageUrl =
+    data.imageUrl === undefined
+      ? undefined
+      : data.imageUrl?.trim() || null;
+
   const product = await prisma.product.create({
     data: {
       name: data.name.trim(),
       shopId: data.shopId,
       description: data.description?.trim() || undefined,
+      imageUrl,
       productVariants: data.productVariants?.create
         ? { create: data.productVariants.create }
         : undefined,

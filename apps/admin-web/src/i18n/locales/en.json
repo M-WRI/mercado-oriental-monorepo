@@ -38,6 +38,7 @@
     "dashboard": "Dashboard",
     "products": "Products",
     "attributes": "Attributes",
+    "categories": "Categories",
     "orders": "Orders",
     "inventory": "Inventory",
     "notifications": "Notifications"
@@ -209,7 +210,8 @@
       "imageUploadTooLarge": "Image must be 5 MB or smaller",
       "imageUploadFailed": "Upload failed. Please try again.",
       "nameRequired": "Product name is required",
-      "shopRequired": "Please select a shop"
+      "shopRequired": "Please select a shop",
+      "categoriesLabel": "Categories"
     },
 
     "attributesStep": {
@@ -338,6 +340,8 @@
     "noValues": "No values",
     "addValue": "Add Value",
     "value": "Value",
+    "valuePlaceholder": "e.g. Large",
+    "valueRequired": "Value is required.",
     "usedBy": "Used by",
     "notUsed": "Not used",
     "usedInProducts": "Used in products",
@@ -349,6 +353,47 @@
     "bulkDeleteConfirmMessage": "Are you sure you want to delete {{count}} attributes? This action cannot be undone.",
     "bulkDelete": "Delete ({{count}})",
     "bulkDeleteSuccess": "{{count}} attributes deleted."
+  },
+
+  "categories": {
+    "title": "Categories",
+    "subtitle": "Organize products in a multi-level taxonomy. Categories can nest several levels deep.",
+    "totalCount": "{{count}} categories total",
+    "empty": "No categories yet. Add a root category or run the seed.",
+    "addRoot": "Add root category",
+    "addChild": "Add subcategory",
+    "createCategory": "Create category",
+    "editCategory": "Edit category",
+    "rootCategory": "Top-level category (no parent)",
+    "underParent": "Subcategory of \"{{name}}\"",
+    "name": "Name",
+    "namePlaceholder": "e.g. Spices & Seasonings",
+    "nameRequired": "Category name is required",
+    "slug": "URL slug",
+    "slugPlaceholder": "auto-generated if empty",
+    "slugHint": "Leave blank to generate from the name. Used in store URLs.",
+    "searchPlaceholder": "Search categories…",
+    "noResults": "No categories found",
+    "deleteConfirmTitle": "Delete category",
+    "deleteConfirmMessage": "Delete \"{{name}}\" and all {{children}} direct subcategories? Products will be unlinked from deleted categories."
+  },
+
+  "inventory": {
+    "viewHistory": "History",
+    "historyTitle": "Stock movement history",
+    "noMovements": "No stock movements recorded yet.",
+    "stockDelta": "Stock",
+    "reservedDelta": "Reserved",
+    "reasons": {
+      "RESERVATION_HOLD": "Order reservation",
+      "RESERVATION_RELEASE": "Reservation released",
+      "SALE_COMMIT": "Sale committed",
+      "ORDER_CANCEL_RESTOCK": "Order cancelled — restocked",
+      "RETURN": "Customer return",
+      "ADJUSTMENT": "Manual adjustment",
+      "DAMAGE": "Damaged stock",
+      "BULK_ADJUST": "Bulk adjustment"
+    }
   },
 
   "orders": {
@@ -696,6 +741,10 @@
     "attribute_updated": "Attribute updated successfully.",
     "attribute_deleted": "Attribute deleted successfully.",
     "attribute_value_deleted": "Attribute value deleted successfully.",
+    "attribute_value_created": "Attribute value added successfully.",
+    "category_created": "Category created successfully.",
+    "category_updated": "Category updated successfully.",
+    "category_deleted": "Category deleted successfully.",
     "variant_created": "Variant created successfully.",
     "variant_updated": "Variant updated successfully.",
     "variant_deleted": "Variant deleted successfully."

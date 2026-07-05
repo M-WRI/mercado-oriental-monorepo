@@ -1,5 +1,6 @@
-import { MdOutlineCategory, MdOutlineReceipt, MdOutlineShoppingCart, MdOutlineSpaceDashboard } from "react-icons/md";
+import { MdOutlineCategory, MdOutlineReceipt, MdOutlineShoppingCart, MdOutlineSpaceDashboard, MdAccountTree } from "react-icons/md";
 import { AttributeDetail, AttributesList, EditAttribute } from "@/_modules/attributes/screens";
+import { CategoriesList } from "@/_modules/categories/screens";
 import { DashboardScreen } from "@/_modules/dashboard/screens";
 import { NotificationsList } from "@/_modules/notifications/screens";
 import { OrderDetail, OrderList } from "@/_modules/orders/screens";
@@ -29,6 +30,14 @@ export const routeConfig: TRouteConfig[] | undefined = [
     labelKey: "nav.attributes",
     label: "Attributes",
     icon: <MdOutlineCategory size={20} />,
+  },
+  {
+    path: "categories",
+    children: [{ index: true, Component: CategoriesList }],
+    showInSidebar: true,
+    labelKey: "nav.categories",
+    label: "Categories",
+    icon: <MdAccountTree size={20} />,
   },
   {
     path: "products",

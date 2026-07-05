@@ -102,6 +102,19 @@ export const apiPatch = async <TVariables extends any, TResponse = TVariables>(
   }
 };
 
+export const apiPut = async <TVariables extends any, TResponse = TVariables>(
+  url: string,
+  data: TVariables,
+  headers: Record<string, string> = {}
+): Promise<TResponse> => {
+  try {
+    const response = await getInstance().put<TResponse>(url, data, { headers });
+    return response.data;
+  } catch (error) {
+    extractError<TResponse>(error);
+  }
+};
+
 export const apiDelete = async <TResponse = any>(
   url: string,
   headers: Record<string, string> = {},
@@ -112,5 +125,26 @@ export const apiDelete = async <TResponse = any>(
     return response.data;
   } catch (error) {
     extractError<ErrorResponse>(error);
+  }
+};
+
+export const apiUpload = async <TResponse>(
+  url: string,
+  formData: FormData,
+  headers: Record<string, string> = {}
+): Promise<TResponse> => {
+  try {
+    const response = await getInstance().post<TResponse>(url, formData, {
+      headers,
+      transformRequest: [(data, requestHeaders) => {
+        if (requestHeaders && "Content-Type" in requestHeaders) {
+          delete requestHeaders["Content-Type"];
+        }
+        return data;
+      }],
+    });
+    return response.data;
+  } catch (error) {
+    extractError<TResponse>(error);
   }
 };

@@ -19,3 +19,19 @@ export function assertShopBelongsToUser(shopId: string, shopIds: string[]): void
     });
   }
 }
+
+/** Optional ?shopId= query — returns one shop or all shops owned by the user. */
+export function resolveScopedShopIds(allShopIds: string[], shopIdQuery: unknown): string[] {
+  if (shopIdQuery == null || shopIdQuery === "") {
+    return allShopIds;
+  }
+  if (typeof shopIdQuery !== "string") {
+    throw new AppError({
+      case: "shop",
+      code: ERROR_CODES.INVALID,
+      statusCode: 400,
+    });
+  }
+  assertShopBelongsToUser(shopIdQuery, allShopIds);
+  return [shopIdQuery];
+}

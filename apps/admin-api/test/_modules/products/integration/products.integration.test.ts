@@ -111,4 +111,67 @@ describe.skipIf(!hasTestDatabase)("products (integration)", () => {
 
     expect(showRes.status).toBe(404);
   });
+
+  it("updates a product via PUT", async () => {
+    const { token } = await registerRandomUser(app);
+    const shop = await createShopForUser(app, token);
+    const valueId = await createAttributeWithOneValue(app, token, shop.id);
+
+    const createRes = await request(app)
+      .post("/api/admin/products")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        name: "Before Edit",
+        shopId: shop.id,
+        productVariants: {
+          create: [
+            {
+              name: "Default",
+              price: 9.99,
+              stock: 10,
+              productVariantAttributeValues: {
+                create: [{ productAttributeValueId: valueId }],
+              },
+            },
+          ],
+        },
+      });
+
+    expect(createRes.status).toBe(201);
+    const productId = createRes.body.id as string;
+
+    const variantsRes = await request(app)
+      .get(`/api/admin/products/${productId}/variants`)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(variantsRes.status).toBe(200);
+    const variantId = variantsRes.body[0].id as string;
+
+    const updateRes = await request(app)
+      .put(`/api/admin/products/${productId}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        name: "After Edit",
+        description: "Updated description",
+        imageUrl: "http://localhost:8000/uploads/products/test.png",
+        shopId: shop.id,
+        isActive: true,
+        variants: {
+          update: [
+            {
+              id: variantId,
+              name: "Default",
+              price: 12.5,
+              stock: 8,
+              attributeValueIds: [valueId],
+            },
+          ],
+        },
+      });
+
+    expect(updateRes.status).toBe(200);
+    expect(updateRes.body.name).toBe("After Edit");
+    expect(updateRes.body.description).toBe("Updated description");
+    expect(updateRes.body.imageUrl).toBe("http://localhost:8000/uploads/products/test.png");
+  });
 });

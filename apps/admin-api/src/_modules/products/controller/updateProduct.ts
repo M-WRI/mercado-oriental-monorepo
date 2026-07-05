@@ -48,6 +48,10 @@ export const updateProduct = asyncHandler(async (req: AuthenticatedRequest, res:
       data: {
         name: data.name?.trim(),
         description: data.description !== undefined ? (data.description?.trim() || null) : undefined,
+        imageUrl:
+          data.imageUrl !== undefined
+            ? (typeof data.imageUrl === "string" ? data.imageUrl.trim() || null : data.imageUrl)
+            : undefined,
         shopId: data.shopId,
         isActive: typeof data.isActive === "boolean" ? data.isActive : undefined,
       },

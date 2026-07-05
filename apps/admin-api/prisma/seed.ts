@@ -29,6 +29,10 @@ if (!connectionString) {
 const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
+function demoProductImageUrl(name: string): string {
+  return `https://picsum.photos/seed/${encodeURIComponent(name)}/400/400`;
+}
+
 async function main() {
   console.log("Seeding database...");
 
@@ -104,6 +108,22 @@ async function main() {
     },
   });
 
+  const newVendorUser = await prisma.user.create({
+    data: {
+      email: "new-vendor@mercado-oriental.com",
+      password: hashedPassword,
+      name: "New Vendor",
+    },
+  });
+
+  const soloUser = await prisma.user.create({
+    data: {
+      email: "solo@mercado-oriental.com",
+      password: hashedPassword,
+      name: "Solo Vendor",
+    },
+  });
+
   // 2. Create other Users (Vendors)
   const vendors = [];
   for (let i = 0; i < 20; i++) {
@@ -131,26 +151,63 @@ async function main() {
   }
   const allCustomers = [moritzCustomer, ...customers];
 
-  // 4. Create 50 Shops
+  const DEMO_SHOPS = [
+    { name: "Mercado Oriental", description: "Authentic Asian groceries and specialty ingredients" },
+    { name: "Silk Road Spices", description: "Premium spices, teas, and dried goods" },
+    { name: "Tokyo Kitchen", description: "Japanese pantry staples and snacks" },
+  ] as const;
+
+  const MERCADO_PRODUCTS = [
+    "Jasmine Rice 5kg",
+    "Premium Soy Sauce",
+    "Sesame Oil Cold-Pressed",
+    "Ramen Noodles Variety Pack",
+    "Matcha Green Tea Powder",
+    "Kimchi Paste",
+    "Coconut Milk Organic",
+    "Sriracha Hot Sauce",
+  ] as const;
+
+  // 4. Create demo shops + remaining random shops
   const shops = [];
-  for (let i = 0; i < 50; i++) {
-    // Make sure Moritz has at least 3 shops
-    const owner = i < 3 ? moritzUser : faker.helpers.arrayElement(allVendors);
+  for (const demo of DEMO_SHOPS) {
+    shops.push(await prisma.shop.create({
+      data: {
+        name: demo.name,
+        description: demo.description,
+        userId: moritzUser.id,
+        defaultLowStockThreshold: 5,
+      },
+    }));
+  }
+
+  shops.push(await prisma.shop.create({
+    data: {
+      name: "Solo Shop",
+      description: "A single-shop demo account",
+      userId: soloUser.id,
+      defaultLowStockThreshold: 5,
+    },
+  }));
+
+  for (let i = 0; i < 46; i++) {
     shops.push(await prisma.shop.create({
       data: {
         name: faker.company.name() + " Market",
         description: faker.company.catchPhrase(),
-        userId: owner.id,
+        userId: faker.helpers.arrayElement(vendors).id,
         defaultLowStockThreshold: faker.number.int({ min: 5, max: 20 }),
-      }
+      },
     }));
   }
+
+  const moritzShops = shops.filter((s) => s.userId === moritzUser.id);
+  void newVendorUser;
 
   // 5. Create 200 Products (4 per shop) and assign categories
   const products: { id: string; shopId: string; name: string }[] = [];
   const allVariants: { id: string; productId: string; name: string; price: number }[] = [];
   for (const shop of shops) {
-    // Create some attributes for the shop
     const sizeAttr = await prisma.productAttribute.create({
       data: {
         name: "Size",
@@ -173,11 +230,18 @@ async function main() {
       include: { productAttributeValues: true }
     });
 
-    for (let p = 0; p < 4; p++) {
+    const isMercado = shop.id === moritzShops[0]?.id;
+    const productCount = isMercado ? MERCADO_PRODUCTS.length : 4;
+
+    for (let p = 0; p < productCount; p++) {
+      const productName = isMercado ? MERCADO_PRODUCTS[p] : faker.commerce.productName();
       const product = await prisma.product.create({
         data: {
-          name: faker.commerce.productName(),
-          description: faker.commerce.productDescription(),
+          name: productName,
+          description: isMercado
+            ? `Premium ${MERCADO_PRODUCTS[p]} — sourced for quality and freshness.`
+            : faker.commerce.productDescription(),
+          imageUrl: demoProductImageUrl(productName),
           shopId: shop.id,
           isActive: true,
         }
@@ -226,9 +290,12 @@ async function main() {
   const orders = [];
   
   for (let i = 0; i < 300; i++) {
-    // Make sure Moritz places at least 20 orders, and receives some in his shops (already likely since he owns shops)
     const customer = i < 20 ? moritzCustomer : faker.helpers.arrayElement(allCustomers);
-    const shop = i >= 20 && i < 40 ? shops[0] : faker.helpers.arrayElement(shops); // Force orders on Moritz's shop
+    let shop;
+    if (i >= 20 && i < 35) shop = moritzShops[0];
+    else if (i >= 35 && i < 43) shop = moritzShops[1];
+    else if (i >= 43 && i < 48) shop = moritzShops[2];
+    else shop = faker.helpers.arrayElement(shops);
     const shopVariants = allVariants.filter(v => v.productId && products.find(p => p.id === v.productId && p.shopId === shop.id));
     
     if (shopVariants.length === 0) continue;
@@ -367,13 +434,11 @@ async function main() {
 
   await syncLowStockNotificationsForVariants(allVariants.map(v => v.id));
 
-  // Moritz as a vendor having some disputes & messages to answer
-  const moritzShops = shops.filter(s => s.userId === moritzUser.id);
-  const moritzShopIds = moritzShops.map(s => s.id);
-  const moritzReceivedOrders = orders.filter(o => moritzShopIds.includes(o.shopId));
+  // Moritz as a vendor having some disputes & messages to answer (Mercado Oriental)
+  const mercadoOrders = orders.filter((o) => o.shopId === moritzShops[0]?.id);
 
-  for (let i = 0; i < Math.min(5, moritzReceivedOrders.length); i++) {
-     const o = moritzReceivedOrders[i];
+  for (let i = 0; i < Math.min(5, mercadoOrders.length); i++) {
+     const o = mercadoOrders[i];
      await prisma.orderMessage.create({
        data: {
          orderId: o.id,
@@ -401,6 +466,16 @@ async function main() {
   }
 
   console.log("Seeding done.");
+  console.log("");
+  console.log("── Demo accounts ──");
+  console.log("Admin  moritz@mercado-oriental.com / password123");
+  console.log("       → Mercado Oriental, Silk Road Spices, Tokyo Kitchen");
+  for (const s of moritzShops.filter((shop) => DEMO_SHOPS.some((d) => d.name === shop.name))) {
+    console.log(`       · ${s.name} (${s.id})`);
+  }
+  console.log("Admin  new-vendor@mercado-oriental.com / password123 (no shops)");
+  console.log("Admin  solo@mercado-oriental.com / password123 → Solo Shop");
+  console.log("Store  moritz@mercado-oriental.com / customer123");
 }
 
 main()

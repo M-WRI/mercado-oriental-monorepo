@@ -1,12 +1,5 @@
 export type { IShop } from "@/_modules/shops/types";
-
-export interface ICategory {
-  id: string;
-  name: string;
-  slug: string;
-  parentId: string | null;
-  children: ICategory[];
-}
+export type { ICategory } from "@/_modules/categories/types";
 
 export interface IProductAttribute {
   id: string;

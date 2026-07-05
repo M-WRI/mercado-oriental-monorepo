@@ -2,11 +2,13 @@ import { useTranslation } from "react-i18next";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Table } from "@mercado/shared-ui/components/table";
 import { Tag } from "@mercado/shared-ui/components/tag";
+import { Button } from "@mercado/shared-ui";
 import { availableUnits, stockHealthLevel } from "@mercado/shared-ui/utils/stock";
 import type { IVariantStat } from "../../types";
 
 interface VariantsTableProps {
   variants: IVariantStat[];
+  onViewHistory?: (variant: IVariantStat) => void;
 }
 
 const AvailableIndicator = ({
@@ -39,7 +41,7 @@ const AvailableIndicator = ({
   );
 };
 
-export const VariantsTable = ({ variants }: VariantsTableProps) => {
+export const VariantsTable = ({ variants, onViewHistory }: VariantsTableProps) => {
   const { t } = useTranslation();
 
   const columns: ColumnDef<IVariantStat>[] = [
@@ -136,6 +138,24 @@ export const VariantsTable = ({ variants }: VariantsTableProps) => {
       },
       meta: { className: "text-right" },
     },
+    ...(onViewHistory
+      ? [
+          {
+            id: "history",
+            header: "",
+            cell: ({ row }: { row: { original: IVariantStat } }) => (
+              <Button
+                style="link"
+                className="!text-xs !p-0"
+                onClick={() => onViewHistory(row.original)}
+              >
+                {t("inventory.viewHistory")}
+              </Button>
+            ),
+            meta: { className: "text-right" },
+          } as ColumnDef<IVariantStat>,
+        ]
+      : []),
   ];
 
   const sorted = [...variants].sort((a, b) => b.revenue - a.revenue);

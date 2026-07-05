@@ -5,6 +5,18 @@ export const bulkAdjustInventory = {
 };
 
 export const getInventoryMovements = {
-  queryKey: (variantId?: string) => [["inventory", "movements", variantId]] as TQueryKey,
-  url: (variantId?: string) => `/inventory/movements?variantId=${variantId ?? ""}`,
+  queryKey: (variantId: string) => [["inventory", "movements", variantId]] as TQueryKey,
+  url: (variantId: string) => `/inventory/movements?variantId=${variantId}`,
 };
+
+export interface IInventoryMovement {
+  id: string;
+  productVariantId: string;
+  stockDelta: number;
+  reservedDelta: number;
+  reason: string;
+  orderId: string | null;
+  userId: string | null;
+  note: string | null;
+  createdAt: string;
+}

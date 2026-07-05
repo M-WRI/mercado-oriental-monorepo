@@ -2,6 +2,7 @@ export interface ProductListItem {
   id: string;
   name: string;
   description: string | null;
+  imageUrl: string | null;
   shop: { id: string; name: string };
   priceMin: number;
   priceMax: number;
@@ -53,6 +54,7 @@ export interface ProductDetail {
   id: string;
   name: string;
   description: string | null;
+  imageUrl: string | null;
   shop: { id: string; name: string };
   variants: ProductVariant[];
   reviews: ProductReview[];

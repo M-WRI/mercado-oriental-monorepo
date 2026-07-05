@@ -32,7 +32,3 @@ export const createAttribute = {
   url: "/attributes",
 };
 
-export const getCategories = {
-  queryKey: [["categories"]] as TQueryKey,
-  url: "/categories",
-};

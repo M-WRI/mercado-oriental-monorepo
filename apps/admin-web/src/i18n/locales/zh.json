@@ -38,6 +38,7 @@
     "dashboard": "仪表板",
     "products": "产品",
     "attributes": "属性",
+    "categories": "分类",
     "orders": "订单",
     "inventory": "库存",
     "notifications": "通知"
@@ -209,7 +210,8 @@
       "imageUploadTooLarge": "图片大小不能超过 5 MB",
       "imageUploadFailed": "上传失败，请重试。",
       "nameRequired": "产品名称为必填项",
-      "shopRequired": "请选择一个店铺"
+      "shopRequired": "请选择一个店铺",
+      "categoriesLabel": "分类"
     },
 
     "attributesStep": {
@@ -338,6 +340,8 @@
     "noValues": "无值",
     "addValue": "添加值",
     "value": "值",
+    "valuePlaceholder": "例如：大号",
+    "valueRequired": "值为必填项。",
     "usedBy": "使用于",
     "notUsed": "未使用",
     "usedInProducts": "使用于产品",
@@ -349,6 +353,47 @@
     "bulkDeleteConfirmMessage": "确定要删除 {{count}} 个属性吗？此操作不可撤销。",
     "bulkDelete": "删除 ({{count}})",
     "bulkDeleteSuccess": "已删除 {{count}} 个属性。"
+  },
+
+  "categories": {
+    "title": "分类",
+    "subtitle": "用多层分类体系组织产品，分类可嵌套多个层级。",
+    "totalCount": "共 {{count}} 个分类",
+    "empty": "暂无分类。添加根分类或运行 seed。",
+    "addRoot": "添加根分类",
+    "addChild": "添加子分类",
+    "createCategory": "创建分类",
+    "editCategory": "编辑分类",
+    "rootCategory": "顶级分类（无父级）",
+    "underParent": "「{{name}}」的子分类",
+    "name": "名称",
+    "namePlaceholder": "例如：香料和调味品",
+    "nameRequired": "分类名称为必填项",
+    "slug": "URL 别名",
+    "slugPlaceholder": "留空则自动生成",
+    "slugHint": "留空则根据名称自动生成，用于店铺 URL。",
+    "searchPlaceholder": "搜索分类…",
+    "noResults": "未找到分类",
+    "deleteConfirmTitle": "删除分类",
+    "deleteConfirmMessage": "删除「{{name}}」及其 {{children}} 个直接子分类？产品将与此分类解除关联。"
+  },
+
+  "inventory": {
+    "viewHistory": "历史",
+    "historyTitle": "库存变动历史",
+    "noMovements": "暂无库存变动记录。",
+    "stockDelta": "库存",
+    "reservedDelta": "预留",
+    "reasons": {
+      "RESERVATION_HOLD": "订单预留",
+      "RESERVATION_RELEASE": "释放预留",
+      "SALE_COMMIT": "销售确认",
+      "ORDER_CANCEL_RESTOCK": "订单取消 — 补回库存",
+      "RETURN": "客户退货",
+      "ADJUSTMENT": "手动调整",
+      "DAMAGE": "损坏库存",
+      "BULK_ADJUST": "批量调整"
+    }
   },
 
   "orders": {
@@ -696,6 +741,10 @@
     "attribute_updated": "属性更新成功。",
     "attribute_deleted": "属性删除成功。",
     "attribute_value_deleted": "属性值删除成功。",
+    "attribute_value_created": "属性值添加成功。",
+    "category_created": "分类创建成功。",
+    "category_updated": "分类更新成功。",
+    "category_deleted": "分类删除成功。",
     "variant_created": "变体创建成功。",
     "variant_updated": "变体更新成功。",
     "variant_deleted": "变体删除成功。"

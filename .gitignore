@@ -55,6 +55,7 @@ lerna-debug.log*
 .tmp/
 temp/
 tmp/
+uploads/
 
 # Local SQLite (if used during dev)
 *.db

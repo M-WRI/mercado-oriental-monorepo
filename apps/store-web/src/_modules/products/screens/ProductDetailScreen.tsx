@@ -159,10 +159,20 @@ export function ProductDetailScreen() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {/* Image */}
-          <div className={`aspect-square ${GRADIENTS[gradientIdx]} rounded-2xl flex items-center justify-center shadow-lg animate-fade-in-up`}>
-            <span className="text-white/50 text-8xl font-light select-none">
-              {product.name.charAt(0).toUpperCase()}
-            </span>
+          <div className={`aspect-square rounded-2xl overflow-hidden shadow-lg animate-fade-in-up ${product.imageUrl ? "bg-gray-50" : GRADIENTS[gradientIdx]}`}>
+            {product.imageUrl ? (
+              <img
+                src={product.imageUrl}
+                alt={product.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className={`w-full h-full flex items-center justify-center ${GRADIENTS[gradientIdx]}`}>
+                <span className="text-white/50 text-8xl font-light select-none">
+                  {product.name.charAt(0).toUpperCase()}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Info */}

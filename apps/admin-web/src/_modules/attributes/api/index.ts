@@ -22,4 +22,8 @@ export const updateAttribute = {
 export const deleteAttributeValueRequest = {
   queryKey: (id?: string) => [["attributes", id, "values"]] as TQueryKey,
   url: (id?: string, valueId?: string) => `/attributes/${id}/values/${valueId}`,
-}
+};
+
+export const createAttributeValue = {
+  url: (attributeId: string) => `/attributes/${attributeId}/values`,
+};

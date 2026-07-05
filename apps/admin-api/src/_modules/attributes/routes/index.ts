@@ -7,7 +7,7 @@ import {
   bulkDeleteProductAttributes,
   getProductAttribute,
 } from "../controller";
-import { deleteProductAttributeValue } from "../_modules/controller";
+import { deleteProductAttributeValue, createProductAttributeValue } from "../_modules/controller";
 
 const router = Router();
 
@@ -19,5 +19,6 @@ router.delete("/bulk", bulkDeleteProductAttributes);
 router.delete("/:id", deleteProductAttribute);
 
 router.delete("/:attributeId/values/:valueId", deleteProductAttributeValue);
+router.post("/:attributeId/values", createProductAttributeValue);
 
 export default router;

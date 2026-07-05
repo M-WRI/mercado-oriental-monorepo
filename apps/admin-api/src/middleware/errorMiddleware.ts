@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import multer from "multer";
 import { AppError, ERROR_CODES } from "../lib/error";
 
 export function errorMiddleware(
@@ -9,6 +10,17 @@ export function errorMiddleware(
 ) {
   if (err instanceof AppError) {
     res.status(err.statusCode).json(err.toJSON());
+    return;
+  }
+
+  if (err instanceof multer.MulterError) {
+    const statusCode = err.code === "LIMIT_FILE_SIZE" ? 400 : 400;
+    const appError = new AppError({
+      case: err.code === "LIMIT_FILE_SIZE" ? "file_too_large" : "upload_failed",
+      code: ERROR_CODES.INVALID,
+      statusCode,
+    });
+    res.status(statusCode).json(appError.toJSON());
     return;
   }
 
