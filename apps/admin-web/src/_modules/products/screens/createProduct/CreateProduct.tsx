@@ -13,7 +13,7 @@ import { ProductInfoStep } from "./steps/ProductInfoStep";
 import { ProductAttributesStep } from "./steps/ProductAttributesStep";
 import { ProductVariantsStep } from "./steps/ProductVariantsStep";
 import { ProductReviewStep } from "./steps/ProductReviewStep";
-import type { INewAttribute, IWizardVariant, IProductAttribute } from "../../types";
+import type { INewAttribute, IWizardVariant, IProductAttribute, IProductImageDraft } from "../../types";
 
 export const CreateProduct = () => {
   const navigate = useNavigate();
@@ -99,13 +99,29 @@ export const CreateProduct = () => {
         };
       });
 
-      // 3. Create the product with variants in a single call
+      // 3. Build image payloads with optional variant links
+      const wizardImages = (productInfo.images ?? []) as IProductImageDraft[];
+      const wizardVariants = variants.variants as IWizardVariant[];
+      const imageInputs = wizardImages.map((img, index) => {
+        const variantIndex = wizardVariants.findIndex(
+          (v) => v.linkedImageTempId === img.tempId
+        );
+        return {
+          url: img.url,
+          sortOrder: index,
+          isPrimary: img.isPrimary,
+          variantIndex: variantIndex >= 0 ? variantIndex : undefined,
+        };
+      });
+
+      // 4. Create the product with variants in a single call
       await postMutation({
         url: createProduct.url,
         data: {
           name: productInfo.name,
           description: productInfo.description,
           imageUrl: productInfo.imageUrl || undefined,
+          images: imageInputs.length > 0 ? imageInputs : undefined,
           shopId: productInfo.shopId,
           categoryIds: productInfo.categoryIds ?? [],
           productVariants: {
@@ -114,7 +130,7 @@ export const CreateProduct = () => {
         },
       });
 
-      // 4. Invalidate caches and navigate back
+      // 5. Invalidate caches and navigate back
       queryClient.invalidateQueries({ queryKey: getProducts.queryKey(shopId) });
       queryClient.invalidateQueries({ queryKey: getAttributes.queryKey(shopId) });
       toastSuccess(t("success.product_created"));

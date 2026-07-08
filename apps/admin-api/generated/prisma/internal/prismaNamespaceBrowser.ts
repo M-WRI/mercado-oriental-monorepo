@@ -54,10 +54,12 @@ export const ModelName = {
   User: 'User',
   Shop: 'Shop',
   Product: 'Product',
+  ProductImage: 'ProductImage',
   ProductVariant: 'ProductVariant',
   ProductAttribute: 'ProductAttribute',
   ProductAttributeValue: 'ProductAttributeValue',
   Customer: 'Customer',
+  CheckoutSession: 'CheckoutSession',
   Order: 'Order',
   OrderItem: 'OrderItem',
   ProductVariantAttributeValue: 'ProductVariantAttributeValue',
@@ -107,6 +109,8 @@ export const ShopScalarFieldEnum = {
   description: 'description',
   userId: 'userId',
   defaultLowStockThreshold: 'defaultLowStockThreshold',
+  stripeAccountId: 'stripeAccountId',
+  stripeOnboardingComplete: 'stripeOnboardingComplete',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -126,6 +130,21 @@ export const ProductScalarFieldEnum = {
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+export const ProductImageScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  alt: 'alt',
+  sortOrder: 'sortOrder',
+  isPrimary: 'isPrimary',
+  productId: 'productId',
+  productVariantId: 'productVariantId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProductImageScalarFieldEnum = (typeof ProductImageScalarFieldEnum)[keyof typeof ProductImageScalarFieldEnum]
 
 
 export const ProductVariantScalarFieldEnum = {
@@ -179,6 +198,21 @@ export const CustomerScalarFieldEnum = {
 export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
 
 
+export const CheckoutSessionScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  stripeSessionId: 'stripeSessionId',
+  status: 'status',
+  totalAmount: 'totalAmount',
+  shippingAddress: 'shippingAddress',
+  customerNote: 'customerNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CheckoutSessionScalarFieldEnum = (typeof CheckoutSessionScalarFieldEnum)[keyof typeof CheckoutSessionScalarFieldEnum]
+
+
 export const OrderScalarFieldEnum = {
   id: 'id',
   customerEmail: 'customerEmail',
@@ -186,6 +220,12 @@ export const OrderScalarFieldEnum = {
   customerId: 'customerId',
   status: 'status',
   totalAmount: 'totalAmount',
+  paymentStatus: 'paymentStatus',
+  stripeCheckoutSessionId: 'stripeCheckoutSessionId',
+  stripePaymentIntentId: 'stripePaymentIntentId',
+  stripeTransferId: 'stripeTransferId',
+  paidAt: 'paidAt',
+  checkoutSessionId: 'checkoutSessionId',
   shippingAddress: 'shippingAddress',
   trackingNumber: 'trackingNumber',
   carrier: 'carrier',

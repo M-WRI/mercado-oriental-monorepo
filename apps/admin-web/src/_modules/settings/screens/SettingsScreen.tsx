@@ -3,6 +3,7 @@ import {
   AccountSettingsForm,
   SettingsSection,
   ShopSettingsForm,
+  StripeConnectSection,
 } from "../components";
 import { useAccountSettingsForm, useShopSettingsForm } from "../hooks";
 
@@ -30,6 +31,8 @@ export const SettingsScreen = () => {
           isSaving={account.isSaving}
         />
       </SettingsSection>
+
+      <StripeConnectSection />
 
       <SettingsSection
         title={t("settings.shopTitle")}

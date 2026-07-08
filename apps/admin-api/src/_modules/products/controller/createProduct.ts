@@ -7,6 +7,7 @@ import {
 } from "../../../lib";
 import { AuthenticatedRequest } from "../../../middleware/authMiddleware";
 import { assertNoAttributeValueDuplicates } from "../validation";
+import { replaceProductImages } from "../lib/productImages";
 
 import type { z } from "zod";
 
@@ -16,9 +17,6 @@ export const createProduct = asyncHandler(async (req: AuthenticatedRequest, res:
 
   assertShopBelongsToUser(data.shopId, shopIds);
 
-  // Variants are already validated, but we still construct synthetic instances
-  // against the assertNoAttributeValueDuplicates logic or just remove that too?
-  // Let's keep logic that's not strictly typing (like no duplicate attribute value sets)
   if (data.productVariants?.create) {
     const syntheticVariants = data.productVariants.create.map((v: any, i: number) => ({
       id: `new-${i}`,
@@ -29,21 +27,42 @@ export const createProduct = asyncHandler(async (req: AuthenticatedRequest, res:
     assertNoAttributeValueDuplicates(syntheticVariants);
   }
 
-  const imageUrl =
+  const legacyImageUrl =
     data.imageUrl === undefined
       ? undefined
       : data.imageUrl?.trim() || null;
 
-  const product = await prisma.product.create({
-    data: {
-      name: data.name.trim(),
-      shopId: data.shopId,
-      description: data.description?.trim() || undefined,
-      imageUrl,
-      productVariants: data.productVariants?.create
-        ? { create: data.productVariants.create }
-        : undefined,
-    },
+  const product = await prisma.$transaction(async (tx) => {
+    const created = await tx.product.create({
+      data: {
+        name: data.name.trim(),
+        shopId: data.shopId,
+        description: data.description?.trim() || undefined,
+        imageUrl: legacyImageUrl,
+        productVariants: data.productVariants?.create
+          ? { create: data.productVariants.create }
+          : undefined,
+      },
+      include: {
+        productVariants: { select: { id: true }, orderBy: { createdAt: "asc" } },
+      },
+    });
+
+    if (data.images?.length) {
+      const variantIds = created.productVariants.map((v) => v.id);
+      await replaceProductImages(tx, created.id, data.images, variantIds);
+    } else if (legacyImageUrl) {
+      await tx.productImage.create({
+        data: {
+          url: legacyImageUrl,
+          sortOrder: 0,
+          isPrimary: true,
+          productId: created.id,
+        },
+      });
+    }
+
+    return created;
   });
 
   // Link categories if provided
@@ -58,6 +77,11 @@ export const createProduct = asyncHandler(async (req: AuthenticatedRequest, res:
     });
   }
 
-  res.status(201).json(product);
+  const result = await prisma.product.findUnique({
+    where: { id: product.id },
+    include: { productImages: true },
+  });
+
+  res.status(201).json(result);
 });
 

@@ -1,5 +1,30 @@
 import { prisma } from "../prisma";
+import {
+  dispatchVendorEmailForNotification,
+  emailWelcomeVendor,
+} from "../email";
 import { NOTIFICATION_TYPE } from "./constants";
+
+async function getUserEmail(userId: string): Promise<string | null> {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { email: true },
+  });
+  return user?.email ?? null;
+}
+
+function fireVendorEmail(
+  userId: string,
+  type: (typeof NOTIFICATION_TYPE)[keyof typeof NOTIFICATION_TYPE],
+  payload: Record<string, unknown>
+) {
+  getUserEmail(userId)
+    .then((email) => {
+      if (!email) return;
+      return dispatchVendorEmailForNotification(type, email, payload);
+    })
+    .catch((err) => console.error("[email] vendor notification failed:", err));
+}
 
 function dedupeNewOrder(orderId: string) {
   return `new_order:${orderId}`;
@@ -13,10 +38,6 @@ function dedupePaymentFailed(
   return `payment_failed:${shopId}:${orderId ?? "no_order"}:${providerReference}`;
 }
 
-/**
- * Create an in-app notification for the shop owner when a new order is placed.
- * Idempotent per order (`dedupeKey` = new_order:{orderId}).
- */
 export async function notifyNewOrder(orderId: string) {
   const order = await prisma.order.findUnique({
     where: { id: orderId },
@@ -62,6 +83,14 @@ export async function notifyNewOrder(orderId: string) {
       },
     },
   });
+
+  fireVendorEmail(order.shop.userId, NOTIFICATION_TYPE.NEW_ORDER, {
+    shopName: order.shop.name,
+    customer,
+    totalAmount: amount,
+    orderId: order.id,
+    shopId: order.shopId,
+  });
 }
 
 export interface NotifyPaymentFailedParams {
@@ -69,21 +98,13 @@ export interface NotifyPaymentFailedParams {
   orderId?: string | null;
   amount?: number | null;
   reason?: string | null;
-  /** Idempotency key from the payment provider (charge id, event id, etc.). */
   providerReference: string;
 }
 
-/**
- * In-app alert when a charge or payout fails. Wire this from your payment webhook.
- * `providerReference` must be unique per failure event for correct deduping.
- */
-/**
- * Notify shop owner when a customer sends a message on an order.
- */
 export async function notifyNewMessage(orderId: string, customerName: string) {
   const order = await prisma.order.findUnique({
     where: { id: orderId },
-    include: { shop: { select: { userId: true } } },
+    include: { shop: { select: { userId: true, id: true } } },
   });
   if (!order) return;
 
@@ -96,15 +117,18 @@ export async function notifyNewMessage(orderId: string, customerName: string) {
       payload: { orderId },
     },
   });
+
+  fireVendorEmail(order.shop.userId, NOTIFICATION_TYPE.NEW_MESSAGE, {
+    customerName,
+    orderId,
+    shopId: order.shop.id,
+  });
 }
 
-/**
- * Notify shop owner when a customer opens a dispute.
- */
 export async function notifyNewDispute(orderId: string, disputeId: string, reason: string) {
   const order = await prisma.order.findUnique({
     where: { id: orderId },
-    include: { shop: { select: { userId: true } } },
+    include: { shop: { select: { userId: true, id: true } } },
   });
   if (!order) return;
 
@@ -119,11 +143,15 @@ export async function notifyNewDispute(orderId: string, disputeId: string, reaso
       payload: { orderId, disputeId },
     },
   });
+
+  fireVendorEmail(order.shop.userId, NOTIFICATION_TYPE.NEW_DISPUTE, {
+    customer,
+    reason,
+    orderId,
+    shopId: order.shop.id,
+  });
 }
 
-/**
- * Notify shop owner when a dispute status changes.
- */
 export async function notifyDisputeStatusChange(
   orderId: string,
   disputeId: string,
@@ -132,7 +160,7 @@ export async function notifyDisputeStatusChange(
 ) {
   const order = await prisma.order.findUnique({
     where: { id: orderId },
-    include: { shop: { select: { userId: true } } },
+    include: { shop: { select: { userId: true, id: true } } },
   });
   if (!order) return;
 
@@ -145,15 +173,19 @@ export async function notifyDisputeStatusChange(
       payload: { orderId, disputeId, oldStatus, newStatus },
     },
   });
+
+  fireVendorEmail(order.shop.userId, NOTIFICATION_TYPE.DISPUTE_STATUS_CHANGE, {
+    orderId,
+    shopId: order.shop.id,
+    oldStatus,
+    newStatus,
+  });
 }
 
-/**
- * Notify shop owner when a customer leaves a product review.
- */
 export async function notifyNewReview(reviewId: string, productId: string) {
   const product = await prisma.product.findUnique({
     where: { id: productId },
-    include: { shop: { select: { userId: true } } },
+    include: { shop: { select: { userId: true, id: true } } },
   });
   if (!product) return;
 
@@ -171,6 +203,14 @@ export async function notifyNewReview(reviewId: string, productId: string) {
       body: `${customer} rated ${product.name} ${stars}`,
       payload: { reviewId, productId },
     },
+  });
+
+  fireVendorEmail(product.shop.userId, NOTIFICATION_TYPE.NEW_REVIEW, {
+    customer,
+    productName: product.name,
+    rating: review.rating,
+    productId,
+    shopId: product.shop.id,
   });
 }
 
@@ -227,4 +267,20 @@ export async function notifyPaymentFailed(params: NotifyPaymentFailedParams) {
       },
     },
   });
+
+  fireVendorEmail(shop.userId, NOTIFICATION_TYPE.PAYMENT_FAILED, {
+    shopId: params.shopId,
+    orderId: params.orderId ?? null,
+    amount: params.amount ?? null,
+    reason: params.reason ?? null,
+  });
+}
+
+export function notifyWelcomeVendor(userId: string, name?: string | null) {
+  getUserEmail(userId)
+    .then((email) => {
+      if (!email) return;
+      return emailWelcomeVendor({ to: email, name });
+    })
+    .catch((err) => console.error("[email] welcome email failed:", err));
 }

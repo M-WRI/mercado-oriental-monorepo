@@ -45,6 +45,7 @@ export const showOrder = asyncHandler(async (req: CustomerAuthenticatedRequest, 
     shop: order.shop,
     items: order.orderItems.map((oi) => ({
       id: oi.id,
+      productId: oi.productVariant?.product?.id ?? null,
       productName: oi.productVariant?.product?.name ?? oi.productName,
       variantName: oi.productVariant?.name ?? oi.variantName,
       attributeSummary: oi.attributeSummary,

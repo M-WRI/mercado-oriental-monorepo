@@ -67,9 +67,9 @@ export function OrderDetailScreen() {
 
   if (isLoading) {
     return (
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12 animate-fade-in">
-        <div className="skeleton h-8 w-1/3 mb-6" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div className="animate-fade-in space-y-4">
+        <div className="skeleton h-6 w-32" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="skeleton h-32 rounded-2xl" />
           <div className="skeleton h-32 rounded-2xl" />
         </div>
@@ -80,9 +80,11 @@ export function OrderDetailScreen() {
 
   if (!order) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-16 text-center animate-fade-in">
+      <div className="text-center py-16 animate-fade-in">
         <p className="text-gray-500 font-medium mb-2">Order not found</p>
-        <Link to="/orders" className="text-sm font-medium text-gray-900 hover:text-gray-700">← Back to orders</Link>
+        <Link to="/account/orders" className="text-sm font-medium text-gray-900 hover:text-gray-700">
+          ← Back to orders
+        </Link>
       </div>
     );
   }
@@ -96,16 +98,16 @@ export function OrderDetailScreen() {
   ].filter((s) => s.date);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 animate-fade-in">
-      <Link to="/orders" className="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-gray-600 mb-6 transition-colors">
+    <div className="animate-fade-in space-y-6">
+      <Link to="/account/orders" className="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-gray-600 transition-colors">
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
         All orders
       </Link>
 
-      <div className="flex items-center gap-3 mb-6">
-        <h1 className="text-2xl font-bold">Order #{order.id.slice(0, 8)}</h1>
+      <div className="flex items-center gap-3">
+        <h2 className="text-xl font-semibold text-gray-900">Order #{order.id.slice(0, 8)}</h2>
         <Tag variant={statusVariant[order.status] ?? "default"} dot>{order.status}</Tag>
       </div>
 
@@ -192,7 +194,7 @@ export function OrderDetailScreen() {
       </div>
 
       {/* Messages */}
-      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm mb-6">
+      <div id="messages" className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm mb-6 scroll-mt-24">
         <div className="px-5 py-3 border-b border-gray-100">
           <h3 className="text-sm font-semibold">Messages</h3>
         </div>
@@ -245,10 +247,12 @@ export function OrderDetailScreen() {
           <p className="text-sm font-medium text-gray-700 mb-2">How was your order?</p>
           <p className="text-xs text-gray-500 mb-4">Leave a review on the products you purchased.</p>
           <div className="flex flex-wrap justify-center gap-2">
-            {order.items.map((item) => (
+            {order.items
+              .filter((item) => item.productId)
+              .map((item) => (
               <Link
                 key={item.id}
-                to={`/products/${item.id}`}
+                to={`/products/${item.productId}`}
                 className="text-xs px-3 py-1.5 bg-white border border-gray-200 text-gray-900 font-medium rounded-lg hover:bg-gray-100 transition-colors"
               >
                 Review {item.productName}

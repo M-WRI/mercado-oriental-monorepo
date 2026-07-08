@@ -10,6 +10,7 @@ import {
 import { INV_REASON, recordMovement, syncLowStockNotificationsForVariants } from "../../../lib/inventory";
 import { AuthenticatedRequest } from "../../../middleware/authMiddleware";
 import { assertNoAttributeValueDuplicates } from "../validation";
+import { replaceProductImages } from "../lib/productImages";
 
 export const updateProduct = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { id } = req.params;
@@ -215,11 +216,22 @@ export const updateProduct = asyncHandler(async (req: AuthenticatedRequest, res:
         });
       }
     }
+
+    if (Array.isArray(data.images)) {
+      const variantIds = (
+        await tx.productVariant.findMany({
+          where: { productId: id },
+          select: { id: true },
+          orderBy: { createdAt: "asc" },
+        })
+      ).map((v) => v.id);
+      await replaceProductImages(tx, id, data.images, variantIds);
+    }
   });
 
   const product = await prisma.product.findUnique({
     where: { id },
-    include: { productVariants: true },
+    include: { productVariants: true, productImages: true },
   });
 
   if (product && data.variants) {

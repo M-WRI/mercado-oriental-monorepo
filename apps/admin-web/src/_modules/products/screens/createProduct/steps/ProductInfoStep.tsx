@@ -18,8 +18,8 @@ export const ProductInfoStep = (props: StepProps) => {
         onNameChange={step.setName}
         description={step.description}
         onDescriptionChange={step.setDescription}
-        imageUrl={step.imageUrl}
-        onImageUrlChange={step.setImageUrl}
+        images={step.images}
+        onImagesChange={step.setImages}
         categoryIds={step.categoryIds}
         categoryNames={step.categoryNames}
         onToggleCategory={step.handleToggleCategory}

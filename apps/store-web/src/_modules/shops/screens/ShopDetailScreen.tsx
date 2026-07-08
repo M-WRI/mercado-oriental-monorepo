@@ -1,16 +1,8 @@
 import { useParams, Link } from "react-router";
 import { useFetch } from "@mercado/shared-ui";
+import { ProductCard } from "@/_modules/products/components";
 import { shopDetailEndpoint } from "../api";
 import type { ShopDetail } from "../types";
-
-const GRADIENTS = [
-  "gradient-placeholder-1",
-  "gradient-placeholder-2",
-  "gradient-placeholder-3",
-  "gradient-placeholder-4",
-  "gradient-placeholder-5",
-  "gradient-placeholder-6",
-];
 
 function StarRating({ rating, size = "sm" }: { rating: number; size?: "sm" | "lg" }) {
   const cls = size === "lg" ? "text-xl" : "text-xs";
@@ -208,59 +200,18 @@ export function ShopDetailScreen() {
             <p className="text-sm text-gray-400">This shop hasn't listed any products.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3">
             {shop.products.map((product, idx) => (
-              <Link
+              <ProductCard
                 key={product.id}
-                to={`/products/${product.id}`}
-                id={`shop-product-${product.id}`}
-                className={`product-card bg-white border border-gray-100 rounded-2xl overflow-hidden group animate-fade-in-up stagger-${Math.min(idx + 1, 8)}`}
-              >
-                {/* Image placeholder */}
-                <div className={`aspect-square ${GRADIENTS[idx % GRADIENTS.length]} flex items-center justify-center relative overflow-hidden`}>
-                  <span className="text-white/60 text-5xl font-light select-none group-hover:scale-110 transition-transform duration-500">
-                    {product.name.charAt(0).toUpperCase()}
-                  </span>
-                  {!product.inStock && (
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                      <span className="text-white text-xs font-semibold bg-black/50 px-3 py-1 rounded-full">
-                        Out of stock
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="p-4 space-y-1.5 bg-white">
-                  <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 group-hover:text-gray-600 transition-colors">
-                    {product.name}
-                  </h3>
-
-                  {product.categories?.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                      {product.categories.slice(0, 2).map((c) => (
-                        <span key={c.id} className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">
-                          {c.name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="flex items-center gap-2 pt-1">
-                    <span className="text-sm font-bold text-gray-900">
-                      {product.priceMin === product.priceMax
-                        ? `€${product.priceMin.toFixed(2)}`
-                        : `€${product.priceMin.toFixed(2)} – €${product.priceMax.toFixed(2)}`}
-                    </span>
-                  </div>
-
-                  {product.avgRating !== null && (
-                    <div className="flex items-center gap-1.5">
-                      <StarRating rating={product.avgRating} />
-                      <span className="text-[10px] text-gray-400">({product.reviewCount})</span>
-                    </div>
-                  )}
-                </div>
-              </Link>
+                product={{
+                  ...product,
+                  imageUrl: null,
+                  shop: { id: shop.id, name: shop.name },
+                }}
+                index={idx}
+                compact
+              />
             ))}
           </div>
         )}

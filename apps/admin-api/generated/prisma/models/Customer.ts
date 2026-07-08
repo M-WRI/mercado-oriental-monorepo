@@ -199,6 +199,7 @@ export type CustomerWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   orders?: Prisma.OrderListRelationFilter
+  checkoutSessions?: Prisma.CheckoutSessionListRelationFilter
   reviews?: Prisma.ProductReviewListRelationFilter
 }
 
@@ -211,6 +212,7 @@ export type CustomerOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   orders?: Prisma.OrderOrderByRelationAggregateInput
+  checkoutSessions?: Prisma.CheckoutSessionOrderByRelationAggregateInput
   reviews?: Prisma.ProductReviewOrderByRelationAggregateInput
 }
 
@@ -226,6 +228,7 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   orders?: Prisma.OrderListRelationFilter
+  checkoutSessions?: Prisma.CheckoutSessionListRelationFilter
   reviews?: Prisma.ProductReviewListRelationFilter
 }, "id" | "email">
 
@@ -264,6 +267,7 @@ export type CustomerCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkoutSessions?: Prisma.CheckoutSessionCreateNestedManyWithoutCustomerInput
   reviews?: Prisma.ProductReviewCreateNestedManyWithoutCustomerInput
 }
 
@@ -276,6 +280,7 @@ export type CustomerUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkoutSessions?: Prisma.CheckoutSessionUncheckedCreateNestedManyWithoutCustomerInput
   reviews?: Prisma.ProductReviewUncheckedCreateNestedManyWithoutCustomerInput
 }
 
@@ -288,6 +293,7 @@ export type CustomerUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkoutSessions?: Prisma.CheckoutSessionUpdateManyWithoutCustomerNestedInput
   reviews?: Prisma.ProductReviewUpdateManyWithoutCustomerNestedInput
 }
 
@@ -300,6 +306,7 @@ export type CustomerUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkoutSessions?: Prisma.CheckoutSessionUncheckedUpdateManyWithoutCustomerNestedInput
   reviews?: Prisma.ProductReviewUncheckedUpdateManyWithoutCustomerNestedInput
 }
 
@@ -363,9 +370,28 @@ export type CustomerMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type CustomerScalarRelationFilter = {
+  is?: Prisma.CustomerWhereInput
+  isNot?: Prisma.CustomerWhereInput
+}
+
 export type CustomerNullableScalarRelationFilter = {
   is?: Prisma.CustomerWhereInput | null
   isNot?: Prisma.CustomerWhereInput | null
+}
+
+export type CustomerCreateNestedOneWithoutCheckoutSessionsInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutCheckoutSessionsInput, Prisma.CustomerUncheckedCreateWithoutCheckoutSessionsInput>
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutCheckoutSessionsInput
+  connect?: Prisma.CustomerWhereUniqueInput
+}
+
+export type CustomerUpdateOneRequiredWithoutCheckoutSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutCheckoutSessionsInput, Prisma.CustomerUncheckedCreateWithoutCheckoutSessionsInput>
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutCheckoutSessionsInput
+  upsert?: Prisma.CustomerUpsertWithoutCheckoutSessionsInput
+  connect?: Prisma.CustomerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CustomerUpdateToOneWithWhereWithoutCheckoutSessionsInput, Prisma.CustomerUpdateWithoutCheckoutSessionsInput>, Prisma.CustomerUncheckedUpdateWithoutCheckoutSessionsInput>
 }
 
 export type CustomerCreateNestedOneWithoutOrdersInput = {
@@ -400,6 +426,70 @@ export type CustomerUpdateOneWithoutReviewsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CustomerUpdateToOneWithWhereWithoutReviewsInput, Prisma.CustomerUpdateWithoutReviewsInput>, Prisma.CustomerUncheckedUpdateWithoutReviewsInput>
 }
 
+export type CustomerCreateWithoutCheckoutSessionsInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  reviews?: Prisma.ProductReviewCreateNestedManyWithoutCustomerInput
+}
+
+export type CustomerUncheckedCreateWithoutCheckoutSessionsInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  reviews?: Prisma.ProductReviewUncheckedCreateNestedManyWithoutCustomerInput
+}
+
+export type CustomerCreateOrConnectWithoutCheckoutSessionsInput = {
+  where: Prisma.CustomerWhereUniqueInput
+  create: Prisma.XOR<Prisma.CustomerCreateWithoutCheckoutSessionsInput, Prisma.CustomerUncheckedCreateWithoutCheckoutSessionsInput>
+}
+
+export type CustomerUpsertWithoutCheckoutSessionsInput = {
+  update: Prisma.XOR<Prisma.CustomerUpdateWithoutCheckoutSessionsInput, Prisma.CustomerUncheckedUpdateWithoutCheckoutSessionsInput>
+  create: Prisma.XOR<Prisma.CustomerCreateWithoutCheckoutSessionsInput, Prisma.CustomerUncheckedCreateWithoutCheckoutSessionsInput>
+  where?: Prisma.CustomerWhereInput
+}
+
+export type CustomerUpdateToOneWithWhereWithoutCheckoutSessionsInput = {
+  where?: Prisma.CustomerWhereInput
+  data: Prisma.XOR<Prisma.CustomerUpdateWithoutCheckoutSessionsInput, Prisma.CustomerUncheckedUpdateWithoutCheckoutSessionsInput>
+}
+
+export type CustomerUpdateWithoutCheckoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  reviews?: Prisma.ProductReviewUpdateManyWithoutCustomerNestedInput
+}
+
+export type CustomerUncheckedUpdateWithoutCheckoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  reviews?: Prisma.ProductReviewUncheckedUpdateManyWithoutCustomerNestedInput
+}
+
 export type CustomerCreateWithoutOrdersInput = {
   id?: string
   email: string
@@ -408,6 +498,7 @@ export type CustomerCreateWithoutOrdersInput = {
   phone?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  checkoutSessions?: Prisma.CheckoutSessionCreateNestedManyWithoutCustomerInput
   reviews?: Prisma.ProductReviewCreateNestedManyWithoutCustomerInput
 }
 
@@ -419,6 +510,7 @@ export type CustomerUncheckedCreateWithoutOrdersInput = {
   phone?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  checkoutSessions?: Prisma.CheckoutSessionUncheckedCreateNestedManyWithoutCustomerInput
   reviews?: Prisma.ProductReviewUncheckedCreateNestedManyWithoutCustomerInput
 }
 
@@ -446,6 +538,7 @@ export type CustomerUpdateWithoutOrdersInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  checkoutSessions?: Prisma.CheckoutSessionUpdateManyWithoutCustomerNestedInput
   reviews?: Prisma.ProductReviewUpdateManyWithoutCustomerNestedInput
 }
 
@@ -457,6 +550,7 @@ export type CustomerUncheckedUpdateWithoutOrdersInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  checkoutSessions?: Prisma.CheckoutSessionUncheckedUpdateManyWithoutCustomerNestedInput
   reviews?: Prisma.ProductReviewUncheckedUpdateManyWithoutCustomerNestedInput
 }
 
@@ -469,6 +563,7 @@ export type CustomerCreateWithoutReviewsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   orders?: Prisma.OrderCreateNestedManyWithoutCustomerInput
+  checkoutSessions?: Prisma.CheckoutSessionCreateNestedManyWithoutCustomerInput
 }
 
 export type CustomerUncheckedCreateWithoutReviewsInput = {
@@ -480,6 +575,7 @@ export type CustomerUncheckedCreateWithoutReviewsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutCustomerInput
+  checkoutSessions?: Prisma.CheckoutSessionUncheckedCreateNestedManyWithoutCustomerInput
 }
 
 export type CustomerCreateOrConnectWithoutReviewsInput = {
@@ -507,6 +603,7 @@ export type CustomerUpdateWithoutReviewsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   orders?: Prisma.OrderUpdateManyWithoutCustomerNestedInput
+  checkoutSessions?: Prisma.CheckoutSessionUpdateManyWithoutCustomerNestedInput
 }
 
 export type CustomerUncheckedUpdateWithoutReviewsInput = {
@@ -518,6 +615,7 @@ export type CustomerUncheckedUpdateWithoutReviewsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   orders?: Prisma.OrderUncheckedUpdateManyWithoutCustomerNestedInput
+  checkoutSessions?: Prisma.CheckoutSessionUncheckedUpdateManyWithoutCustomerNestedInput
 }
 
 
@@ -527,11 +625,13 @@ export type CustomerUncheckedUpdateWithoutReviewsInput = {
 
 export type CustomerCountOutputType = {
   orders: number
+  checkoutSessions: number
   reviews: number
 }
 
 export type CustomerCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orders?: boolean | CustomerCountOutputTypeCountOrdersArgs
+  checkoutSessions?: boolean | CustomerCountOutputTypeCountCheckoutSessionsArgs
   reviews?: boolean | CustomerCountOutputTypeCountReviewsArgs
 }
 
@@ -555,6 +655,13 @@ export type CustomerCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types
 /**
  * CustomerCountOutputType without action
  */
+export type CustomerCountOutputTypeCountCheckoutSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CheckoutSessionWhereInput
+}
+
+/**
+ * CustomerCountOutputType without action
+ */
 export type CustomerCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ProductReviewWhereInput
 }
@@ -569,6 +676,7 @@ export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   createdAt?: boolean
   updatedAt?: boolean
   orders?: boolean | Prisma.Customer$ordersArgs<ExtArgs>
+  checkoutSessions?: boolean | Prisma.Customer$checkoutSessionsArgs<ExtArgs>
   reviews?: boolean | Prisma.Customer$reviewsArgs<ExtArgs>
   _count?: boolean | Prisma.CustomerCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["customer"]>
@@ -606,6 +714,7 @@ export type CustomerSelectScalar = {
 export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "phone" | "createdAt" | "updatedAt", ExtArgs["result"]["customer"]>
 export type CustomerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orders?: boolean | Prisma.Customer$ordersArgs<ExtArgs>
+  checkoutSessions?: boolean | Prisma.Customer$checkoutSessionsArgs<ExtArgs>
   reviews?: boolean | Prisma.Customer$reviewsArgs<ExtArgs>
   _count?: boolean | Prisma.CustomerCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -616,6 +725,7 @@ export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   name: "Customer"
   objects: {
     orders: Prisma.$OrderPayload<ExtArgs>[]
+    checkoutSessions: Prisma.$CheckoutSessionPayload<ExtArgs>[]
     reviews: Prisma.$ProductReviewPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1021,6 +1131,7 @@ readonly fields: CustomerFieldRefs;
 export interface Prisma__CustomerClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   orders<T extends Prisma.Customer$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Customer$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  checkoutSessions<T extends Prisma.Customer$checkoutSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Customer$checkoutSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CheckoutSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.Customer$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Customer$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1472,6 +1583,30 @@ export type Customer$ordersArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+}
+
+/**
+ * Customer.checkoutSessions
+ */
+export type Customer$checkoutSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CheckoutSession
+   */
+  select?: Prisma.CheckoutSessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CheckoutSession
+   */
+  omit?: Prisma.CheckoutSessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CheckoutSessionInclude<ExtArgs> | null
+  where?: Prisma.CheckoutSessionWhereInput
+  orderBy?: Prisma.CheckoutSessionOrderByWithRelationInput | Prisma.CheckoutSessionOrderByWithRelationInput[]
+  cursor?: Prisma.CheckoutSessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CheckoutSessionScalarFieldEnum | Prisma.CheckoutSessionScalarFieldEnum[]
 }
 
 /**

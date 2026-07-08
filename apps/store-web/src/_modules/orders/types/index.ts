@@ -22,6 +22,7 @@ export interface OrderListResponse {
 
 export interface OrderDetailItem {
   id: string;
+  productId: string | null;
   productName: string;
   variantName: string;
   attributeSummary: string;

@@ -12,6 +12,7 @@ import {
   serializeSalesPerformance,
   serializeCustomerInsights,
 } from "../serializers";
+import { serializeProductImages } from "../lib/productImages";
 
 export const showProduct = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { id } = req.params;
@@ -56,6 +57,7 @@ export const showProduct = asyncHandler(async (req: AuthenticatedRequest, res: R
           category: { select: { id: true, name: true, slug: true } },
         },
       },
+      productImages: true,
     },
   });
 
@@ -86,6 +88,7 @@ export const showProduct = asyncHandler(async (req: AuthenticatedRequest, res: R
     name: product.name,
     description: product.description,
     imageUrl: product.imageUrl,
+    images: serializeProductImages(product.productImages),
     isActive: product.isActive,
     shop: product.shop,
     createdAt: product.createdAt,

@@ -9,17 +9,33 @@ export const ERROR_CODES = {
   UNAUTHORIZED: "UNAUTHORIZED",
 } as const;
 
+export const ProductImageUrlSchema = z.union([
+  z.string().url(),
+  z.string().regex(/^\/uploads\//),
+]);
+
+export const ProductImageInputSchema = z.object({
+  id: z.string().optional(),
+  url: ProductImageUrlSchema,
+  alt: z.string().nullable().optional(),
+  sortOrder: z.number().int().min(0).optional(),
+  isPrimary: z.boolean().optional(),
+  productVariantId: z.string().nullable().optional(),
+  /** 0-based index into productVariants.create — used on product create only */
+  variantIndex: z.number().int().min(0).optional(),
+});
+
 export const BaseProductSchema = z.object({
   name: z.string().trim().min(1, "Product name is required"),
   description: z.string().nullable().optional(),
   imageUrl: z
     .union([
-      z.string().url(),
-      z.string().regex(/^\/uploads\//),
+      ProductImageUrlSchema,
       z.literal(""),
       z.null(),
     ])
     .optional(),
+  images: z.array(ProductImageInputSchema).optional(),
   isActive: z.boolean().default(true),
 });
 

@@ -1,5 +1,6 @@
 import { prisma } from "../prisma";
 import { NOTIFICATION_TYPE } from "../notifications/constants";
+import { dispatchVendorEmailForNotification } from "../email";
 
 function available(stock: number, reserved: number) {
   return stock - reserved;
@@ -45,6 +46,9 @@ export async function syncLowStockNotificationsForVariants(variantIds: string[])
           payload: {
             variantId,
             productId: v.productId,
+            shopId: v.product.shopId,
+            productName: v.product.name,
+            variantName: v.name,
             available: avail,
             threshold,
           },
@@ -56,11 +60,28 @@ export async function syncLowStockNotificationsForVariants(variantIds: string[])
           payload: {
             variantId,
             productId: v.productId,
+            shopId: v.product.shopId,
+            productName: v.product.name,
+            variantName: v.name,
             available: avail,
             threshold,
           },
         },
       });
+
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { email: true },
+      });
+      if (user?.email) {
+        dispatchVendorEmailForNotification(NOTIFICATION_TYPE.LOW_STOCK, user.email, {
+          productName: v.product.name,
+          variantName: v.name,
+          available: avail,
+          threshold,
+          shopId: v.product.shopId,
+        }).catch((err) => console.error("[email] low stock notification failed:", err));
+      }
     } else {
       await prisma.notification.deleteMany({ where: { dedupeKey: key } });
     }

@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router";
 import { ProtectedRoute } from "@mercado/shared-ui";
-import { LoginScreen, RegisterScreen } from "@/_modules/auth/screens";
+import { LoginScreen, RegisterScreen, ForgotPasswordScreen, ResetPasswordScreen } from "@/_modules/auth/screens";
 import { ShopPickerScreen, CreateShopScreen, EditShopScreen } from "@/_modules/shops/screens";
 import { ShopLayout, MinimalAuthLayout } from "../layout/ShopLayout";
 import { routeConfig } from "./routeConfig";
@@ -9,6 +9,14 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     Component: LoginScreen,
+  },
+  {
+    path: "/forgot-password",
+    Component: ForgotPasswordScreen,
+  },
+  {
+    path: "/reset-password",
+    Component: ResetPasswordScreen,
   },
   {
     path: "/register",

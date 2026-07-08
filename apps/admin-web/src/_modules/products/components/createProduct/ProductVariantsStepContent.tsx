@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Button, Tag } from "@mercado/shared-ui";
 import { MdAdd, MdClose } from "react-icons/md";
-import type { IWizardVariant } from "../../types";
+import type { IWizardVariant, IProductImageDraft } from "../../types";
 import { WizardVariantForm } from "./WizardVariantForm";
 import type { useProductVariantsStep } from "../../hooks/useProductVariantsStep";
 
@@ -20,6 +20,8 @@ export function ProductVariantsStepContent(props: ProductVariantsStepContentProp
     selections,
     selectValue,
     cancelNewVariant,
+    productImages,
+    setVariantLinkedImage,
   } = props;
 
   return (
@@ -33,7 +35,13 @@ export function ProductVariantsStepContent(props: ProductVariantsStepContentProp
       {variants.length > 0 && (
         <div className="mb-6 grid gap-2">
           {variants.map((v) => (
-            <VariantRow key={v.tempId} variant={v} onRemove={removeVariant} />
+            <VariantRow
+              key={v.tempId}
+              variant={v}
+              productImages={productImages}
+              onRemove={removeVariant}
+              onLinkImage={setVariantLinkedImage}
+            />
           ))}
         </div>
       )}
@@ -66,15 +74,31 @@ export function ProductVariantsStepContent(props: ProductVariantsStepContentProp
 
 function VariantRow({
   variant,
+  productImages,
   onRemove,
+  onLinkImage,
 }: {
   variant: IWizardVariant;
+  productImages: IProductImageDraft[];
   onRemove: (tempId: string) => void;
+  onLinkImage: (tempId: string, linkedImageTempId: string | null) => void;
 }) {
+  const { t } = useTranslation();
+  const linkedImage = productImages.find((img) => img.tempId === variant.linkedImageTempId);
+
   return (
     <div className="flex items-start gap-3 border border-gray-200 rounded-lg p-4">
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-3">
+          {linkedImage ? (
+            <img
+              src={linkedImage.url}
+              alt=""
+              className="w-10 h-10 rounded-md object-cover border border-gray-200 shrink-0"
+            />
+          ) : (
+            <div className="w-10 h-10 rounded-md bg-gray-100 border border-gray-200 shrink-0" />
+          )}
           <span className="font-medium text-gray-900 text-sm">{variant.name}</span>
           <span className="text-xs text-gray-400">
             €{variant.price.toFixed(2)} · {variant.stock} in stock
@@ -87,6 +111,31 @@ function VariantRow({
                 {sel.attributeName}: {sel.valueName}
               </Tag>
             ))}
+          </div>
+        )}
+        {productImages.length > 0 && (
+          <div className="mt-3 grid gap-1">
+            <label className="text-xs font-medium text-gray-500">
+              {t("products.variantsStep.linkedImageLabel")}
+            </label>
+            <select
+              value={variant.linkedImageTempId ?? ""}
+              onChange={(e) =>
+                onLinkImage(variant.tempId, e.target.value || null)
+              }
+              className="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white max-w-xs"
+            >
+              <option value="">{t("products.variantsStep.noLinkedImage")}</option>
+              {productImages.map((img) => (
+                <option key={img.tempId} value={img.tempId}>
+                  {img.isPrimary
+                    ? t("products.infoStep.imagePrimaryBadge")
+                    : t("products.variantsStep.galleryImage", {
+                        index: img.sortOrder + 1,
+                      })}
+                </option>
+              ))}
+            </select>
           </div>
         )}
       </div>

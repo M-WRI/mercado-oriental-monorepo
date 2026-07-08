@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
 import { prisma, AppError, ERROR_CODES, asyncHandler } from "../../../lib";
+import {
+  getVariantImageUrl,
+  resolvePrimaryImageUrl,
+  serializeProductImages,
+} from "../../products/lib/productImages";
 
 export const showProduct = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -30,6 +35,7 @@ export const showProduct = asyncHandler(async (req: Request, res: Response) => {
           category: { select: { id: true, name: true, slug: true } },
         },
       },
+      productImages: true,
     },
   });
 
@@ -40,6 +46,10 @@ export const showProduct = asyncHandler(async (req: Request, res: Response) => {
       statusCode: 404,
     });
   }
+
+  const images = serializeProductImages(product.productImages);
+  const primaryImageUrl =
+    product.imageUrl ?? resolvePrimaryImageUrl(images) ?? null;
 
   const variants = product.productVariants.map((v) => {
     const available = v.stock - v.reservedStock;
@@ -55,6 +65,7 @@ export const showProduct = asyncHandler(async (req: Request, res: Response) => {
       price: v.price,
       available,
       inStock: available > 0,
+      imageUrl: getVariantImageUrl(v.id, images, primaryImageUrl),
       attributes,
     };
   });
@@ -78,7 +89,8 @@ export const showProduct = asyncHandler(async (req: Request, res: Response) => {
     id: product.id,
     name: product.name,
     description: product.description,
-    imageUrl: product.imageUrl,
+    imageUrl: primaryImageUrl,
+    images,
     shop: product.shop,
     variants,
     reviews,

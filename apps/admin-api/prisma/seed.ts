@@ -29,8 +29,9 @@ if (!connectionString) {
 const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
-function demoProductImageUrl(name: string): string {
-  return `https://picsum.photos/seed/${encodeURIComponent(name)}/400/400`;
+function demoProductImageUrl(name: string, suffix = ""): string {
+  const seed = suffix ? `${name}-${suffix}` : name;
+  return `https://picsum.photos/seed/${encodeURIComponent(seed)}/400/400`;
 }
 
 async function main() {
@@ -51,6 +52,7 @@ async function main() {
   await prisma.order.deleteMany();
   await prisma.productVariantAttributeValue.deleteMany();
   await prisma.productVariant.deleteMany();
+  await prisma.productImage.deleteMany();
   await prisma.productAttributeValue.deleteMany();
   await prisma.productAttribute.deleteMany();
   await prisma.product.deleteMany();
@@ -64,7 +66,20 @@ async function main() {
     readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), "categories.json"), "utf-8")
   );
 
-  const leafCategoryIds: string[] = [];
+  const categoryBySlug = new Map<string, string>();
+  let leafCategoryCount = 0;
+
+  function collectLeafSlugsUnder(nodes: CategoryNode[], rootSlug: string, inSubtree = false): string[] {
+    const slugs: string[] = [];
+    for (const node of nodes) {
+      const here = inSubtree || node.slug === rootSlug;
+      if (here && node.children.length === 0) slugs.push(node.slug);
+      if (node.children.length > 0) {
+        slugs.push(...collectLeafSlugsUnder(node.children, rootSlug, here));
+      }
+    }
+    return slugs;
+  }
 
   async function seedCategories(nodes: CategoryNode[], parentId: string | null = null) {
     for (const node of nodes) {
@@ -75,17 +90,36 @@ async function main() {
           parentId,
         },
       });
+      categoryBySlug.set(node.slug, cat.id);
       if (node.children.length === 0) {
-        leafCategoryIds.push(cat.id);
+        leafCategoryCount++;
       } else {
         await seedCategories(node.children, cat.id);
       }
     }
   }
 
+  function categoryIdsFromSlugs(slugs: string[]): string[] {
+    return [...new Set(slugs.map((slug) => categoryBySlug.get(slug)).filter((id): id is string => !!id))];
+  }
+
+  async function assignProductCategories(productId: string, categorySlugs: string[]) {
+    for (const categoryId of categoryIdsFromSlugs(categorySlugs)) {
+      await prisma.productCategory.create({
+        data: { productId, categoryId },
+      });
+    }
+  }
+
   console.log("Seeding categories...");
   await seedCategories(categoriesJson);
-  console.log(`Seeded ${leafCategoryIds.length} leaf categories.`);
+  console.log(`Seeded ${leafCategoryCount} leaf categories.`);
+
+  const foodLeafSlugs = collectLeafSlugsUnder(categoriesJson, "food-beverages");
+  const foodLeafCategoryIds = categoryIdsFromSlugs(foodLeafSlugs);
+  const electronicsLeafSlugs = collectLeafSlugsUnder(categoriesJson, "electronics");
+  console.log(`Using ${foodLeafCategoryIds.length} food & beverage categories for demo products.`);
+  console.log(`Electronics taxonomy has ${electronicsLeafSlugs.length} leaf categories.`);
 
   const hashedPassword = await bcrypt.hash("password123", 10);
   const customerPassword = await bcrypt.hash("customer123", 10);
@@ -155,6 +189,7 @@ async function main() {
     { name: "Mercado Oriental", description: "Authentic Asian groceries and specialty ingredients" },
     { name: "Silk Road Spices", description: "Premium spices, teas, and dried goods" },
     { name: "Tokyo Kitchen", description: "Japanese pantry staples and snacks" },
+    { name: "Tech Haven", description: "Electronics, gadgets, and accessories" },
   ] as const;
 
   const MERCADO_PRODUCTS = [
@@ -166,6 +201,83 @@ async function main() {
     "Kimchi Paste",
     "Coconut Milk Organic",
     "Sriracha Hot Sauce",
+  ] as const;
+
+  const MERCADO_PRODUCT_CATEGORY_SLUGS: Record<(typeof MERCADO_PRODUCTS)[number], string[]> = {
+    "Jasmine Rice 5kg": ["rice-pasta-grains", "international-foods"],
+    "Premium Soy Sauce": ["sauces-condiments", "international-foods"],
+    "Sesame Oil Cold-Pressed": ["oils-vinegars-dressings", "gourmet-specialty"],
+    "Ramen Noodles Variety Pack": ["rice-pasta-grains", "international-foods"],
+    "Matcha Green Tea Powder": ["coffee-tea", "organic-natural"],
+    "Kimchi Paste": ["sauces-condiments", "canned-jarred-goods"],
+    "Coconut Milk Organic": ["canned-jarred-goods", "organic-natural"],
+    "Sriracha Hot Sauce": ["sauces-condiments", "spices-seasonings"],
+  };
+
+  const SILK_ROAD_PRODUCTS = [
+    "Sichuan Peppercorns 100g",
+    "Star Anise Whole",
+    "Turmeric Powder Organic",
+    "Dragon Well Green Tea",
+  ] as const;
+
+  const SILK_ROAD_CATEGORY_SLUGS = [
+    "spices-seasonings",
+    "coffee-tea",
+    "dried-fruits",
+    "nuts-trail-mix",
+    "organic-natural",
+    "gourmet-specialty",
+    "international-foods",
+  ] as const;
+
+  const TOKYO_KITCHEN_PRODUCTS = [
+    "White Miso Paste",
+    "Panko Breadcrumbs",
+    "Instant Miso Soup 4-Pack",
+    "Senbei Rice Crackers",
+  ] as const;
+
+  const TOKYO_KITCHEN_CATEGORY_SLUGS = [
+    "rice-pasta-grains",
+    "sauces-condiments",
+    "canned-jarred-goods",
+    "cookies-biscuits",
+    "chips-crisps",
+    "international-foods",
+  ] as const;
+
+  const TECH_PRODUCTS = [
+    "iPhone 18",
+    "Wireless Noise-Cancelling Earbuds",
+    "27\" 4K Monitor",
+    "Mechanical Gaming Keyboard",
+    "USB-C Docking Station",
+    "Bluetooth Speaker Mini",
+  ] as const;
+
+  const TECH_PRODUCT_CATEGORY_SLUGS: Record<(typeof TECH_PRODUCTS)[number], string[]> = {
+    "iPhone 18": ["iphones", "android-phones"],
+    "Wireless Noise-Cancelling Earbuds": ["true-wireless-earbuds", "noise-cancelling-headphones"],
+    "27\" 4K Monitor": ["monitors", "oled-tvs"],
+    "Mechanical Gaming Keyboard": ["keyboards", "gaming-laptops"],
+    "USB-C Docking Station": ["usb-hubs-docks", "network-adapters"],
+    "Bluetooth Speaker Mini": ["bluetooth-speakers", "smart-speakers"],
+  };
+
+  const GENERIC_FOOD_PRODUCTS = [
+    "Organic Basmati Rice 2kg",
+    "Extra Virgin Olive Oil",
+    "Whole Bean Coffee Medium Roast",
+    "Mixed Herb Spice Blend",
+    "Dark Chocolate Bar 70%",
+    "Granola Honey Almond",
+    "Sparkling Mineral Water 6-Pack",
+    "Tomato Passata",
+    "Penne Pasta 500g",
+    "Green Tea Bags 50ct",
+    "Almond Butter Crunchy",
+    "Dried Mango Slices",
   ] as const;
 
   // 4. Create demo shops + remaining random shops
@@ -230,17 +342,39 @@ async function main() {
       include: { productAttributeValues: true }
     });
 
-    const isMercado = shop.id === moritzShops[0]?.id;
-    const productCount = isMercado ? MERCADO_PRODUCTS.length : 4;
+    const isMercado = shop.name === DEMO_SHOPS[0].name;
+    const isSilkRoad = shop.name === DEMO_SHOPS[1].name;
+    const isTokyoKitchen = shop.name === DEMO_SHOPS[2].name;
+    const isTechHaven = shop.name === DEMO_SHOPS[3].name;
+    const productCount = isMercado
+      ? MERCADO_PRODUCTS.length
+      : isTechHaven
+        ? TECH_PRODUCTS.length
+        : 4;
 
     for (let p = 0; p < productCount; p++) {
-      const productName = isMercado ? MERCADO_PRODUCTS[p] : faker.commerce.productName();
+      const productName = isMercado
+        ? MERCADO_PRODUCTS[p]
+        : isSilkRoad
+          ? SILK_ROAD_PRODUCTS[p]
+          : isTokyoKitchen
+            ? TOKYO_KITCHEN_PRODUCTS[p]
+            : isTechHaven
+              ? TECH_PRODUCTS[p]
+              : faker.helpers.arrayElement(GENERIC_FOOD_PRODUCTS);
+
       const product = await prisma.product.create({
         data: {
           name: productName,
           description: isMercado
             ? `Premium ${MERCADO_PRODUCTS[p]} — sourced for quality and freshness.`
-            : faker.commerce.productDescription(),
+            : isSilkRoad
+              ? `Hand-selected ${SILK_ROAD_PRODUCTS[p]} from trusted growers and spice merchants.`
+              : isTokyoKitchen
+                ? `Authentic ${TOKYO_KITCHEN_PRODUCTS[p]} — imported Japanese pantry essential.`
+                : isTechHaven
+                  ? `${TECH_PRODUCTS[p]} — latest tech with full warranty and fast shipping.`
+                  : `Quality ${productName} for everyday cooking and entertaining.`,
           imageUrl: demoProductImageUrl(productName),
           shopId: shop.id,
           isActive: true,
@@ -248,19 +382,48 @@ async function main() {
       });
       products.push(product);
 
-      // Assign 1-3 random leaf categories
-      const catCount = faker.number.int({ min: 1, max: 3 });
-      const selectedCats = faker.helpers.arrayElements(leafCategoryIds, catCount);
-      for (const catId of selectedCats) {
-        await prisma.productCategory.create({
-          data: {
-            productId: product.id,
-            categoryId: catId,
-          },
-        });
+      let categorySlugs: string[];
+      if (isMercado) {
+        categorySlugs = MERCADO_PRODUCT_CATEGORY_SLUGS[MERCADO_PRODUCTS[p]];
+      } else if (isSilkRoad) {
+        categorySlugs = faker.helpers.arrayElements(
+          [...SILK_ROAD_CATEGORY_SLUGS],
+          faker.number.int({ min: 1, max: 2 }),
+        );
+      } else if (isTokyoKitchen) {
+        categorySlugs = faker.helpers.arrayElements(
+          [...TOKYO_KITCHEN_CATEGORY_SLUGS],
+          faker.number.int({ min: 1, max: 2 }),
+        );
+      } else if (isTechHaven) {
+        categorySlugs = TECH_PRODUCT_CATEGORY_SLUGS[TECH_PRODUCTS[p]];
+      } else {
+        categorySlugs = faker.helpers.arrayElements(
+          foodLeafSlugs,
+          faker.number.int({ min: 1, max: 2 }),
+        );
       }
 
+      await assignProductCategories(product.id, categorySlugs);
+
+      const galleryUrls = [
+        demoProductImageUrl(productName, "main"),
+        demoProductImageUrl(productName, "detail-1"),
+        demoProductImageUrl(productName, "detail-2"),
+        demoProductImageUrl(productName, "detail-3"),
+      ];
+
+      await prisma.productImage.createMany({
+        data: galleryUrls.map((url, index) => ({
+          url,
+          sortOrder: index,
+          isPrimary: index === 0,
+          productId: product.id,
+        })),
+      });
+
       // Create variants
+      const createdVariants = [];
       for (let v = 0; v < 3; v++) {
         const sizeVal = faker.helpers.arrayElement(sizeAttr.productAttributeValues);
         const colorVal = faker.helpers.arrayElement(colorAttr.productAttributeValues);
@@ -280,7 +443,23 @@ async function main() {
             }
           }
         });
+        createdVariants.push({ variant, colorVal });
         allVariants.push(variant);
+      }
+
+      // Link one gallery image per variant (use color-specific image for demo shops)
+      for (let v = 0; v < createdVariants.length; v++) {
+        const { variant, colorVal } = createdVariants[v];
+        const variantImageUrl = demoProductImageUrl(productName, colorVal.value.toLowerCase());
+        await prisma.productImage.create({
+          data: {
+            url: variantImageUrl,
+            sortOrder: galleryUrls.length + v,
+            isPrimary: false,
+            productId: product.id,
+            productVariantId: variant.id,
+          },
+        });
       }
     }
   }

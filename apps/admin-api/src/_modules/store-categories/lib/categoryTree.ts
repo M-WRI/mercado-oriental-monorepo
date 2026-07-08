@@ -25,6 +25,12 @@ export async function getDescendantCategoryIds(categoryId: string): Promise<Set<
   return descendants;
 }
 
+/** Category id plus all descendant ids — for product list filters. */
+export async function getCategoryFilterIds(categoryId: string): Promise<string[]> {
+  const descendants = await getDescendantCategoryIds(categoryId);
+  return [categoryId, ...descendants];
+}
+
 export async function assertValidCategoryParent(
   categoryId: string | undefined,
   parentId: string | null | undefined

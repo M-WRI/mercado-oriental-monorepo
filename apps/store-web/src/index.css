@@ -79,6 +79,14 @@ body {
   box-shadow: 0 12px 32px rgba(0,0,0,0.08);
 }
 
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 /* ─── Gradient placeholders (Minimalist Grays) ─── */
 .gradient-placeholder-1 { background: #f4f4f5; } /* zinc-100 */
 .gradient-placeholder-2 { background: #fafaf9; } /* stone-50 */

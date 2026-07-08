@@ -14,16 +14,24 @@ import reviewsRoutes from "./_modules/reviews/routes";
 import storeAuthRoutes from "./_modules/store-auth/routes";
 import storeProductRoutes from "./_modules/store-products/routes";
 import storeOrderRoutes from "./_modules/store-orders/routes";
+import storeCheckoutRoutes from "./_modules/store-checkout/routes";
 import storeReviewRoutes from "./_modules/store-reviews/routes";
 import storeMessageRoutes from "./_modules/store-messages/routes";
 import storeShopRoutes from "./_modules/store-shops/routes";
 import storeCategoryRoutes from "./_modules/store-categories/routes/store";
 import adminCategoryRoutes from "./_modules/store-categories/routes/admin";
+import { handleStripeWebhook } from "./_modules/webhooks/stripe/handleStripeWebhook";
 import { authMiddleware } from "./middleware/authMiddleware";
 import { errorMiddleware } from "./middleware/errorMiddleware";
 
 export function createApp() {
   const app = express();
+
+  app.post(
+    "/api/webhooks/stripe",
+    express.raw({ type: "application/json" }),
+    handleStripeWebhook
+  );
 
   app.use(express.json());
   app.use(cors());
@@ -53,6 +61,7 @@ export function createApp() {
   storeRouter.use("/shops", storeShopRoutes);
   storeRouter.use("/categories", storeCategoryRoutes);
   storeRouter.use("/orders", storeOrderRoutes);
+  storeRouter.use("/checkout", storeCheckoutRoutes);
   storeRouter.use(storeReviewRoutes);
   storeRouter.use(storeMessageRoutes);
 

@@ -98,7 +98,18 @@
     "emailRequired": "El correo electrónico es obligatorio.",
     "emailInvalid": "Por favor, introduce un correo electrónico válido.",
     "passwordRequired": "La contraseña es obligatoria.",
-    "passwordMinLength": "La contraseña debe tener al menos 6 caracteres."
+    "passwordMinLength": "La contraseña debe tener al menos 6 caracteres.",
+    "forgotPasswordLink": "¿Olvidaste tu contraseña?",
+    "forgotPasswordTitle": "Restablecer contraseña",
+    "forgotPasswordSubtitle": "Te enviaremos un enlace por correo.",
+    "forgotPasswordSent": "Si existe una cuenta con ese correo, recibirás un enlace.",
+    "sendResetLink": "Enviar enlace",
+    "backToLogin": "Volver al inicio de sesión",
+    "resetPasswordTitle": "Elige una nueva contraseña",
+    "resetPasswordSubmit": "Actualizar contraseña",
+    "resetPasswordFailed": "No se pudo restablecer. El enlace puede haber expirado.",
+    "resetTokenMissing": "Enlace de restablecimiento inválido o ausente.",
+    "passwordMinLength8": "La contraseña debe tener al menos 8 caracteres."
   },
 
   "dashboard": {
@@ -214,7 +225,14 @@
       "imageUploadFailed": "Error al subir. Inténtalo de nuevo.",
       "nameRequired": "El nombre del producto es obligatorio",
       "shopRequired": "Selecciona una tienda",
-      "categoriesLabel": "Categorías"
+      "categoriesLabel": "Categorías",
+      "imagesLabel": "Imágenes del producto",
+      "imagesHint": "Sube varias imágenes para la galería. Marca una como principal y opcionalmente vincula imágenes a variantes.",
+      "imagesUploadPrompt": "Haz clic para subir imágenes",
+      "imagePrimaryBadge": "Principal",
+      "imageSetPrimary": "Marcar como principal",
+      "imageLinkVariant": "Variante vinculada",
+      "imageNoVariant": "Sin variante (solo galería)"
     },
 
     "attributesStep": {
@@ -241,7 +259,10 @@
       "stockLabel": "Stock",
       "stockPlaceholder": "0",
       "attributeValues": "Valores de atributo",
-      "addVariant": "Añadir variante"
+      "addVariant": "Añadir variante",
+      "linkedImageLabel": "Imagen de vista previa",
+      "noLinkedImage": "Sin imagen vinculada",
+      "galleryImage": "Imagen de galería {{index}}"
     },
 
     "reviewStep": {
@@ -380,7 +401,17 @@
     "lowStockLabel": "Umbral de stock bajo",
     "lowStockHint": "Las variantes en o por debajo de esta cantidad disponible activan alertas.",
     "lowStockInvalid": "Introduce un número válido (0 o mayor).",
-    "saveShop": "Guardar configuración de tienda"
+    "saveShop": "Guardar configuración de tienda",
+    "paymentsTitle": "Pagos",
+    "paymentsSubtitle": "Conecta Stripe para recibir pagos de pedidos.",
+    "paymentsDescription": "Los clientes pagan una vez en el checkout. Tras el pago, los fondos se transfieren a tu cuenta Stripe conectada (menos la comisión de la plataforma).",
+    "stripeConnect": "Conectar Stripe",
+    "stripeContinueSetup": "Continuar configuración de Stripe",
+    "stripeRefresh": "Actualizar estado",
+    "stripeStatusReady": "Listo para recibir pagos",
+    "stripeStatusPending": "Configuración incompleta",
+    "stripeStatusNotConnected": "No conectado",
+    "stripeReturnSuccess": "Configuración de Stripe actualizada."
   },
 
   "categories": {

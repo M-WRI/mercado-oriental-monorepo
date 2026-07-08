@@ -40,6 +40,8 @@ export type ShopMinAggregateOutputType = {
   description: string | null
   userId: string | null
   defaultLowStockThreshold: number | null
+  stripeAccountId: string | null
+  stripeOnboardingComplete: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,6 +52,8 @@ export type ShopMaxAggregateOutputType = {
   description: string | null
   userId: string | null
   defaultLowStockThreshold: number | null
+  stripeAccountId: string | null
+  stripeOnboardingComplete: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -60,6 +64,8 @@ export type ShopCountAggregateOutputType = {
   description: number
   userId: number
   defaultLowStockThreshold: number
+  stripeAccountId: number
+  stripeOnboardingComplete: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -80,6 +86,8 @@ export type ShopMinAggregateInputType = {
   description?: true
   userId?: true
   defaultLowStockThreshold?: true
+  stripeAccountId?: true
+  stripeOnboardingComplete?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -90,6 +98,8 @@ export type ShopMaxAggregateInputType = {
   description?: true
   userId?: true
   defaultLowStockThreshold?: true
+  stripeAccountId?: true
+  stripeOnboardingComplete?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -100,6 +110,8 @@ export type ShopCountAggregateInputType = {
   description?: true
   userId?: true
   defaultLowStockThreshold?: true
+  stripeAccountId?: true
+  stripeOnboardingComplete?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -197,6 +209,8 @@ export type ShopGroupByOutputType = {
   description: string | null
   userId: string
   defaultLowStockThreshold: number
+  stripeAccountId: string | null
+  stripeOnboardingComplete: boolean
   createdAt: Date
   updatedAt: Date
   _count: ShopCountAggregateOutputType | null
@@ -230,6 +244,8 @@ export type ShopWhereInput = {
   description?: Prisma.StringNullableFilter<"Shop"> | string | null
   userId?: Prisma.StringFilter<"Shop"> | string
   defaultLowStockThreshold?: Prisma.IntFilter<"Shop"> | number
+  stripeAccountId?: Prisma.StringNullableFilter<"Shop"> | string | null
+  stripeOnboardingComplete?: Prisma.BoolFilter<"Shop"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Shop"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Shop"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -244,6 +260,8 @@ export type ShopOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   defaultLowStockThreshold?: Prisma.SortOrder
+  stripeAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
+  stripeOnboardingComplete?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -254,6 +272,7 @@ export type ShopOrderByWithRelationInput = {
 
 export type ShopWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  stripeAccountId?: string
   AND?: Prisma.ShopWhereInput | Prisma.ShopWhereInput[]
   OR?: Prisma.ShopWhereInput[]
   NOT?: Prisma.ShopWhereInput | Prisma.ShopWhereInput[]
@@ -261,13 +280,14 @@ export type ShopWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Shop"> | string | null
   userId?: Prisma.StringFilter<"Shop"> | string
   defaultLowStockThreshold?: Prisma.IntFilter<"Shop"> | number
+  stripeOnboardingComplete?: Prisma.BoolFilter<"Shop"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Shop"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Shop"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   products?: Prisma.ProductListRelationFilter
   attributes?: Prisma.ProductAttributeListRelationFilter
   orders?: Prisma.OrderListRelationFilter
-}, "id">
+}, "id" | "stripeAccountId">
 
 export type ShopOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -275,6 +295,8 @@ export type ShopOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   defaultLowStockThreshold?: Prisma.SortOrder
+  stripeAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
+  stripeOnboardingComplete?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ShopCountOrderByAggregateInput
@@ -293,6 +315,8 @@ export type ShopScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Shop"> | string | null
   userId?: Prisma.StringWithAggregatesFilter<"Shop"> | string
   defaultLowStockThreshold?: Prisma.IntWithAggregatesFilter<"Shop"> | number
+  stripeAccountId?: Prisma.StringNullableWithAggregatesFilter<"Shop"> | string | null
+  stripeOnboardingComplete?: Prisma.BoolWithAggregatesFilter<"Shop"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Shop"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Shop"> | Date | string
 }
@@ -302,6 +326,8 @@ export type ShopCreateInput = {
   name: string
   description?: string | null
   defaultLowStockThreshold?: number
+  stripeAccountId?: string | null
+  stripeOnboardingComplete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutShopsInput
@@ -316,6 +342,8 @@ export type ShopUncheckedCreateInput = {
   description?: string | null
   userId: string
   defaultLowStockThreshold?: number
+  stripeAccountId?: string | null
+  stripeOnboardingComplete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutShopInput
@@ -328,6 +356,8 @@ export type ShopUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLowStockThreshold?: Prisma.IntFieldUpdateOperationsInput | number
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeOnboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutShopsNestedInput
@@ -342,6 +372,8 @@ export type ShopUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   defaultLowStockThreshold?: Prisma.IntFieldUpdateOperationsInput | number
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeOnboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUncheckedUpdateManyWithoutShopNestedInput
@@ -355,6 +387,8 @@ export type ShopCreateManyInput = {
   description?: string | null
   userId: string
   defaultLowStockThreshold?: number
+  stripeAccountId?: string | null
+  stripeOnboardingComplete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -364,6 +398,8 @@ export type ShopUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLowStockThreshold?: Prisma.IntFieldUpdateOperationsInput | number
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeOnboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -374,6 +410,8 @@ export type ShopUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   defaultLowStockThreshold?: Prisma.IntFieldUpdateOperationsInput | number
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeOnboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -394,6 +432,8 @@ export type ShopCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   defaultLowStockThreshold?: Prisma.SortOrder
+  stripeAccountId?: Prisma.SortOrder
+  stripeOnboardingComplete?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -408,6 +448,8 @@ export type ShopMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   defaultLowStockThreshold?: Prisma.SortOrder
+  stripeAccountId?: Prisma.SortOrder
+  stripeOnboardingComplete?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -418,6 +460,8 @@ export type ShopMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   defaultLowStockThreshold?: Prisma.SortOrder
+  stripeAccountId?: Prisma.SortOrder
+  stripeOnboardingComplete?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -481,6 +525,10 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type ShopCreateNestedOneWithoutProductsInput = {
   create?: Prisma.XOR<Prisma.ShopCreateWithoutProductsInput, Prisma.ShopUncheckedCreateWithoutProductsInput>
   connectOrCreate?: Prisma.ShopCreateOrConnectWithoutProductsInput
@@ -528,6 +576,8 @@ export type ShopCreateWithoutUserInput = {
   name: string
   description?: string | null
   defaultLowStockThreshold?: number
+  stripeAccountId?: string | null
+  stripeOnboardingComplete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   products?: Prisma.ProductCreateNestedManyWithoutShopInput
@@ -540,6 +590,8 @@ export type ShopUncheckedCreateWithoutUserInput = {
   name: string
   description?: string | null
   defaultLowStockThreshold?: number
+  stripeAccountId?: string | null
+  stripeOnboardingComplete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutShopInput
@@ -582,6 +634,8 @@ export type ShopScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Shop"> | string | null
   userId?: Prisma.StringFilter<"Shop"> | string
   defaultLowStockThreshold?: Prisma.IntFilter<"Shop"> | number
+  stripeAccountId?: Prisma.StringNullableFilter<"Shop"> | string | null
+  stripeOnboardingComplete?: Prisma.BoolFilter<"Shop"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Shop"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Shop"> | Date | string
 }
@@ -591,6 +645,8 @@ export type ShopCreateWithoutProductsInput = {
   name: string
   description?: string | null
   defaultLowStockThreshold?: number
+  stripeAccountId?: string | null
+  stripeOnboardingComplete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutShopsInput
@@ -604,6 +660,8 @@ export type ShopUncheckedCreateWithoutProductsInput = {
   description?: string | null
   userId: string
   defaultLowStockThreshold?: number
+  stripeAccountId?: string | null
+  stripeOnboardingComplete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   attributes?: Prisma.ProductAttributeUncheckedCreateNestedManyWithoutShopInput
@@ -631,6 +689,8 @@ export type ShopUpdateWithoutProductsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLowStockThreshold?: Prisma.IntFieldUpdateOperationsInput | number
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeOnboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutShopsNestedInput
@@ -644,6 +704,8 @@ export type ShopUncheckedUpdateWithoutProductsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   defaultLowStockThreshold?: Prisma.IntFieldUpdateOperationsInput | number
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeOnboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attributes?: Prisma.ProductAttributeUncheckedUpdateManyWithoutShopNestedInput
@@ -655,6 +717,8 @@ export type ShopCreateWithoutAttributesInput = {
   name: string
   description?: string | null
   defaultLowStockThreshold?: number
+  stripeAccountId?: string | null
+  stripeOnboardingComplete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutShopsInput
@@ -668,6 +732,8 @@ export type ShopUncheckedCreateWithoutAttributesInput = {
   description?: string | null
   userId: string
   defaultLowStockThreshold?: number
+  stripeAccountId?: string | null
+  stripeOnboardingComplete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutShopInput
@@ -695,6 +761,8 @@ export type ShopUpdateWithoutAttributesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLowStockThreshold?: Prisma.IntFieldUpdateOperationsInput | number
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeOnboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutShopsNestedInput
@@ -708,6 +776,8 @@ export type ShopUncheckedUpdateWithoutAttributesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   defaultLowStockThreshold?: Prisma.IntFieldUpdateOperationsInput | number
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeOnboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUncheckedUpdateManyWithoutShopNestedInput
@@ -719,6 +789,8 @@ export type ShopCreateWithoutOrdersInput = {
   name: string
   description?: string | null
   defaultLowStockThreshold?: number
+  stripeAccountId?: string | null
+  stripeOnboardingComplete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutShopsInput
@@ -732,6 +804,8 @@ export type ShopUncheckedCreateWithoutOrdersInput = {
   description?: string | null
   userId: string
   defaultLowStockThreshold?: number
+  stripeAccountId?: string | null
+  stripeOnboardingComplete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutShopInput
@@ -759,6 +833,8 @@ export type ShopUpdateWithoutOrdersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLowStockThreshold?: Prisma.IntFieldUpdateOperationsInput | number
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeOnboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutShopsNestedInput
@@ -772,6 +848,8 @@ export type ShopUncheckedUpdateWithoutOrdersInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   defaultLowStockThreshold?: Prisma.IntFieldUpdateOperationsInput | number
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeOnboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUncheckedUpdateManyWithoutShopNestedInput
@@ -783,6 +861,8 @@ export type ShopCreateManyUserInput = {
   name: string
   description?: string | null
   defaultLowStockThreshold?: number
+  stripeAccountId?: string | null
+  stripeOnboardingComplete?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -792,6 +872,8 @@ export type ShopUpdateWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLowStockThreshold?: Prisma.IntFieldUpdateOperationsInput | number
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeOnboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUpdateManyWithoutShopNestedInput
@@ -804,6 +886,8 @@ export type ShopUncheckedUpdateWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLowStockThreshold?: Prisma.IntFieldUpdateOperationsInput | number
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeOnboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUncheckedUpdateManyWithoutShopNestedInput
@@ -816,6 +900,8 @@ export type ShopUncheckedUpdateManyWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLowStockThreshold?: Prisma.IntFieldUpdateOperationsInput | number
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeOnboardingComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -875,6 +961,8 @@ export type ShopSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   description?: boolean
   userId?: boolean
   defaultLowStockThreshold?: boolean
+  stripeAccountId?: boolean
+  stripeOnboardingComplete?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -890,6 +978,8 @@ export type ShopSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   description?: boolean
   userId?: boolean
   defaultLowStockThreshold?: boolean
+  stripeAccountId?: boolean
+  stripeOnboardingComplete?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -901,6 +991,8 @@ export type ShopSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   description?: boolean
   userId?: boolean
   defaultLowStockThreshold?: boolean
+  stripeAccountId?: boolean
+  stripeOnboardingComplete?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -912,11 +1004,13 @@ export type ShopSelectScalar = {
   description?: boolean
   userId?: boolean
   defaultLowStockThreshold?: boolean
+  stripeAccountId?: boolean
+  stripeOnboardingComplete?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ShopOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "userId" | "defaultLowStockThreshold" | "createdAt" | "updatedAt", ExtArgs["result"]["shop"]>
+export type ShopOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "userId" | "defaultLowStockThreshold" | "stripeAccountId" | "stripeOnboardingComplete" | "createdAt" | "updatedAt", ExtArgs["result"]["shop"]>
 export type ShopInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   products?: boolean | Prisma.Shop$productsArgs<ExtArgs>
@@ -945,6 +1039,8 @@ export type $ShopPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     description: string | null
     userId: string
     defaultLowStockThreshold: number
+    stripeAccountId: string | null
+    stripeOnboardingComplete: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["shop"]>
@@ -1379,6 +1475,8 @@ export interface ShopFieldRefs {
   readonly description: Prisma.FieldRef<"Shop", 'String'>
   readonly userId: Prisma.FieldRef<"Shop", 'String'>
   readonly defaultLowStockThreshold: Prisma.FieldRef<"Shop", 'Int'>
+  readonly stripeAccountId: Prisma.FieldRef<"Shop", 'String'>
+  readonly stripeOnboardingComplete: Prisma.FieldRef<"Shop", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Shop", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Shop", 'DateTime'>
 }

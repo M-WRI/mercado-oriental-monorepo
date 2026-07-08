@@ -387,10 +387,12 @@ export const ModelName = {
   User: 'User',
   Shop: 'Shop',
   Product: 'Product',
+  ProductImage: 'ProductImage',
   ProductVariant: 'ProductVariant',
   ProductAttribute: 'ProductAttribute',
   ProductAttributeValue: 'ProductAttributeValue',
   Customer: 'Customer',
+  CheckoutSession: 'CheckoutSession',
   Order: 'Order',
   OrderItem: 'OrderItem',
   ProductVariantAttributeValue: 'ProductVariantAttributeValue',
@@ -419,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "shop" | "product" | "productVariant" | "productAttribute" | "productAttributeValue" | "customer" | "order" | "orderItem" | "productVariantAttributeValue" | "inventoryMovement" | "priceHistory" | "orderMessage" | "dispute" | "disputeMessage" | "productReview" | "reviewReply" | "notification" | "category" | "productCategory"
+    modelProps: "user" | "shop" | "product" | "productImage" | "productVariant" | "productAttribute" | "productAttributeValue" | "customer" | "checkoutSession" | "order" | "orderItem" | "productVariantAttributeValue" | "inventoryMovement" | "priceHistory" | "orderMessage" | "dispute" | "disputeMessage" | "productReview" | "reviewReply" | "notification" | "category" | "productCategory"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -642,6 +644,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ProductCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ProductCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProductImage: {
+      payload: Prisma.$ProductImagePayload<ExtArgs>
+      fields: Prisma.ProductImageFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProductImageFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductImagePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProductImageFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductImagePayload>
+        }
+        findFirst: {
+          args: Prisma.ProductImageFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductImagePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProductImageFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductImagePayload>
+        }
+        findMany: {
+          args: Prisma.ProductImageFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductImagePayload>[]
+        }
+        create: {
+          args: Prisma.ProductImageCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductImagePayload>
+        }
+        createMany: {
+          args: Prisma.ProductImageCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProductImageCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductImagePayload>[]
+        }
+        delete: {
+          args: Prisma.ProductImageDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductImagePayload>
+        }
+        update: {
+          args: Prisma.ProductImageUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductImagePayload>
+        }
+        deleteMany: {
+          args: Prisma.ProductImageDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProductImageUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProductImageUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductImagePayload>[]
+        }
+        upsert: {
+          args: Prisma.ProductImageUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductImagePayload>
+        }
+        aggregate: {
+          args: Prisma.ProductImageAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProductImage>
+        }
+        groupBy: {
+          args: Prisma.ProductImageGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProductImageGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProductImageCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProductImageCountAggregateOutputType> | number
         }
       }
     }
@@ -938,6 +1014,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CustomerCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CustomerCountAggregateOutputType> | number
+        }
+      }
+    }
+    CheckoutSession: {
+      payload: Prisma.$CheckoutSessionPayload<ExtArgs>
+      fields: Prisma.CheckoutSessionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CheckoutSessionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckoutSessionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CheckoutSessionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckoutSessionPayload>
+        }
+        findFirst: {
+          args: Prisma.CheckoutSessionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckoutSessionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CheckoutSessionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckoutSessionPayload>
+        }
+        findMany: {
+          args: Prisma.CheckoutSessionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckoutSessionPayload>[]
+        }
+        create: {
+          args: Prisma.CheckoutSessionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckoutSessionPayload>
+        }
+        createMany: {
+          args: Prisma.CheckoutSessionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CheckoutSessionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckoutSessionPayload>[]
+        }
+        delete: {
+          args: Prisma.CheckoutSessionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckoutSessionPayload>
+        }
+        update: {
+          args: Prisma.CheckoutSessionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckoutSessionPayload>
+        }
+        deleteMany: {
+          args: Prisma.CheckoutSessionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CheckoutSessionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CheckoutSessionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckoutSessionPayload>[]
+        }
+        upsert: {
+          args: Prisma.CheckoutSessionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckoutSessionPayload>
+        }
+        aggregate: {
+          args: Prisma.CheckoutSessionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCheckoutSession>
+        }
+        groupBy: {
+          args: Prisma.CheckoutSessionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CheckoutSessionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CheckoutSessionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CheckoutSessionCountAggregateOutputType> | number
         }
       }
     }
@@ -1960,6 +2110,8 @@ export const ShopScalarFieldEnum = {
   description: 'description',
   userId: 'userId',
   defaultLowStockThreshold: 'defaultLowStockThreshold',
+  stripeAccountId: 'stripeAccountId',
+  stripeOnboardingComplete: 'stripeOnboardingComplete',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1979,6 +2131,21 @@ export const ProductScalarFieldEnum = {
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+export const ProductImageScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  alt: 'alt',
+  sortOrder: 'sortOrder',
+  isPrimary: 'isPrimary',
+  productId: 'productId',
+  productVariantId: 'productVariantId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProductImageScalarFieldEnum = (typeof ProductImageScalarFieldEnum)[keyof typeof ProductImageScalarFieldEnum]
 
 
 export const ProductVariantScalarFieldEnum = {
@@ -2032,6 +2199,21 @@ export const CustomerScalarFieldEnum = {
 export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
 
 
+export const CheckoutSessionScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  stripeSessionId: 'stripeSessionId',
+  status: 'status',
+  totalAmount: 'totalAmount',
+  shippingAddress: 'shippingAddress',
+  customerNote: 'customerNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CheckoutSessionScalarFieldEnum = (typeof CheckoutSessionScalarFieldEnum)[keyof typeof CheckoutSessionScalarFieldEnum]
+
+
 export const OrderScalarFieldEnum = {
   id: 'id',
   customerEmail: 'customerEmail',
@@ -2039,6 +2221,12 @@ export const OrderScalarFieldEnum = {
   customerId: 'customerId',
   status: 'status',
   totalAmount: 'totalAmount',
+  paymentStatus: 'paymentStatus',
+  stripeCheckoutSessionId: 'stripeCheckoutSessionId',
+  stripePaymentIntentId: 'stripePaymentIntentId',
+  stripeTransferId: 'stripeTransferId',
+  paidAt: 'paidAt',
+  checkoutSessionId: 'checkoutSessionId',
   shippingAddress: 'shippingAddress',
   trackingNumber: 'trackingNumber',
   carrier: 'carrier',
@@ -2432,10 +2620,12 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   shop?: Prisma.ShopOmit
   product?: Prisma.ProductOmit
+  productImage?: Prisma.ProductImageOmit
   productVariant?: Prisma.ProductVariantOmit
   productAttribute?: Prisma.ProductAttributeOmit
   productAttributeValue?: Prisma.ProductAttributeValueOmit
   customer?: Prisma.CustomerOmit
+  checkoutSession?: Prisma.CheckoutSessionOmit
   order?: Prisma.OrderOmit
   orderItem?: Prisma.OrderItemOmit
   productVariantAttributeValue?: Prisma.ProductVariantAttributeValueOmit

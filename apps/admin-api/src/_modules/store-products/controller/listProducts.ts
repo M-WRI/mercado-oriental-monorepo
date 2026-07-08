@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { prisma, asyncHandler, parseListQuery, paginatedResponse } from "../../../lib";
+import { getCategoryFilterIds } from "../../store-categories/lib/categoryTree";
+import { resolvePrimaryImageUrl } from "../../products/lib/productImages";
 
 const filterConfig = {
   searchFields: ["name", "description", "shop.name"],
@@ -19,10 +21,11 @@ export const listProducts = asyncHandler(async (req: Request, res: Response) => 
     productVariants: { some: {} },
   };
 
-  // Category filter
+  // Category filter — include selected category and all descendants (products are tagged on leaf nodes)
   const categoryId = req.query.categoryId as string | undefined;
   if (categoryId) {
-    where.productCategories = { some: { categoryId } };
+    const categoryIds = await getCategoryFilterIds(categoryId);
+    where.productCategories = { some: { categoryId: { in: categoryIds } } };
   }
 
   const [products, total] = await Promise.all([
@@ -57,6 +60,9 @@ export const listProducts = asyncHandler(async (req: Request, res: Response) => 
             category: { select: { id: true, name: true, slug: true } },
           },
         },
+        productImages: {
+          select: { url: true, isPrimary: true, sortOrder: true },
+        },
       },
     }),
     prisma.product.count({ where }),
@@ -73,7 +79,7 @@ export const listProducts = asyncHandler(async (req: Request, res: Response) => 
       id: p.id,
       name: p.name,
       description: p.description,
-      imageUrl: p.imageUrl,
+      imageUrl: p.imageUrl ?? resolvePrimaryImageUrl(p.productImages),
       shop: p.shop,
       priceMin: prices.length ? Math.min(...prices) : 0,
       priceMax: prices.length ? Math.max(...prices) : 0,

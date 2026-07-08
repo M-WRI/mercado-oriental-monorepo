@@ -6,5 +6,6 @@ export {
   notifyNewDispute,
   notifyDisputeStatusChange,
   notifyNewReview,
+  notifyWelcomeVendor,
 } from "./notify";
 export type { NotifyPaymentFailedParams } from "./notify";

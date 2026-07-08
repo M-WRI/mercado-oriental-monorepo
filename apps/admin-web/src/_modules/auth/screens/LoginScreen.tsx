@@ -79,6 +79,12 @@ export const LoginScreen = () => {
               )}
             </form.AppField>
 
+            <p className="text-right -mt-2">
+              <Link to="/forgot-password" className="text-xs text-gray-500 hover:text-gray-900 hover:underline">
+                {t("auth.forgotPasswordLink")}
+              </Link>
+            </p>
+
             <Button
               onClick={() => form.handleSubmit()}
               disabled={isPending}

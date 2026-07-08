@@ -98,7 +98,18 @@
     "emailRequired": "Email is required.",
     "emailInvalid": "Please enter a valid email address.",
     "passwordRequired": "Password is required.",
-    "passwordMinLength": "Password must be at least 6 characters."
+    "passwordMinLength": "Password must be at least 6 characters.",
+    "forgotPasswordLink": "Forgot password?",
+    "forgotPasswordTitle": "Reset password",
+    "forgotPasswordSubtitle": "We'll email you a reset link.",
+    "forgotPasswordSent": "If an account exists for that email, a reset link has been sent.",
+    "sendResetLink": "Send reset link",
+    "backToLogin": "Back to sign in",
+    "resetPasswordTitle": "Choose a new password",
+    "resetPasswordSubmit": "Update password",
+    "resetPasswordFailed": "Could not reset password. The link may have expired.",
+    "resetTokenMissing": "Invalid or missing reset link.",
+    "passwordMinLength8": "Password must be at least 8 characters."
   },
 
   "dashboard": {
@@ -215,7 +226,14 @@
       "imageUploadFailed": "Upload failed. Please try again.",
       "nameRequired": "Product name is required",
       "shopRequired": "Please select a shop",
-      "categoriesLabel": "Categories"
+      "categoriesLabel": "Categories",
+      "imagesLabel": "Product images",
+      "imagesHint": "Upload multiple images for the gallery. Mark one as primary and optionally link images to variants.",
+      "imagesUploadPrompt": "Click to upload images",
+      "imagePrimaryBadge": "Primary",
+      "imageSetPrimary": "Set as primary",
+      "imageLinkVariant": "Linked variant",
+      "imageNoVariant": "No variant (gallery only)"
     },
 
     "attributesStep": {
@@ -242,7 +260,10 @@
       "stockLabel": "Stock",
       "stockPlaceholder": "0",
       "attributeValues": "Attribute values",
-      "addVariant": "Add variant"
+      "addVariant": "Add variant",
+      "linkedImageLabel": "Preview image",
+      "noLinkedImage": "No linked image",
+      "galleryImage": "Gallery image {{index}}"
     },
 
     "reviewStep": {
@@ -381,7 +402,17 @@
     "lowStockLabel": "Low stock threshold",
     "lowStockHint": "Variants at or below this available quantity trigger low-stock alerts.",
     "lowStockInvalid": "Enter a valid number (0 or greater).",
-    "saveShop": "Save shop settings"
+    "saveShop": "Save shop settings",
+    "paymentsTitle": "Payments",
+    "paymentsSubtitle": "Connect Stripe to receive payouts from customer orders.",
+    "paymentsDescription": "Customers pay once at checkout. After payment, funds are transferred to your connected Stripe account (minus platform fee).",
+    "stripeConnect": "Connect Stripe",
+    "stripeContinueSetup": "Continue Stripe setup",
+    "stripeRefresh": "Refresh status",
+    "stripeStatusReady": "Ready to accept payments",
+    "stripeStatusPending": "Setup incomplete",
+    "stripeStatusNotConnected": "Not connected",
+    "stripeReturnSuccess": "Stripe setup updated."
   },
 
   "categories": {

@@ -27,13 +27,26 @@ export const ProductReviewStep = ({ data, submitRef, onComplete }: StepProps) =>
       <div className="mb-6">
         <h5 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">{t("products.reviewStep.product")}</h5>
         <div className="border border-gray-200 rounded-lg p-4">
-          {productInfo.imageUrl && (
+          {(productInfo.images?.length ?? 0) > 0 ? (
+            <div className="flex flex-wrap gap-2 mb-3">
+              {productInfo.images.map((img) => (
+                <img
+                  key={img.tempId}
+                  src={img.url}
+                  alt={productInfo.name}
+                  className={`w-16 h-16 rounded-lg object-cover border ${
+                    img.isPrimary ? "border-indigo-400 ring-2 ring-indigo-100" : "border-gray-100"
+                  }`}
+                />
+              ))}
+            </div>
+          ) : productInfo.imageUrl ? (
             <img
               src={productInfo.imageUrl}
               alt={productInfo.name}
               className="w-20 h-20 rounded-lg object-cover mb-3 border border-gray-100"
             />
-          )}
+          ) : null}
           <p className="font-medium text-gray-900">{productInfo.name}</p>
           {productInfo.description && (
             <p className="text-sm text-gray-500 mt-1">{productInfo.description}</p>
@@ -119,7 +132,18 @@ export const ProductReviewStep = ({ data, submitRef, onComplete }: StepProps) =>
           {variants.map((v) => (
             <div key={v.tempId} className="border border-gray-200 rounded-lg p-4">
               <div className="flex items-center justify-between">
-                <span className="font-medium text-gray-900 text-sm">{v.name}</span>
+                <div className="flex items-center gap-2">
+                  {v.linkedImageTempId && productInfo.images && (
+                    <img
+                      src={
+                        productInfo.images.find((img) => img.tempId === v.linkedImageTempId)?.url
+                      }
+                      alt=""
+                      className="w-8 h-8 rounded object-cover border border-gray-200"
+                    />
+                  )}
+                  <span className="font-medium text-gray-900 text-sm">{v.name}</span>
+                </div>
                 <span className="text-sm text-gray-500">
                   €{v.price.toFixed(2)} · {v.stock} {t("common.unit_plural")}
                 </span>

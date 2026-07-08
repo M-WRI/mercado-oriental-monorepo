@@ -107,6 +107,28 @@ CLOUDINARY_API_SECRET=your-api-secret
 # CLOUDINARY_FOLDER=mercado-oriental/products
 ```
 
+## Email (Brevo) & payments (Stripe)
+
+Vendor email notifications and checkout use **Brevo** and **Stripe Connect** (marketplace model). Add to `apps/admin-api/.env.local`:
+
+```bash
+BREVO_API_KEY=...
+BREVO_SENDER_EMAIL=notifications@yourdomain.com
+BREVO_SENDER_NAME=Mercado Oriental
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_PLATFORM_FEE_PERCENT=5
+ADMIN_WEB_URL=http://localhost:5173
+STORE_WEB_URL=http://localhost:5174
+```
+
+- **Checkout:** Store uses `POST /api/store/checkout` → Stripe Hosted Checkout (one payment, multi-shop split).
+- **Webhooks (local):** `stripe listen --forward-to localhost:8000/api/webhooks/stripe`
+- **Vendor Stripe:** Admin → Settings → Connect Stripe (required before a shop can receive orders).
+- **Tests:** `ALLOW_LEGACY_ORDERS=true` is set in `test/setup.ts` for direct order creation in integration tests.
+
+Run migrations after pulling: `pnpm --filter @mercado/admin-api prisma:migrate`
+
 ## Production deploy (summary)
 
 | Component | Notes |

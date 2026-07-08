@@ -3,15 +3,17 @@ import { Input } from "@mercado/shared-ui/components/inputs/components/Input";
 import { TextArea } from "@mercado/shared-ui/components/inputs/components/TextArea";
 import { CategoryPicker } from "@/_modules/categories/components";
 import type { ICategory } from "@/_modules/categories/types";
-import { ProductImageField } from "../ProductImageField";
+import type { IProductImageDraft, IProductImageVariantOption } from "../../types";
+import { ProductImagesField } from "../ProductImagesField";
 
 export interface ProductInfoFieldsProps {
   name: string;
   onNameChange: (value: string) => void;
   description: string;
   onDescriptionChange: (value: string) => void;
-  imageUrl: string;
-  onImageUrlChange: (value: string) => void;
+  images: IProductImageDraft[];
+  onImagesChange: (images: IProductImageDraft[]) => void;
+  variantOptions?: IProductImageVariantOption[];
   categoryIds: string[];
   categoryNames: Record<string, string>;
   onToggleCategory: (id: string, catName: string, path: string) => void;
@@ -24,8 +26,9 @@ export function ProductInfoFields({
   onNameChange,
   description,
   onDescriptionChange,
-  imageUrl,
-  onImageUrlChange,
+  images,
+  onImagesChange,
+  variantOptions,
   categoryIds,
   categoryNames,
   onToggleCategory,
@@ -53,7 +56,11 @@ export function ProductInfoFields({
         rows={3}
       />
 
-      <ProductImageField value={imageUrl} onChange={onImageUrlChange} />
+      <ProductImagesField
+        images={images}
+        onChange={onImagesChange}
+        variantOptions={variantOptions}
+      />
 
       <div className="grid gap-1.5">
         <label className="text-sm font-medium text-gray-700">

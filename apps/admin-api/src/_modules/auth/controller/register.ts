@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { prisma, AppError, ERROR_CODES, asyncHandler } from "../../../lib";
+import { notifyWelcomeVendor } from "../../../lib/notifications/notify";
 
 const JWT_SECRET = process.env.JWT_SECRET || "mercado-oriental-secret";
 
@@ -68,4 +69,6 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     },
     token,
   });
+
+  notifyWelcomeVendor(user.id, user.name);
 });

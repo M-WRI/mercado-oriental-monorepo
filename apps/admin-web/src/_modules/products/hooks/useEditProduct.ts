@@ -14,6 +14,7 @@ import type {
   IEditableVariant,
   IVariantAttributeSelection,
   IProductAttribute,
+  IProductImageDraft,
 } from "../types";
 import type { ICategory } from "@/_modules/categories/types";
 import { AddAttributeModal } from "@/_modules/attributes/components";
@@ -39,7 +40,7 @@ export function useEditProduct(id: string) {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [images, setImages] = useState<IProductImageDraft[]>([]);
   const [isActive, setIsActive] = useState(true);
   const [categoryIds, setCategoryIds] = useState<string[]>([]);
   const [categoryNames, setCategoryNames] = useState<Record<string, string>>({});
@@ -75,7 +76,30 @@ export function useEditProduct(id: string) {
     if (!product || !rawVariants || initialized) return;
     setName(product.name);
     setDescription(product.description ?? "");
-    setImageUrl(product.imageUrl ?? "");
+    if (product.images?.length) {
+      setImages(
+        product.images.map((img) => ({
+          tempId: img.id,
+          id: img.id,
+          url: img.url,
+          alt: img.alt,
+          sortOrder: img.sortOrder,
+          isPrimary: img.isPrimary,
+          productVariantId: img.productVariantId,
+        }))
+      );
+    } else if (product.imageUrl) {
+      setImages([
+        {
+          tempId: "legacy-primary",
+          url: product.imageUrl,
+          sortOrder: 0,
+          isPrimary: true,
+        },
+      ]);
+    } else {
+      setImages([]);
+    }
     setIsActive(product.isActive);
     setCategoryIds(product.categories.map((c) => c.id));
     setCategoryNames(Object.fromEntries(product.categories.map((c) => [c.id, c.name])));
@@ -204,7 +228,7 @@ export function useEditProduct(id: string) {
       setError(t("products.infoStep.nameRequired"));
       return;
     }
-    if (imageUrl.trim() && !isProductImageUrlValid(imageUrl)) {
+    if (images.some((img) => img.url.trim() && !isProductImageUrlValid(img.url))) {
       setError(t("products.infoStep.imageUrlInvalid"));
       return;
     }
@@ -244,13 +268,26 @@ export function useEditProduct(id: string) {
         attributeValueIds: v.attributeValueIds,
       }));
 
+    const sortedImages = [...images].sort((a, b) => a.sortOrder - b.sortOrder);
+
     putProduct(
       {
         url: updateProduct.url(id),
         data: {
           name: name.trim(),
           description: description.trim() || null,
-          imageUrl: imageUrl.trim() || null,
+          imageUrl:
+            sortedImages.find((img) => img.isPrimary)?.url ??
+            sortedImages[0]?.url ??
+            null,
+          images: sortedImages.map((img, index) => ({
+            id: img.id,
+            url: img.url.trim(),
+            alt: img.alt ?? null,
+            sortOrder: index,
+            isPrimary: img.isPrimary,
+            productVariantId: img.productVariantId ?? null,
+          })),
           shopId,
           isActive,
           categoryIds,
@@ -292,8 +329,8 @@ export function useEditProduct(id: string) {
     setName,
     description,
     setDescription,
-    imageUrl,
-    setImageUrl,
+    images,
+    setImages,
     isActive,
     setIsActive,
     categoryIds,

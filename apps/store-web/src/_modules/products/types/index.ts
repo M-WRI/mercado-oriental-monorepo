@@ -31,12 +31,22 @@ export interface VariantAttribute {
   value: string;
 }
 
+export interface ProductImage {
+  id: string;
+  url: string;
+  alt: string | null;
+  sortOrder: number;
+  isPrimary: boolean;
+  productVariantId: string | null;
+}
+
 export interface ProductVariant {
   id: string;
   name: string;
   price: number;
   available: number;
   inStock: boolean;
+  imageUrl: string | null;
   attributes: VariantAttribute[];
 }
 
@@ -55,6 +65,7 @@ export interface ProductDetail {
   name: string;
   description: string | null;
   imageUrl: string | null;
+  images: ProductImage[];
   shop: { id: string; name: string };
   variants: ProductVariant[];
   reviews: ProductReview[];

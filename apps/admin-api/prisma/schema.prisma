@@ -27,6 +27,8 @@ model Shop {
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   defaultLowStockThreshold Int @default(5)
+  stripeAccountId String? @unique
+  stripeOnboardingComplete Boolean @default(false)
   products Product[]
   attributes ProductAttribute[]
   orders Order[]
@@ -43,10 +45,28 @@ model Product {
   shopId String
   shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
   productVariants ProductVariant[]
+  productImages ProductImage[]
   productCategories ProductCategory[]
   reviews ProductReview[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model ProductImage {
+  id String @id @default(uuid())
+  url String
+  alt String?
+  sortOrder Int @default(0)
+  isPrimary Boolean @default(false)
+  productId String
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productVariantId String?
+  productVariant ProductVariant? @relation(fields: [productVariantId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+  @@index([productVariantId])
 }
 
 model ProductVariant {
@@ -59,6 +79,7 @@ model ProductVariant {
   productId String
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productVariantAttributeValues ProductVariantAttributeValue[]
+  productImages ProductImage[]
   orderItems OrderItem[]
   inventoryMovements InventoryMovement[]
   priceHistory PriceHistory[]
@@ -94,9 +115,26 @@ model Customer {
   name      String?
   phone     String?
   orders    Order[]
+  checkoutSessions CheckoutSession[]
   reviews   ProductReview[]
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
+}
+
+model CheckoutSession {
+  id               String   @id @default(uuid())
+  customerId       String
+  customer         Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  stripeSessionId  String?  @unique
+  status           String   @default("pending") // pending | completed | expired | failed
+  totalAmount      Float
+  shippingAddress  String?
+  customerNote     String?
+  orders           Order[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([customerId])
 }
 
 model Order {
@@ -107,6 +145,13 @@ model Order {
   customer Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
   status String @default("pending")
   totalAmount Float
+  paymentStatus String @default("pending") // pending | paid | failed | refunded
+  stripeCheckoutSessionId String?
+  stripePaymentIntentId String?
+  stripeTransferId String?
+  paidAt DateTime?
+  checkoutSessionId String?
+  checkoutSession CheckoutSession? @relation(fields: [checkoutSessionId], references: [id], onDelete: SetNull)
 
   shippingAddress String?
   trackingNumber  String?

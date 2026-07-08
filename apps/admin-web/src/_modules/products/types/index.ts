@@ -26,9 +26,36 @@ export interface IProductInfoData {
   name: string;
   description: string;
   imageUrl: string;
+  images: IProductImageDraft[];
   shopId: string;
   shopName: string;
   categoryIds: string[];
+}
+
+export interface IProductImageDraft {
+  tempId: string;
+  id?: string;
+  url: string;
+  alt?: string | null;
+  sortOrder: number;
+  isPrimary: boolean;
+  productVariantId?: string | null;
+  variantTempId?: string | null;
+}
+
+export interface IProductImageVariantOption {
+  id?: string;
+  tempId?: string;
+  name: string;
+}
+
+export interface IProductImageResponse {
+  id: string;
+  url: string;
+  alt: string | null;
+  sortOrder: number;
+  isPrimary: boolean;
+  productVariantId: string | null;
 }
 
 export interface IAttributesData {
@@ -49,6 +76,7 @@ export interface IWizardVariant {
   price: number;
   stock: number;
   attributeSelections: IVariantAttributeSelection[];
+  linkedImageTempId?: string | null;
 }
 
 export interface IVariantAttributeValueLink {
@@ -147,6 +175,7 @@ export interface IProductDetailResponse {
   name: string;
   description: string | null;
   imageUrl: string | null;
+  images?: IProductImageResponse[];
   isActive: boolean;
   shop: { id: string; name: string; defaultLowStockThreshold?: number };
   createdAt: string;

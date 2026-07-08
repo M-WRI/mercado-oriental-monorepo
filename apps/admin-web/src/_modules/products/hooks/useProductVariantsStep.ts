@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { StepProps } from "@mercado/shared-ui/components/flowWizard";
 import { useFormHook } from "@mercado/shared-ui";
-import type { IWizardVariant, IVariantAttributeSelection } from "../types";
+import type { IWizardVariant, IVariantAttributeSelection, IProductImageDraft } from "../types";
 import { getAvailableAttributes } from "../utils";
 
 export type WizardVariantFormValues = {
@@ -87,6 +87,16 @@ export function useProductVariantsStep({ data, submitRef, onComplete }: StepProp
     setShowForm(false);
   };
 
+  const productImages = (data.productInfo?.images ?? []) as IProductImageDraft[];
+
+  const setVariantLinkedImage = (tempId: string, linkedImageTempId: string | null) => {
+    setVariants((prev) =>
+      prev.map((v) =>
+        v.tempId === tempId ? { ...v, linkedImageTempId } : v
+      )
+    );
+  };
+
   return {
     error,
     variants,
@@ -98,5 +108,7 @@ export function useProductVariantsStep({ data, submitRef, onComplete }: StepProp
     selections,
     selectValue,
     cancelNewVariant,
+    productImages,
+    setVariantLinkedImage,
   };
 }

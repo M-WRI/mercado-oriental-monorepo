@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router";
 import { useFetch, usePost, useToast, useAuth } from "@mercado/shared-ui";
 import { productDetailEndpoint } from "../api";
@@ -56,12 +56,31 @@ function timeAgo(dateStr: string) {
   return `${months}mo ago`;
 }
 
+function resolveDisplayImage(
+  product: ProductDetail,
+  variant: ProductVariant | null,
+  selectedImageId: string | null
+): { url: string | null; activeImageId: string | null } {
+  const gallery = product.images ?? [];
+  if (selectedImageId) {
+    const selected = gallery.find((img) => img.id === selectedImageId);
+    if (selected) return { url: selected.url, activeImageId: selected.id };
+  }
+  if (variant?.imageUrl) {
+    const linked = gallery.find((img) => img.productVariantId === variant.id);
+    return { url: variant.imageUrl, activeImageId: linked?.id ?? null };
+  }
+  const primary = gallery.find((img) => img.isPrimary) ?? gallery[0];
+  return { url: product.imageUrl ?? primary?.url ?? null, activeImageId: primary?.id ?? null };
+}
+
 export function ProductDetailScreen() {
   const { id } = useParams<{ id: string }>();
   const { addItem } = useCart();
   const { success } = useToast();
   const { isAuthenticated } = useAuth();
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
+  const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
 
   // Review form
@@ -77,6 +96,19 @@ export function ProductDetailScreen() {
     url: endpoint.url,
     enabled: !!id,
   });
+
+  const variant = selectedVariant ?? product?.variants[0] ?? null;
+  const galleryImages = useMemo(
+    () => [...(product?.images ?? [])].sort((a, b) => a.sortOrder - b.sortOrder),
+    [product?.images]
+  );
+  const { url: displayImageUrl, activeImageId } = product
+    ? resolveDisplayImage(product, variant, selectedImageId)
+    : { url: null, activeImageId: null };
+
+  useEffect(() => {
+    setSelectedImageId(null);
+  }, [variant?.id]);
 
   if (isLoading) {
     return (
@@ -109,7 +141,6 @@ export function ProductDetailScreen() {
     );
   }
 
-  const variant = selectedVariant ?? product.variants[0] ?? null;
   const gradientIdx = product.name.charCodeAt(0) % GRADIENTS.length;
 
   const handleAddToCart = () => {
@@ -158,19 +189,40 @@ export function ProductDetailScreen() {
         </Link>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-          {/* Image */}
-          <div className={`aspect-square rounded-2xl overflow-hidden shadow-lg animate-fade-in-up ${product.imageUrl ? "bg-gray-50" : GRADIENTS[gradientIdx]}`}>
-            {product.imageUrl ? (
-              <img
-                src={product.imageUrl}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className={`w-full h-full flex items-center justify-center ${GRADIENTS[gradientIdx]}`}>
-                <span className="text-white/50 text-8xl font-light select-none">
-                  {product.name.charAt(0).toUpperCase()}
-                </span>
+          {/* Image gallery */}
+          <div className="space-y-3">
+            <div className={`aspect-square rounded-2xl overflow-hidden shadow-lg animate-fade-in-up ${displayImageUrl ? "bg-gray-50" : GRADIENTS[gradientIdx]}`}>
+              {displayImageUrl ? (
+                <img
+                  src={displayImageUrl}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className={`w-full h-full flex items-center justify-center ${GRADIENTS[gradientIdx]}`}>
+                  <span className="text-white/50 text-8xl font-light select-none">
+                    {product.name.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {galleryImages.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {galleryImages.map((img) => (
+                  <button
+                    key={img.id}
+                    type="button"
+                    onClick={() => setSelectedImageId(img.id)}
+                    className={`shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
+                      activeImageId === img.id
+                        ? "border-gray-900 ring-2 ring-gray-900/10"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    <img src={img.url} alt="" className="w-full h-full object-cover" />
+                  </button>
+                ))}
               </div>
             )}
           </div>
@@ -183,9 +235,13 @@ export function ProductDetailScreen() {
               {product.categories?.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 mt-2">
                   {product.categories.map((c) => (
-                    <span key={c.id} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
+                    <Link
+                      key={c.id}
+                      to={`/?categoryId=${c.id}`}
+                      className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full hover:bg-gray-200 hover:text-gray-900 transition-colors"
+                    >
                       {c.name}
-                    </span>
+                    </Link>
                   ))}
                 </div>
               )}
@@ -210,8 +266,8 @@ export function ProductDetailScreen() {
                   {product.variants.map((v) => (
                     <button
                       key={v.id}
-                      onClick={() => { setSelectedVariant(v); setQuantity(1); }}
-                      className={`text-sm px-4 py-2 border-2 rounded-xl transition-all ${
+                      onClick={() => { setSelectedVariant(v); setQuantity(1); setSelectedImageId(null); }}
+                      className={`inline-flex items-center gap-2 text-sm px-3 py-2 border-2 rounded-xl transition-all ${
                         variant?.id === v.id
                           ? "border-gray-900 bg-gray-900 text-white font-medium shadow-sm"
                           : v.inStock
@@ -220,12 +276,23 @@ export function ProductDetailScreen() {
                       }`}
                       disabled={!v.inStock}
                     >
-                      {v.name}
-                      {v.attributes.length > 0 && (
-                        <span className="text-[10px] ml-1 opacity-60">
-                          ({v.attributes.map((a) => a.value).join(", ")})
-                        </span>
+                      {v.imageUrl && (
+                        <img
+                          src={v.imageUrl}
+                          alt=""
+                          className={`w-6 h-6 rounded-md object-cover border ${
+                            variant?.id === v.id ? "border-white/30" : "border-gray-200"
+                          }`}
+                        />
                       )}
+                      <span>
+                        {v.name}
+                        {v.attributes.length > 0 && (
+                          <span className="text-[10px] ml-1 opacity-60">
+                            ({v.attributes.map((a) => a.value).join(", ")})
+                          </span>
+                        )}
+                      </span>
                     </button>
                   ))}
                 </div>

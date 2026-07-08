@@ -61,8 +61,13 @@ function EditProductScreen({ id }: { id: string }) {
             onNameChange={edit.setName}
             description={edit.description}
             onDescriptionChange={edit.setDescription}
-            imageUrl={edit.imageUrl}
-            onImageUrlChange={edit.setImageUrl}
+            images={edit.images}
+            onImagesChange={edit.setImages}
+            variantOptions={edit.variants.map((v) => ({
+              id: v.id,
+              tempId: v.tempId,
+              name: v.name,
+            }))}
             categoryIds={edit.categoryIds}
             categoryNames={edit.categoryNames}
             onToggleCategory={edit.handleToggleCategory}

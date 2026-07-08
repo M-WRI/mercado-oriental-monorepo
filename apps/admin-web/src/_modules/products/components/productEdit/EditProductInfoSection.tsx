@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { ICategory } from "@/_modules/categories/types";
+import type { IProductImageDraft, IProductImageVariantOption } from "../../types";
 import { ProductInfoFields } from "../forms";
 
 interface EditProductInfoSectionProps {
@@ -7,8 +8,9 @@ interface EditProductInfoSectionProps {
   onNameChange: (value: string) => void;
   description: string;
   onDescriptionChange: (value: string) => void;
-  imageUrl: string;
-  onImageUrlChange: (value: string) => void;
+  images: IProductImageDraft[];
+  onImagesChange: (images: IProductImageDraft[]) => void;
+  variantOptions?: IProductImageVariantOption[];
   categoryIds: string[];
   categoryNames: Record<string, string>;
   onToggleCategory: (id: string, catName: string, path: string) => void;
@@ -23,8 +25,9 @@ export function EditProductInfoSection({
   onNameChange,
   description,
   onDescriptionChange,
-  imageUrl,
-  onImageUrlChange,
+  images,
+  onImagesChange,
+  variantOptions,
   categoryIds,
   categoryNames,
   onToggleCategory,
@@ -42,8 +45,9 @@ export function EditProductInfoSection({
         onNameChange={onNameChange}
         description={description}
         onDescriptionChange={onDescriptionChange}
-        imageUrl={imageUrl}
-        onImageUrlChange={onImageUrlChange}
+        images={images}
+        onImagesChange={onImagesChange}
+        variantOptions={variantOptions}
         categoryIds={categoryIds}
         categoryNames={categoryNames}
         onToggleCategory={onToggleCategory}

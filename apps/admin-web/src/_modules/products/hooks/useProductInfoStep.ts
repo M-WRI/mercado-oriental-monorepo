@@ -6,6 +6,19 @@ import { useShop } from "@/_modules/shops/context/ShopProvider";
 import { getCategories } from "@/_modules/categories/api";
 import type { ICategory } from "@/_modules/categories/types";
 import { isProductImageUrlValid } from "../components/ProductImageField";
+import type { IProductImageDraft } from "../types";
+
+function legacyImageToDraft(imageUrl: string): IProductImageDraft[] {
+  if (!imageUrl.trim() || !isProductImageUrlValid(imageUrl)) return [];
+  return [
+    {
+      tempId: "legacy-primary",
+      url: imageUrl.trim(),
+      sortOrder: 0,
+      isPrimary: true,
+    },
+  ];
+}
 
 export function useProductInfoStep({ data, submitRef, onComplete }: StepProps) {
   const { t } = useTranslation();
@@ -13,7 +26,11 @@ export function useProductInfoStep({ data, submitRef, onComplete }: StepProps) {
   const prevData = data.productInfo;
   const [name, setName] = useState(prevData?.name ?? "");
   const [description, setDescription] = useState(prevData?.description ?? "");
-  const [imageUrl, setImageUrl] = useState(prevData?.imageUrl ?? "");
+  const [images, setImages] = useState<IProductImageDraft[]>(
+    prevData?.images?.length
+      ? prevData.images
+      : legacyImageToDraft(prevData?.imageUrl ?? "")
+  );
   const [categoryIds, setCategoryIds] = useState<string[]>(prevData?.categoryIds ?? []);
   const [categoryNames, setCategoryNames] = useState<Record<string, string>>(
     prevData?._categoryNames ?? {}
@@ -32,14 +49,16 @@ export function useProductInfoStep({ data, submitRef, onComplete }: StepProps) {
         setError(t("products.infoStep.nameRequired"));
         return;
       }
-      if (imageUrl.trim() && !isProductImageUrlValid(imageUrl)) {
+      const invalidImage = images.find((img) => !isProductImageUrlValid(img.url));
+      if (invalidImage) {
         setError(t("products.infoStep.imageUrlInvalid"));
         return;
       }
       onComplete({
         name: name.trim(),
         description: description.trim(),
-        imageUrl: imageUrl.trim(),
+        images,
+        imageUrl: images.find((img) => img.isPrimary)?.url ?? images[0]?.url ?? "",
         shopId,
         shopName: shop.name,
         categoryIds,
@@ -49,7 +68,7 @@ export function useProductInfoStep({ data, submitRef, onComplete }: StepProps) {
   }, [
     name,
     description,
-    imageUrl,
+    images,
     shopId,
     shop.name,
     categoryIds,
@@ -77,8 +96,8 @@ export function useProductInfoStep({ data, submitRef, onComplete }: StepProps) {
     setName,
     description,
     setDescription,
-    imageUrl,
-    setImageUrl,
+    images,
+    setImages,
     categoryIds,
     categoryNames,
     categoryTree,

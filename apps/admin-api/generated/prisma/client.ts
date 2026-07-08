@@ -55,6 +55,11 @@ export type Shop = Prisma.ShopModel
  */
 export type Product = Prisma.ProductModel
 /**
+ * Model ProductImage
+ * 
+ */
+export type ProductImage = Prisma.ProductImageModel
+/**
  * Model ProductVariant
  * 
  */
@@ -74,6 +79,11 @@ export type ProductAttributeValue = Prisma.ProductAttributeValueModel
  * 
  */
 export type Customer = Prisma.CustomerModel
+/**
+ * Model CheckoutSession
+ * 
+ */
+export type CheckoutSession = Prisma.CheckoutSessionModel
 /**
  * Model Order
  * 
